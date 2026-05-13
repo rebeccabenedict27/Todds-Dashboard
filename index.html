@@ -305,6 +305,55 @@
   .check-item:hover .del-btn,
   .wait-item:hover .del-btn { display: block; }
 
+  /* ── Mark-as-Done button (mirrors .wb-msg-del pattern) ── */
+  .done-btn {
+    border: 1px solid #D1D5DB; background: #fff; cursor: pointer; color: #059669;
+    font-size: 12px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
+    opacity: 0.85; transition: opacity 0.15s, background 0.15s, transform 0.1s;
+    margin-top: 1px; line-height: 1; flex-shrink: 0;
+  }
+  .done-btn:hover { opacity: 1; background: #D1FAE5; color: #047857; border-color: #86EFAC; transform: scale(1.05); }
+  .restore-btn {
+    border: 1px solid #D1D5DB; background: #fff; cursor: pointer; color: #2563EB;
+    font-size: 12px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
+    margin-top: 1px; line-height: 1; flex-shrink: 0; transition: background 0.15s;
+  }
+  .restore-btn:hover { background: #DBEAFE; color: #1E40AF; border-color: #93C5FD; }
+  .del-btn-perm {
+    display: inline-block !important;
+    border: 1px solid #D1D5DB; background: #fff; cursor: pointer; color: #9CA3AF;
+    font-size: 12px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
+    margin-top: 1px; line-height: 1; flex-shrink: 0; transition: background 0.15s;
+  }
+  .del-btn-perm:hover { background: #FEE2E2; color: #DC2626; border-color: #FCA5A5; }
+  /* Hide archived items from the main section flow */
+  .task-row.archived,
+  .bullet-item.archived,
+  .wait-item.archived,
+  .radar-item.archived { display: none; }
+  /* Item added-on date badge (mirrors .day-badge size cues) */
+  .item-added-date {
+    display: inline-block; font-size: 9.5px; font-weight: 700;
+    padding: 2px 7px; border-radius: 9px;
+    background: #F3F4F6; color: var(--gray-text);
+    white-space: nowrap; margin-right: 6px; vertical-align: middle;
+    letter-spacing: 0.2px;
+  }
+  /* Section-level archive container */
+  .section-archive-wrap { margin-top: 8px; border-top: 1px dashed #E5E7EB; padding-top: 8px; }
+  .section-archive { display: none; margin-top: 6px; }
+  .section-archive.open { display: block; }
+  /* When archive container is open, force-show .archived children inside it */
+  .section-archive.open .task-row.archived,
+  .section-archive.open .bullet-item.archived,
+  .section-archive.open .wait-item.archived,
+  .section-archive.open .radar-item.archived { display: flex; opacity: 0.72; }
+  .section-archive .task-text,
+  .section-archive .bullet-text,
+  .section-archive .wait-what,
+  .section-archive .radar-text { text-decoration: line-through; color: var(--gray-text); }
+  .section-archive .done-btn { display: none; }
+
   /* ── BULLET ITEMS ── */
   .bullet-item {
     display: flex; gap: 10px; padding: 8px 0;
@@ -1348,9 +1397,9 @@
         <span class="sh-icon">⚠️</span><span>Decisions Needed (Action Required)</span>
       </div>
       <div class="section-body" id="decisionsBody" data-add-type="checklist">
-        
-        
-        
+
+
+
         <div class="task-row"><div class="status-dd" data-s="todo">
     <button class="sd-btn" onclick="openSD(this)"><span class="sd-label">To Do</span><span class="sd-caret">▾</span></button>
     <div class="sd-menu">
@@ -1365,7 +1414,12 @@
       <div class="task-text" contenteditable="false" data-ph="Task…">Roni and Sara SC</div>
       <div class="task-sub" contenteditable="false" data-ph="Note or deadline…"></div>
     </div>
+    <button class="done-btn" onclick="markItemDone(this)" title="Mark done">✓</button>
     <button class="del-btn" onclick="this.closest('.task-row').remove()">✕</button></div><button class="add-item-btn" onclick="addTaskRow(this.parentElement, 'todo')">+ Add decision item</button>
+        <div class="section-archive-wrap">
+          <button class="archive-toggle-btn" onclick="toggleSectionArchive(this)">📂 Archived (<span class="sa-count">0</span>) <span class="sa-arrow">▾</span></button>
+          <div class="section-archive"></div>
+        </div>
       </div>
     </div><div class="section-card">
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
@@ -1387,12 +1441,16 @@
         <span class="sh-icon">ℹ️</span><span>FYIs (No Action Required)</span>
       </div>
       <div class="section-body" data-add-type="bullets">
-        
-        
-        
-        
-        
+
+
+
+
+
         <button class="add-item-btn" onclick="addBulletItem(this.parentElement, 'ℹ️')">+ Add FYI</button>
+        <div class="section-archive-wrap">
+          <button class="archive-toggle-btn" onclick="toggleSectionArchive(this)">📂 Archived (<span class="sa-count">0</span>) <span class="sa-arrow">▾</span></button>
+          <div class="section-archive"></div>
+        </div>
       </div>
     </div>
 
@@ -1405,15 +1463,20 @@
         <span style="margin-left:auto;font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-text);">Things out to others — following up</span>
       </div>
       <div class="section-body" id="waitingOnBody">
-        
-        
-        
+
+
+
         <div class="wait-item"><span class="wait-who" contenteditable="false" style="outline:none; min-width:44px;">Who</span>
     <div class="wait-body">
       <div class="wait-what" contenteditable="false" data-ph="What are you waiting on?">Jake Schuster - Shelley is getting us energy invoices due EOW</div>
       <div class="wait-since" contenteditable="false" data-ph="Since when / context…"><br></div>
     </div>
+    <button class="done-btn" onclick="markItemDone(this)" title="Mark done">✓</button>
     <button class="del-btn" onclick="this.closest('.wait-item').remove()">✕</button></div><button class="add-item-btn" onclick="addWaitItem()">+ Add waiting-on item</button>
+        <div class="section-archive-wrap">
+          <button class="archive-toggle-btn" onclick="toggleSectionArchive(this)">📂 Archived (<span class="sa-count">0</span>) <span class="sa-arrow">▾</span></button>
+          <div class="section-archive"></div>
+        </div>
       </div>
     </div>
 
@@ -1430,11 +1493,16 @@
             <div class="radar-text" contenteditable="false">Find Handyman plumber for pipe in basement wall</div>
             <div class="radar-sub" contenteditable="false"><br></div>
           </div>
+          <button class="done-btn" onclick="markItemDone(this)" title="Mark done">✓</button>
           <button class="del-btn" onclick="this.closest('.radar-item').remove()">✕</button>
         </div>
-        
-        
+
+
         <button class="add-item-btn" onclick="addRadarItem(this.parentElement)">+ Add radar item</button>
+        <div class="section-archive-wrap">
+          <button class="archive-toggle-btn" onclick="toggleSectionArchive(this)">📂 Archived (<span class="sa-count">0</span>) <span class="sa-arrow">▾</span></button>
+          <div class="section-archive"></div>
+        </div>
       </div>
     </div>
 
@@ -2753,6 +2821,18 @@ function pickSD(opt) {
       removeFromDoneLog(text);
     }
   }
+
+  // Hook into section-level archive: if this task-row is inside a section-card
+  // that has a .section-archive, mirror the done/undone state there too.
+  if (row && row.closest && row.closest('.section-card') && row.closest('.section-card').querySelector('.section-archive')) {
+    if (val === 'done' && !row.classList.contains('archived')) {
+      // Use the done button if present to trigger the same archive path
+      const doneBtn = row.querySelector('.done-btn');
+      if (doneBtn) markItemDone(doneBtn); else markItemDone(row);
+    } else if (prev === 'done' && val !== 'done' && row.classList.contains('archived')) {
+      restoreItem(row);
+    }
+  }
 }
 
 // Close dropdowns on outside click
@@ -2803,15 +2883,21 @@ function sdHTML(initialStatus) {
 }
 
 function addTaskRow(container, status) {
-  // Find the add button and insert before it
+  // Find the add button and insert before it (archive container, if present, sits after the add button)
   const addBtn  = container.querySelector('.add-item-btn');
   const wrapper = document.createElement('div');
   wrapper.className = 'task-row';
+  // Only show ✓ done button if this section-card has a .section-archive
+  const card = container.closest('.section-card');
+  const hasArchive = card && card.querySelector('.section-archive');
+  const doneBtnHTML = hasArchive ? '<button class="done-btn" onclick="markItemDone(this)" title="Mark done">✓</button>' : '';
+  const dateHTML    = hasArchive ? dateBadgeHTML() : '';
   wrapper.innerHTML = `${sdHTML(status || 'todo')}
     <div class="task-body">
       <div class="task-text" contenteditable="true" data-ph="Task…"></div>
-      <div class="task-sub"  contenteditable="true" data-ph="Note or deadline…"></div>
+      <div class="task-sub"  contenteditable="true" data-ph="Note or deadline…">${dateHTML}</div>
     </div>
+    ${doneBtnHTML}
     <button class="del-btn" onclick="this.closest('.task-row').remove()">✕</button>`;
   container.insertBefore(wrapper, addBtn);
   wrapper.querySelector('.task-text').focus();
@@ -2902,8 +2988,13 @@ function addBulletItem(container, emoji) {
   const addBtn = container.querySelector('.add-item-btn');
   const el = document.createElement('div');
   el.className = 'bullet-item';
+  const card = container.closest('.section-card');
+  const hasArchive = card && card.querySelector('.section-archive');
+  const doneBtnHTML = hasArchive ? '<button class="done-btn" onclick="markItemDone(this)" title="Mark done">✓</button>' : '';
+  const dateHTML    = hasArchive ? dateBadgeHTML() : '';
   el.innerHTML = `<span class="bullet-dot" contenteditable="false">${emoji || '•'}</span>
-    <div class="bullet-text" contenteditable="true" data-ph="Add note…"></div>
+    <div class="bullet-text" contenteditable="true" data-ph="Add note…">${dateHTML}</div>
+    ${doneBtnHTML}
     <button class="del-btn" onclick="this.closest('.bullet-item').remove()">✕</button>`;
   container.insertBefore(el, addBtn);
   el.querySelector('.bullet-text').focus();
@@ -2914,11 +3005,16 @@ function addRadarItem(container) {
   const num = container.querySelectorAll('.radar-item').length + 1;
   const el = document.createElement('div');
   el.className = 'radar-item';
+  const card = container.closest('.section-card');
+  const hasArchive = card && card.querySelector('.section-archive');
+  const doneBtnHTML = hasArchive ? '<button class="done-btn" onclick="markItemDone(this)" title="Mark done">✓</button>' : '';
+  const dateHTML    = hasArchive ? dateBadgeHTML() : '';
   el.innerHTML = `<div class="radar-num">${num}</div>
     <div style="flex:1;">
       <div class="radar-text" contenteditable="true" data-ph="Radar item…"></div>
-      <div class="radar-sub"  contenteditable="true" data-ph="Sub-note…"></div>
+      <div class="radar-sub"  contenteditable="true" data-ph="Sub-note…">${dateHTML}</div>
     </div>
+    ${doneBtnHTML}
     <button class="del-btn" onclick="this.closest('.radar-item').remove()">✕</button>`;
   container.insertBefore(el, addBtn);
   el.querySelector('.radar-text').focus();
@@ -3133,6 +3229,93 @@ function wbToggleArchive(btn) {
   const open = list.classList.toggle('open');
   if (btn) btn.textContent = open ? '📂 Read messages ▴' : '📂 Read messages ▾';
 }
+
+// ─────────────────────────────────────────────
+//  SECTION-LEVEL ARCHIVE (decisions / FYIs / waiting-on / radar)
+// ─────────────────────────────────────────────
+function _todayLabel() {
+  const d = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[d.getMonth()] + ' ' + d.getDate();
+}
+function _todayISO() {
+  const d = new Date();
+  const m = String(d.getMonth() + 1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return d.getFullYear() + '-' + m + '-' + day;
+}
+function dateBadgeHTML() {
+  return '<span class="item-added-date" data-added="' + _todayISO() + '">' + _todayLabel() + '</span>';
+}
+function _findArchivableItem(el) {
+  return el.closest('.task-row, .bullet-item, .wait-item, .radar-item');
+}
+function _findSectionCard(el) {
+  return el.closest('.section-card');
+}
+function markItemDone(btn) {
+  const item = _findArchivableItem(btn);
+  if (!item) return;
+  item.classList.add('archived');
+  // Move item DOM-wise into the section's archive container so it appears in the archive list
+  const card = _findSectionCard(item);
+  if (card) {
+    const arch = card.querySelector('.section-archive');
+    if (arch) arch.appendChild(item);
+    updateSectionArchiveCount(card);
+  }
+  // Add archive-only action buttons if missing
+  if (!item.querySelector('.restore-btn')) {
+    const wrap = document.createElement('span');
+    wrap.className = 'archived-actions';
+    wrap.style.cssText = 'display:inline-flex; gap:4px; margin-left:auto; flex-shrink:0;';
+    wrap.innerHTML = '<button class="restore-btn" onclick="restoreItem(this)" title="Restore">↺</button>' +
+                     '<button class="del-btn-perm" onclick="this.closest(\'.task-row, .bullet-item, .wait-item, .radar-item\').remove(); updateSectionArchiveCount(this.closest(\'.section-card\'));" title="Delete permanently">✕</button>';
+    item.appendChild(wrap);
+  }
+  if (typeof markDirty === 'function') markDirty();
+}
+function restoreItem(btn) {
+  const item = _findArchivableItem(btn);
+  if (!item) return;
+  const card = _findSectionCard(item);
+  item.classList.remove('archived');
+  // Remove archive-only actions
+  const aa = item.querySelector('.archived-actions');
+  if (aa) aa.remove();
+  // Move it back into the main section body (before the add button)
+  if (card) {
+    const body = card.querySelector('.section-body');
+    if (body) {
+      const addBtn = body.querySelector('.add-item-btn');
+      if (addBtn) body.insertBefore(item, addBtn); else body.appendChild(item);
+    }
+    updateSectionArchiveCount(card);
+  }
+  if (typeof markDirty === 'function') markDirty();
+}
+function toggleSectionArchive(btn) {
+  const wrap = btn.closest('.section-archive-wrap');
+  if (!wrap) return;
+  const list = wrap.querySelector('.section-archive');
+  if (!list) return;
+  const open = list.classList.toggle('open');
+  // Update arrow only — count comes from the label span
+  const arrow = btn.querySelector('.sa-arrow');
+  if (arrow) arrow.textContent = open ? '▴' : '▾';
+}
+function updateSectionArchiveCount(card) {
+  if (!card) return;
+  const arch = card.querySelector('.section-archive');
+  const lbl  = card.querySelector('.sa-count');
+  if (!arch || !lbl) return;
+  const n = arch.querySelectorAll('.task-row, .bullet-item, .wait-item, .radar-item').length;
+  lbl.textContent = n;
+}
+// Refresh all section archive counts on load (idempotent)
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.section-card').forEach(c => updateSectionArchiveCount(c));
+});
 function wbFmtTs(iso) {
   try {
     const d = new Date(iso);
@@ -3257,11 +3440,16 @@ function addWaitItem() {
   const addBtn = body.querySelector('.add-item-btn');
   const el = document.createElement('div');
   el.className = 'wait-item';
+  const card = body.closest('.section-card');
+  const hasArchive = card && card.querySelector('.section-archive');
+  const doneBtnHTML = hasArchive ? '<button class="done-btn" onclick="markItemDone(this)" title="Mark done">✓</button>' : '';
+  const dateHTML    = hasArchive ? dateBadgeHTML() : '';
   el.innerHTML = `<span class="wait-who" contenteditable="true" style="outline:none; min-width:44px;">Who</span>
     <div class="wait-body">
       <div class="wait-what" contenteditable="true" data-ph="What are you waiting on?">What are you waiting on?</div>
-      <div class="wait-since" contenteditable="true" data-ph="Since when / context…">Since…</div>
+      <div class="wait-since" contenteditable="true" data-ph="Since when / context…">${dateHTML}Since…</div>
     </div>
+    ${doneBtnHTML}
     <button class="del-btn" onclick="this.closest('.wait-item').remove()">✕</button>`;
   body.insertBefore(el, addBtn);
   el.querySelector('[contenteditable]').focus();
