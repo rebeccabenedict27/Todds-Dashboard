@@ -357,9 +357,9 @@
   }
   .day-toggle:hover { background: #F9FAFB; }
   .day-left  { display: flex; align-items: center; gap: 9px; flex: 1; min-width: 0; }
-  .day-dow   { font-size: 11px; font-weight: 800; color: var(--dark); white-space: nowrap; }
-  .day-date  { font-size: 11px; color: var(--gray-text); }
-  .day-badge { font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 10px; background: #F3F4F6; color: var(--gray-text); white-space: nowrap; }
+  .day-dow   { font-size: 15px; font-weight: 800; color: var(--dark); white-space: nowrap; letter-spacing: 0.2px; }
+  .day-date  { font-size: 14px; font-weight: 600; color: var(--dark); }
+  .day-badge { font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 10px; background: #F3F4F6; color: var(--gray-text); white-space: nowrap; }
   .day-toggle.is-today .day-dow  { color: var(--cherry); }
   .day-toggle.is-today .day-badge { background: var(--cherry-lt); color: var(--cherry); }
   .day-toggle.has-flag .day-dow  { color: #D97706; }
@@ -388,7 +388,13 @@
   .top3-item:last-child { margin-bottom: 0; }
   .top3-item:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
   .top3-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
-  .top3-text  { font-size: 13px; font-weight: 600; outline: none; }
+  .top3-text  { font-size: 13px; font-weight: 600; outline: none; min-height: 18px; border-radius: 4px; padding: 1px 3px; transition: background 0.15s; }
+  .top3-text[contenteditable="true"]:empty::before { content: attr(data-ph); color: #9CA3AF; font-style: italic; font-weight: 400; }
+  .top3-why[contenteditable="true"]:empty::before  { content: attr(data-ph); color: #C4C9D4; font-style: italic; }
+  .top3-text[contenteditable="true"]:empty,
+  .top3-why[contenteditable="true"]:empty  { border: 1px dashed #D1D5DB; background: rgba(255,255,255,0.4); cursor: text; }
+  .top3-text[contenteditable="true"]:focus,
+  .top3-why[contenteditable="true"]:focus  { background: #fff; border: 1px solid #A8A4CC; }
   .top3-why   { font-size: 11px; margin-top: 4px; outline: none; }
   .top3-1 { border-left: 4px solid #718096; background: #F8F9FA; }
   .top3-1 .top3-label { color: #4A5568; } .top3-1 .top3-why { color: #718096; }
@@ -518,6 +524,21 @@
   .sc-avg-label { color: var(--gray-text); }
   .sc-avg-val { font-weight: 700; color: var(--dark); background: var(--gray-light); border-radius: 5px; padding: 1px 6px; min-width: 28px; text-align: center; }
   .sc-avg-sep { color: #D1D5DB; font-size: 13px; }
+  /* Happiness daily history */
+  .sc-history-toggle {
+    display:block; margin-top:6px; padding:3px 0;
+    background:none; border:none; cursor:pointer; font-family:'Inter',sans-serif;
+    font-size:10.5px; font-weight:600; color:#9CA3AF;
+  }
+  .sc-history-toggle:hover { color:#6B7280; }
+  .sc-history-list { margin-top:4px; padding:6px 10px; background:#FAFAFA; border-radius:6px; max-height:280px; overflow-y:auto; }
+  .sc-history-row { font-size:11px; color:#4B5563; padding:2px 0; border-bottom:1px solid #F3F4F6; }
+  .sc-history-row:last-child { border-bottom:none; }
+  .sc-history-empty { color:#C4C9D4; }
+  .sc-history-row .sc-h-day { font-weight:700; color:#374151; }
+  .sc-history-row .sc-h-emoji { font-size:14px; }
+  .sc-history-row .sc-h-val { color:#9CA3AF; font-size:10px; }
+  .sc-history-row .sc-h-none { font-style:italic; color:#D1D5DB; font-size:10px; }
   .sc-person-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
   .sc-person-row:last-child { margin-bottom: 0; }
   .sc-person-label { font-size: 11px; font-weight: 700; color: var(--gray-text); width: 62px; flex-shrink: 0; }
@@ -672,8 +693,17 @@
     transition:opacity 0.15s;
   }
   .wb-msg:hover .wb-msg-del { opacity:1; }
-  .wb-msg-del:hover { background:rgba(0,0,0,0.06); color:#DC2626; }
+  .wb-msg-del:hover { background:rgba(0,0,0,0.06); color:#059669; }
+  .wb-msg-del-perm:hover { color:#DC2626; }
   .wb-empty { font-size:11.5px; color:#9CA3AF; font-style:italic; text-align:center; padding:14px 0; }
+  /* Whiteboard archive */
+  .wb-archive-wrap { margin-top: 10px; border-top: 1px dashed #E5E7EB; padding-top: 8px; }
+  .wb-msg-archived { opacity: 0.75; font-style: italic; font-size: 12px; padding: 6px 10px; }
+  .wb-msg-archived .wb-msg-body { font-size: 12px; }
+  .wb-msg-archived-actions { position:absolute; top:4px; right:6px; display:flex; gap:2px; opacity:0; transition:opacity 0.15s; }
+  .wb-msg-archived:hover .wb-msg-archived-actions { opacity:1; }
+  .wb-msg-restore { background:none; border:none; cursor:pointer; color:#9CA3AF; font-size:13px; padding:2px 6px; border-radius:4px; }
+  .wb-msg-restore:hover { background:rgba(0,0,0,0.06); color:#2563EB; }
   .msg-ts { font-size: 10px; color: #9CA3AF; }
   .msg-text {
     min-height: 70px; padding: 9px 11px;
@@ -1180,7 +1210,12 @@
       </div>
     </div>
     <!-- Thread -->
-    <div class="wb-thread" id="wbThread"><div class="wb-msg wb-msg-rebecca" data-wbid="wb_moufetxx_1pk"><div class="wb-msg-head"><span class="wb-msg-author">Rebecca</span><span class="wb-msg-time">May 6 · 3:04 PM</span></div><div class="wb-msg-body">dfadf</div><button class="wb-msg-del" onclick="wbDelete('wb_moufetxx_1pk')" title="Delete message">✕</button></div><div class="wb-msg wb-msg-rebecca" data-wbid="wb_moufefjw_2hu"><div class="wb-msg-head"><span class="wb-msg-author">Brett</span><span class="wb-msg-time">May 6 · 3:03 PM</span></div><div class="wb-msg-body">Nope</div><button class="wb-msg-del" onclick="wbDelete('wb_moufefjw_2hu')" title="Delete message">✕</button></div><div class="wb-msg wb-msg-rebecca" data-wbid="wb_moufebzp_f9d"><div class="wb-msg-head"><span class="wb-msg-author">Brett</span><span class="wb-msg-time">May 6 · 3:03 PM</span></div><div class="wb-msg-body">HEy Bretlkajdsfkherikhaoiewrhjoi</div><button class="wb-msg-del" onclick="wbDelete('wb_moufebzp_f9d')" title="Delete message">✕</button></div><div class="wb-msg wb-msg-rebecca" data-wbid="wb_mou6fv32_40d"><div class="wb-msg-head"><span class="wb-msg-author">Rebecca</span><span class="wb-msg-time">May 6 · 10:53 AM</span></div><div class="wb-msg-body">brett</div><button class="wb-msg-del" onclick="wbDelete('wb_mou6fv32_40d')" title="Delete message">✕</button></div><div class="wb-msg wb-msg-rebecca" data-wbid="wb_mora4k5y_ju3"><div class="wb-msg-head"><span class="wb-msg-author">Rebecca</span><span class="wb-msg-time">May 4 · 10:13 AM</span></div><div class="wb-msg-body">Check In</div><button class="wb-msg-del" onclick="wbDelete('wb_mora4k5y_ju3')" title="Delete message">✕</button></div></div>
+    <div class="wb-thread" id="wbThread"></div>
+    <!-- Archive (read messages) -->
+    <div class="wb-archive-wrap">
+      <button class="archive-toggle-btn" onclick="wbToggleArchive(this)">📂 Read messages ▾</button>
+      <div id="wbArchive" class="archive-list"></div>
+    </div>
     <!-- Hidden store -->
     <div id="wb-store" style="display:none">[{"id":"wb_mora4k5y_ju3","author":"Rebecca","text":"Check In","ts":"2026-05-04T14:13:01.846Z"},{"id":"wb_mou6fv32_40d","author":"Rebecca","text":"brett","ts":"2026-05-06T14:53:09.278Z"},{"id":"wb_moufebzp_f9d","author":"Brett","text":"HEy Bretlkajdsfkherikhaoiewrhjoi","ts":"2026-05-06T19:03:54.421Z"},{"id":"wb_moufefjw_2hu","author":"Brett","text":"Nope","ts":"2026-05-06T19:03:59.036Z"},{"id":"wb_moufetxx_1pk","author":"Rebecca","text":"dfadf","ts":"2026-05-06T19:04:17.685Z"}]</div>
   </div>
@@ -1409,38 +1444,38 @@
         <span class="sh-icon">🎯</span><span>Rebecca's Top 3 — Today</span>
         <button onclick="archiveTop3()" style="margin-left:auto;background:none;border:1px solid #DDD6FE;color:var(--purple);border-radius:6px;font-size:10px;font-weight:700;padding:2px 8px;cursor:pointer;" title="Archive and clear today's Top 3">📦 Archive</button>
       </div>
-      <div class="section-body" id="top3Body" data-set-date="">
+      <div class="section-body" id="top3Body" data-set-date="2026-05-11">
         <div class="top3-item top3-1" data-slot="p1">
           <div class="top3-head-row">
             <button type="button" class="top3-check" aria-checked="false" title="Mark complete" onclick="toggleTop3Check(this)">✓</button>
             <div class="top3-label">Priority One</div>
           </div>
-          <div class="top3-text" contenteditable="false" oninput="top3Touched()">Test Todd's Dashboard with Brett, Finish To-Do List Open Items</div>
-          <div class="top3-why" contenteditable="false" oninput="top3Touched()"></div>
+          <div class="top3-text" contenteditable="true" data-always-editable="true" data-ph="Click to add priority..." oninput="top3Touched()">Test Todd's Dashboard with Brett, Finish To-Do List Open Items</div>
+          <div class="top3-why" contenteditable="true" data-always-editable="true" data-ph="Why this matters (optional)" oninput="top3Touched()"></div>
         </div>
         <div class="top3-item top3-2" data-slot="p2">
           <div class="top3-head-row">
             <button type="button" class="top3-check" aria-checked="false" title="Mark complete" onclick="toggleTop3Check(this)">✓</button>
             <div class="top3-label">Priority Two</div>
           </div>
-          <div class="top3-text" contenteditable="false" oninput="top3Touched()">Check in with Bob, Tennis, Steph, Greenland, Prescriptions, Genetic Tests Tracking, Email questions</div>
-          <div class="top3-why" contenteditable="false" oninput="top3Touched()"></div>
+          <div class="top3-text" contenteditable="true" data-always-editable="true" data-ph="Click to add priority..." oninput="top3Touched()">Check in with Bob, Tennis, Steph, Greenland, Prescriptions, Genetic Tests Tracking, Email questions</div>
+          <div class="top3-why" contenteditable="true" data-always-editable="true" data-ph="Why this matters (optional)" oninput="top3Touched()"></div>
         </div>
         <div class="top3-item top3-3" data-slot="p3">
           <div class="top3-head-row">
             <button type="button" class="top3-check" aria-checked="false" title="Mark complete" onclick="toggleTop3Check(this)">✓</button>
             <div class="top3-label">Priority Three</div>
           </div>
-          <div class="top3-text" contenteditable="false" oninput="top3Touched()">List of Bob and Todd Open Topics</div>
-          <div class="top3-why" contenteditable="false" oninput="top3Touched()"></div>
+          <div class="top3-text" contenteditable="true" data-always-editable="true" data-ph="Click to add priority..." oninput="top3Touched()">List of Bob and Todd Open Topics</div>
+          <div class="top3-why" contenteditable="true" data-always-editable="true" data-ph="Why this matters (optional)" oninput="top3Touched()"></div>
         </div>
 
         <!-- Weekly completion stat -->
         <div class="top3-weekly-stat" title="Percentage of filled Top 3 priorities completed this week (Mon–Sun)">
           <span class="top3-ws-label">🗓 This Week</span>
-          <span class="top3-ws-val" id="top3WeeklyPct">67%</span>
-          <span class="top3-ws-frac" id="top3WeeklyFrac">2 of 3 done</span>
-          <div class="top3-ws-bar"><div class="top3-ws-bar-fill" id="top3WeeklyBar" style="width: 67%;"></div></div>
+          <span class="top3-ws-val" id="top3WeeklyPct">0%</span>
+          <span class="top3-ws-frac" id="top3WeeklyFrac">—</span>
+          <div class="top3-ws-bar"><div class="top3-ws-bar-fill" id="top3WeeklyBar" style="width: 0%;"></div></div>
         </div>
 
         <!-- Archive section -->
@@ -1705,6 +1740,8 @@
             <span class="sc-avg-sep">·</span>
             <span class="sc-avg-label">Running avg:</span><span class="sc-avg-val" id="sc-rebeccaHappy-run">4.0</span>
           </div>
+          <button class="sc-history-toggle" onclick="scToggleHappyHistory()" id="sc-happy-history-toggle">📅 See daily entries ▾</button>
+          <div class="sc-history-list" id="sc-happy-history" style="display:none;"></div>
         </div>
 
         <!-- Hidden happiness tally store (persisted in HTML on save) -->
@@ -2581,7 +2618,7 @@
 function toggleEdit() {
   const isOn = document.body.classList.toggle('edit-mode');
   const btn  = document.getElementById('editBtn');
-  document.querySelectorAll('[contenteditable]').forEach(el => {
+  document.querySelectorAll('[contenteditable]:not([data-always-editable])').forEach(el => {
     el.contentEditable = isOn ? 'true' : 'false';
   });
   btn.textContent = isOn ? '✅ Done Editing' : '✏️ Edit Text';
@@ -3065,10 +3102,35 @@ function wbPostMessage() {
   if (typeof markDirty === 'function') markDirty();
 }
 function wbDelete(id) {
+  // Permanent delete
   const data = wbReadStore().filter(m => m.id !== id);
   wbWriteStore(data);
   wbRenderThread();
   if (typeof markDirty === 'function') markDirty();
+}
+function wbMarkRead(id) {
+  const data = wbReadStore();
+  const idx = data.findIndex(m => m.id === id);
+  if (idx < 0) return;
+  data[idx] = Object.assign({}, data[idx], { read: true });
+  wbWriteStore(data);
+  wbRenderThread();
+  if (typeof markDirty === 'function') markDirty();
+}
+function wbMarkUnread(id) {
+  const data = wbReadStore();
+  const idx = data.findIndex(m => m.id === id);
+  if (idx < 0) return;
+  data[idx] = Object.assign({}, data[idx], { read: false });
+  wbWriteStore(data);
+  wbRenderThread();
+  if (typeof markDirty === 'function') markDirty();
+}
+function wbToggleArchive(btn) {
+  const list = document.getElementById('wbArchive');
+  if (!list) return;
+  const open = list.classList.toggle('open');
+  if (btn) btn.textContent = open ? '📂 Read messages ▴' : '📂 Read messages ▾';
 }
 function wbFmtTs(iso) {
   try {
@@ -3083,26 +3145,52 @@ function wbFmtTs(iso) {
 }
 function wbRenderThread() {
   const thread = document.getElementById('wbThread');
+  const archive = document.getElementById('wbArchive');
   if (!thread) return;
   const data = wbReadStore();
-  if (!data.length) {
-    thread.innerHTML = '<div class="wb-empty">No messages yet — pick an author above and post the first one.</div>';
-    return;
-  }
   // Newest at top
   const sorted = data.slice().sort((a,b) => (b.ts||'') < (a.ts||'') ? -1 : 1);
-  thread.innerHTML = sorted.map(m => {
-    const cls = m.author === 'Todd' ? 'wb-msg-todd' : 'wb-msg-rebecca';
-    const safeText = (m.text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return '<div class="wb-msg '+cls+'" data-wbid="'+m.id+'">'+
-      '<div class="wb-msg-head">'+
-        '<span class="wb-msg-author">'+m.author+'</span>'+
-        '<span class="wb-msg-time">'+wbFmtTs(m.ts)+'</span>'+
-      '</div>'+
-      '<div class="wb-msg-body">'+safeText+'</div>'+
-      '<button class="wb-msg-del" onclick="wbDelete(\''+m.id+'\')" title="Delete message">✕</button>'+
-    '</div>';
-  }).join('');
+  const unread = sorted.filter(m => !m.read);
+  const read   = sorted.filter(m =>  m.read);
+
+  const esc = (t) => (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  if (!unread.length) {
+    thread.innerHTML = '<div class="wb-empty">No unread messages — pick an author above and post one, or check the archive below.</div>';
+  } else {
+    thread.innerHTML = unread.map(m => {
+      const cls = m.author === 'Todd' ? 'wb-msg-todd' : 'wb-msg-rebecca';
+      return '<div class="wb-msg '+cls+'" data-wbid="'+m.id+'">'+
+        '<div class="wb-msg-head">'+
+          '<span class="wb-msg-author">'+m.author+'</span>'+
+          '<span class="wb-msg-time">'+wbFmtTs(m.ts)+'</span>'+
+        '</div>'+
+        '<div class="wb-msg-body">'+esc(m.text)+'</div>'+
+        '<button class="wb-msg-del" onclick="wbMarkRead(\''+m.id+'\')" title="Mark as read">✓</button>'+
+      '</div>';
+    }).join('');
+  }
+
+  if (archive) {
+    if (!read.length) {
+      archive.innerHTML = '<div class="wb-empty" style="padding:8px 0;">No read messages yet.</div>';
+    } else {
+      archive.innerHTML = read.map(m => {
+        const cls = m.author === 'Todd' ? 'wb-msg-todd' : 'wb-msg-rebecca';
+        return '<div class="wb-msg wb-msg-archived '+cls+'" data-wbid="'+m.id+'">'+
+          '<div class="wb-msg-head">'+
+            '<span class="wb-msg-author">'+m.author+'</span>'+
+            '<span class="wb-msg-time">'+wbFmtTs(m.ts)+'</span>'+
+          '</div>'+
+          '<div class="wb-msg-body">'+esc(m.text)+'</div>'+
+          '<div class="wb-msg-archived-actions">'+
+            '<button class="wb-msg-restore" onclick="wbMarkUnread(\''+m.id+'\')" title="Restore to unread">↺</button>'+
+            '<button class="wb-msg-del wb-msg-del-perm" onclick="wbDelete(\''+m.id+'\')" title="Delete permanently">✕</button>'+
+          '</div>'+
+        '</div>';
+      }).join('');
+    }
+  }
 }
 // Wire Enter key + initial render
 document.addEventListener('DOMContentLoaded', () => {
@@ -4194,6 +4282,47 @@ function scInitAvgs() {
   });
 }
 
+// ───────── Happiness history (per-day list) ─────────
+function scToggleHappyHistory() {
+  const list = document.getElementById('sc-happy-history');
+  const btn  = document.getElementById('sc-happy-history-toggle');
+  if (!list) return;
+  const willOpen = list.style.display === 'none' || !list.style.display;
+  list.style.display = willOpen ? 'block' : 'none';
+  if (btn) btn.textContent = willOpen ? '📅 See daily entries ▴' : '📅 See daily entries ▾';
+  if (willOpen) scRenderHappyHistory();
+}
+function scRenderHappyHistory() {
+  const list = document.getElementById('sc-happy-history');
+  if (!list) return;
+  const store = document.getElementById('happy-store');
+  let data = {};
+  try { data = JSON.parse((store && store.textContent) || '{}'); } catch(e) {}
+  const entries = (data.rebeccaHappy || []).slice();
+  // Map date -> value for quick lookup
+  const byDate = {};
+  entries.forEach(e => { byDate[e.d] = e.v; });
+  const EMO  = { 1:'😞', 2:'😐', 3:'🙂', 4:'😊', 5:'😄' };
+  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const MON  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const rows = [];
+  const today = new Date();
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const ds = d.toISOString().slice(0,10);
+    const v  = byDate[ds];
+    const wd = DAYS[d.getDay()];
+    const md = MON[d.getMonth()] + ' ' + d.getDate();
+    if (v) {
+      rows.push('<div class="sc-history-row"><span class="sc-h-day">'+wd+'</span> · <span class="sc-h-date">'+md+'</span> · <span class="sc-h-emoji">'+EMO[v]+'</span> <span class="sc-h-val">('+v+')</span></div>');
+    } else {
+      rows.push('<div class="sc-history-row sc-history-empty"><span class="sc-h-day">'+wd+'</span> · <span class="sc-h-date">'+md+'</span> · <span class="sc-h-none">— no entry</span></div>');
+    }
+  }
+  list.innerHTML = rows.join('');
+}
+
 // ═════════════════════════════════════════════════════════════
 //  MASTER TASK DATABASE — Notion-style w/ auto-bucketing
 // ═════════════════════════════════════════════════════════════
@@ -4773,6 +4902,7 @@ taskDbInit();
       if (typeof window.markDirty === 'function') window.markDirty();
     };
     window.wbDelete = function (id) {
+      // Permanent delete from Yjs
       for (let i = 0; i < yWhiteboard.length; i++) {
         if (yWhiteboard.get(i)?.id === id) {
           yWhiteboard.delete(i, 1);
@@ -4781,6 +4911,23 @@ taskDbInit();
       }
       if (typeof window.markDirty === 'function') window.markDirty();
     };
+    function _wbYjsSetReadFlag(id, readVal) {
+      // Y.Array items are not mutated in place — delete + push a new copy.
+      for (let i = 0; i < yWhiteboard.length; i++) {
+        const cur = yWhiteboard.get(i);
+        if (cur?.id === id) {
+          const next = Object.assign({}, cur, { read: readVal });
+          ydoc.transact(() => {
+            yWhiteboard.delete(i, 1);
+            yWhiteboard.push([next]);
+          });
+          break;
+        }
+      }
+      if (typeof window.markDirty === 'function') window.markDirty();
+    }
+    window.wbMarkRead   = function (id) { _wbYjsSetReadFlag(id, true);  };
+    window.wbMarkUnread = function (id) { _wbYjsSetReadFlag(id, false); };
 
     // Re-render thread whenever Yjs whiteboard changes
     yWhiteboard.observe(() => {
