@@ -1427,10 +1427,15 @@
         <span class="sh-icon">🚧</span><span>Issues / Risks / Friction Points</span>
       </div>
       <div class="section-body" data-add-type="bullets">
-        
+
         <div class="bullet-item"><span class="bullet-dot" contenteditable="false">⚠️</span>
     <div class="bullet-text" contenteditable="false" data-ph="Add note…">Hand off Claude to Brett Clark</div>
+    <button class="done-btn" onclick="markItemDone(this)" title="Mark as done / archive">✓</button>
     <button class="del-btn" onclick="this.closest('.bullet-item').remove()">✕</button></div><button class="add-item-btn" onclick="addBulletItem(this.parentElement, '⚠️')">+ Add risk or issue</button>
+        <div class="section-archive-wrap">
+          <button class="archive-toggle-btn" onclick="toggleSectionArchive(this)">📂 Archived (<span class="sa-count">0</span>) <span class="sa-arrow">▾</span></button>
+          <div class="section-archive"></div>
+        </div>
       </div>
     </div>
 
