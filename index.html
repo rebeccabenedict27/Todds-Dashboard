@@ -1426,7 +1426,7 @@
       <div class="section-header sh-amber">
         <span class="sh-icon">🚧</span><span>Issues / Risks / Friction Points</span>
       </div>
-      <div class="section-body" data-add-type="bullets">
+      <div class="section-body" id="issuesBody" data-add-type="bullets">
 
         <div class="bullet-item"><span class="bullet-dot" contenteditable="false">⚠️</span>
     <div class="bullet-text" contenteditable="false" data-ph="Add note…">Hand off Claude to Brett Clark</div>
@@ -1445,7 +1445,7 @@
       <div class="section-header sh-blue">
         <span class="sh-icon">ℹ️</span><span>FYIs (No Action Required)</span>
       </div>
-      <div class="section-body" data-add-type="bullets">
+      <div class="section-body" id="fyisBody" data-add-type="bullets">
 
 
 
@@ -1491,7 +1491,7 @@
       <div class="section-header sh-gray">
         <span class="sh-icon">📡</span><span>On Our Radar</span>
       </div>
-      <div class="section-body" data-add-type="radar">
+      <div class="section-body" id="radarBody" data-add-type="radar">
         <div class="radar-item">
           <div class="radar-num">1</div>
           <div style="flex:1;">
@@ -5265,13 +5265,131 @@ taskDbInit();
     // and re-rendering now would briefly show an empty Yjs array.
   }
 
-  // ─── 7. CONTENTEDITABLE SECTION SYNC — DEFERRED ───────────────
-  // Decisions, Waiting On, Rocks etc. are contenteditable sections. A naive
-  // Y.Text-as-innerHTML sync interleaves HTML during CRDT merges and can
-  // corrupt content when two users open the dashboard near-simultaneously.
-  // Doing this properly requires per-item structured Y.Arrays (one per item
-  // with id/text/status/etc). That's a bigger rewrite — deferred to a
-  // dedicated session. For now these sections remain local-only.
+  // ─── 7. CONTENTEDITABLE SECTION SYNC ──────────────────────────
+  // Mirror seven contenteditable sections via Y.Map<sectionId, innerHTML>.
+  // Last-writer-wins per section; we never apply a remote change while the
+  // user has focus inside that section (would stomp their caret). Local
+  // mutations are observed via MutationObserver and pushed (debounced).
+  const SYNCED_SECTIONS = [
+    'rocksBody', 'rocksRebeccaBody', 'decisionsBody',
+    'waitingOnBody', 'issuesBody', 'fyisBody', 'radarBody'
+  ];
+  const ySectionsMap = ydoc.getMap('sections');
+
+  // Per-section state: { applying, pushTimer, observer }
+  const _sectionState = Object.create(null);
+
+  function _sectionHasFocus(el) {
+    const a = document.activeElement;
+    return !!(a && el.contains(a));
+  }
+
+  function _applyYjsToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const remote = ySectionsMap.get(id);
+    if (remote == null) return;
+    if (_sectionHasFocus(el)) return; // don't stomp caret
+    if (el.innerHTML === remote) return;
+    const st = _sectionState[id];
+    if (st) st.applying = true;
+    try {
+      el.innerHTML = remote;
+    } finally {
+      if (st) {
+        // Defer flag clear past the MutationObserver microtask so writes
+        // triggered by this innerHTML swap don't echo back to Yjs.
+        setTimeout(() => { st.applying = false; }, 0);
+      }
+    }
+    // Re-sync the archive count badge for this section
+    const card = el.closest('.section-card');
+    if (card && typeof updateSectionArchiveCount === 'function') {
+      updateSectionArchiveCount(card);
+    }
+  }
+
+  function _queueLocalPush(id) {
+    const st = _sectionState[id];
+    if (!st) return;
+    if (st.applying) return;
+    clearTimeout(st.pushTimer);
+    st.pushTimer = setTimeout(() => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (st.applying) return;
+      const html = el.innerHTML;
+      if (ySectionsMap.get(id) === html) return;
+      ySectionsMap.set(id, html);
+    }, 300);
+  }
+
+  SYNCED_SECTIONS.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const st = { applying: false, pushTimer: null, observer: null };
+    _sectionState[id] = st;
+
+    // Local DOM → Yjs (debounced, suppressed during applies)
+    st.observer = new MutationObserver(() => _queueLocalPush(id));
+    st.observer.observe(el, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+    });
+  });
+
+  // Yjs → DOM (any remote change to any section key)
+  ySectionsMap.observe(event => {
+    event.keysChanged.forEach(id => {
+      if (!SYNCED_SECTIONS.includes(id)) return;
+      _applyYjsToSection(id);
+    });
+  });
+
+  // Seeding: only push local innerHTML if remote is missing/empty AND local
+  // has substantial content. Wait for provider 'synced' (or 2.5s timeout),
+  // same pattern as the taskDb seed.
+  let _sectionsSeeded = false;
+  const seedSectionsIfNeeded = () => {
+    if (_sectionsSeeded) return;
+    _sectionsSeeded = true;
+
+    // First: apply any remote content that's already in the map (this is the
+    // common case — a returning user opens the page and we need to overwrite
+    // the stale HTML defaults with whatever the server has).
+    ydoc.transact(() => {
+      SYNCED_SECTIONS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const remote = ySectionsMap.get(id);
+        const local = el.innerHTML;
+
+        if (remote == null || (typeof remote === 'string' && remote.trim().length < 5)) {
+          // Remote empty/missing: seed from local if local has real content
+          if (local && local.length > 100) {
+            ySectionsMap.set(id, local);
+          }
+        } else if (remote !== local && !_sectionHasFocus(el)) {
+          // Remote has content and differs: apply it to DOM
+          const st = _sectionState[id];
+          if (st) st.applying = true;
+          try {
+            el.innerHTML = remote;
+          } finally {
+            if (st) setTimeout(() => { st.applying = false; }, 0);
+          }
+          const card = el.closest('.section-card');
+          if (card && typeof updateSectionArchiveCount === 'function') {
+            updateSectionArchiveCount(card);
+          }
+        }
+      });
+    });
+  };
+  provider.on('synced', seedSectionsIfNeeded);
+  setTimeout(seedSectionsIfNeeded, 2500);
 
   // ─── 8. AWARENESS / TYPING HIGHLIGHT ────────────────────────────
   // When someone else has focus in the whiteboard composer, glow it briefly
