@@ -1151,8 +1151,8 @@
     <span class="header-tagline">Daily Briefing · Live</span>
   </div>
   <div class="header-right">
-    <div class="header-date" contenteditable="false">Week of May 4, 2026</div>
-    <div class="header-week">Week 18 · Q2</div>
+    <div class="header-date" contenteditable="false">Week of May 11, 2026</div>
+    <div class="header-week">Week 19 · Q2</div>
     <span class="header-badge">📊 Executive View</span>
   </div>
 </div>
@@ -1777,131 +1777,125 @@
   <div class="section-card" id="scheduleCard">
     <div class="section-header sh-gray">
       <span class="sh-icon">📅</span>
-      <span>Calendar — Week of May 4, 2026</span>
+      <span>Calendar — Week of May 11, 2026</span>
       <span style="margin-left:auto; font-size:10px; color:var(--gray-text); font-weight:400; text-transform:none; letter-spacing:0;">click any day to expand ▾</span>
     </div>
 
     <!-- ── THIS WEEK ── -->
-    <div class="day-divider">This Week — May 4–8</div>
+    <div class="day-divider">This Week — May 11–15</div>
 
-    <!-- Monday May 4 — TODAY -->
-    <div class="day-toggle" id="dt-may4" onclick="toggleDay('may4')" style="display: none;">
+    <!-- Monday May 11 -->
+    <div class="day-toggle" id="dt-may11" onclick="toggleDay('may11')">
       <div class="day-left">
         <span class="day-dow">Monday</span>
-        <span class="day-date">May 4</span>
+        <span class="day-date">May 11</span>
+        <span class="day-badge">5 events</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body" id="db-may11">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may11">
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Agency Visits</span></td><td class="time-cell" contenteditable="false">10:00 AM</td><td class="time-cell" contenteditable="false">10:45 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Nicole Agruda</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">T/R Check In</span></td><td class="time-cell" contenteditable="false">11:15 AM</td><td class="time-cell" contenteditable="false">12:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Rebecca Benedict</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">BrenAdv Weekly Check-In</span></td><td class="time-cell" contenteditable="false">12:00 PM</td><td class="time-cell" contenteditable="false">1:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Bob Sutherland</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Cherry Republic / Independent Bank Monthly Check-In</span></td><td class="time-cell" contenteditable="false">1:00 PM</td><td class="time-cell" contenteditable="false">1:45 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Admin-Compass-Teams-Room · Julie Meredith</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr class="sched-row-highlight"><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">🍒 AI Tiger Team</span></td><td class="time-cell" contenteditable="false">2:00 PM</td><td class="time-cell" contenteditable="false">3:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Todd Ciolek (organizer)</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+        </tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may11')">+ Add event</button>
+    </div>
+
+    <!-- Tuesday May 12 -->
+    <div class="day-toggle" id="dt-may12" onclick="toggleDay('may12')">
+      <div class="day-left">
+        <span class="day-dow">Tuesday</span>
+        <span class="day-date">May 12</span>
+        <span class="day-badge">5 events</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body" id="db-may12">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may12">
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Mfg Accounting</span></td><td class="time-cell" contenteditable="false">9:30 AM</td><td class="time-cell" contenteditable="false">10:30 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Adam Whitson (Plante Moran)</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr class="sched-row-highlight"><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">LT Level 10</span></td><td class="time-cell" contenteditable="false">10:30 AM</td><td class="time-cell" contenteditable="false">12:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">HQ-Executive-Sand-Lot-Teams-Room · Todd Ciolek (organizer)</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Cherry Republic / Four13 — Digital Campaign &amp; 2026 Plan Review</span></td><td class="time-cell" contenteditable="false">12:00 PM</td><td class="time-cell" contenteditable="false">1:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Sara Harding</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Meeting with IB / Cherry</span></td><td class="time-cell" contenteditable="false">1:00 PM</td><td class="time-cell" contenteditable="false">2:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">5917 S Ray St · Todd Ciolek (organizer)</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Todd Ciolek &amp; Kory Simpson</span></td><td class="time-cell" contenteditable="false">2:15 PM</td><td class="time-cell" contenteditable="false">2:45 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Kory Simpson · Strategic Coach</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+        </tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may12')">+ Add event</button>
+    </div>
+
+    <!-- Wednesday May 13 — TODAY -->
+    <div class="day-toggle is-today open" id="dt-may13" onclick="toggleDay('may13')">
+      <div class="day-left">
+        <span class="day-dow">Wednesday</span>
+        <span class="day-date">May 13</span>
+        <span class="day-badge">Today · 4 events</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body open" id="db-may13">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may13">
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Strategic Time</span></td><td class="time-cell" contenteditable="false">9:00 AM</td><td class="time-cell" contenteditable="false">11:00 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Todd Ciolek · focused block</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Meeting with NexTec about Acumatica</span></td><td class="time-cell" contenteditable="false">11:00 AM</td><td class="time-cell" contenteditable="false">12:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Jenny Thorne</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr class="sched-row-highlight"><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Visionary / Integrator Check In</span></td><td class="time-cell" contenteditable="false">2:00 PM</td><td class="time-cell" contenteditable="false">4:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">(Zoom Room) HQ-Life Media Room · Bob Sutherland</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">⚽ Soccer (Girls V) @ Boyne City High School</span></td><td class="time-cell" contenteditable="false">5:00 PM</td><td class="time-cell" contenteditable="false">6:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Glen Lake Community Schools</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+        </tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may13')">+ Add event</button>
+    </div>
+
+    <!-- Thursday May 14 -->
+    <div class="day-toggle" id="dt-may14" onclick="toggleDay('may14')">
+      <div class="day-left">
+        <span class="day-dow">Thursday</span>
+        <span class="day-date">May 14</span>
         <span class="day-badge">7 events</span>
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body" id="db-may4" style="display: none;">
+    <div class="day-body" id="db-may14">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
-        <tbody id="rows-may4">
-          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">BrenAdv Weekly Check-In</span></td><td class="time-cell" contenteditable="false">10:00 AM</td><td class="time-cell" contenteditable="false">11:00 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Bob Sutherland</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">T/R Check In</span></td><td class="time-cell" contenteditable="false">11:15 AM</td><td class="time-cell" contenteditable="false">12:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Rebecca Benedict</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr class="sched-row-highlight"><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Gross Margin Tiger Team Kickoff Meeting</span></td><td class="time-cell" contenteditable="false">1:00 PM</td><td class="time-cell" contenteditable="false">2:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">HQ-Birch-Board-Teams-Room (US) · Todd Ciolek</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">🏆 Golf (Boys V) @ NWC Golf 18 — Benzie Central</span></td><td class="time-cell" contenteditable="false">1:00 PM</td><td class="time-cell" contenteditable="false">3:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Champion Hill</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Answer Email from Kate @ Leelanau Enterprise</span></td><td class="time-cell" contenteditable="false">2:00 PM</td><td class="time-cell" contenteditable="false">3:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">—</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">Travel to Suttons Bay</span></td><td class="time-cell" contenteditable="false">4:00 PM</td><td class="time-cell" contenteditable="false">5:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Suttons Bay</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">⚽ Soccer (Girls V) @ Suttons Bay Senior High School</span></td><td class="time-cell" contenteditable="false">5:00 PM</td><td class="time-cell" contenteditable="false">6:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Suttons Bay Senior High School</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+        <tbody id="rows-may14">
+          <tr><td><span class="ev-dot ev-remind"></span><span class="event-name" contenteditable="false">📍 HOLD — Admin Fun Day</span></td><td class="time-cell" contenteditable="false">All day</td><td class="time-cell" contenteditable="false">—</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Julie Meredith · free / hold</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">Travel to Traverse City</span></td><td class="time-cell" contenteditable="false">8:45 AM</td><td class="time-cell" contenteditable="false">9:30 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">—</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Admin: Shoreline Fruit Tour &amp; Fun and Games @ Incredible Mo's</span></td><td class="time-cell" contenteditable="false">9:30 AM</td><td class="time-cell" contenteditable="false">2:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Incredible Mo's · Todd organizing</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Karen / Bob / Todd Check In</span></td><td class="time-cell" contenteditable="false">11:00 AM</td><td class="time-cell" contenteditable="false">11:30 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Bob Sutherland</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">Travel to School for German Meeting</span></td><td class="time-cell" contenteditable="false">6:30 PM</td><td class="time-cell" contenteditable="false">7:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">—</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">German Parent Meeting</span></td><td class="time-cell" contenteditable="false">7:00 PM</td><td class="time-cell" contenteditable="false">8:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Scott's Room · Glen Lake Community Schools</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">✈️ AA 4768 → Chicago (ORD)</span></td><td class="time-cell" contenteditable="false">7:45 PM</td><td class="time-cell" contenteditable="false">9:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Traverse City → Chicago O'Hare · Confirmation KNDBXS</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
         </tbody>
       </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may4')">+ Add event</button>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may14')">+ Add event</button>
     </div>
 
-    <!-- Tuesday May 5 -->
-    <div class="day-toggle" id="dt-may5" onclick="toggleDay('may5')" style="display: none;">
-      <div class="day-left">
-        <span class="day-dow">Tuesday</span>
-        <span class="day-date">May 5</span>
-        <span class="day-badge">5 events</span>
-      </div>
-      <span class="day-arrow">▾</span>
-    </div>
-    <div class="day-body" id="db-may5" style="display: none;">
-      <table class="sched-table">
-        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
-        <tbody id="rows-may5">
-          
-          
-          
-          
-          
-        <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Monthly Financial Health Check</span></td><td class="time-cell" contenteditable="false">9:30 AM</td><td class="time-cell" contenteditable="false">10:30 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Julie Meredith</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr><tr class="sched-row-highlight"><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">LT Level 10</span></td><td class="time-cell" contenteditable="false">10:30 AM</td><td class="time-cell" contenteditable="false">12:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · HQ-Executive-Sand-Lot · Todd Ciolek</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr><tr>
-    <td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false" data-ph="Event name…" style="outline:none;">Brett/Todd/Rebecca</span></td>
-    <td class="time-cell" contenteditable="false" style="outline:none;">12:00 PM</td>
-    <td class="time-cell" contenteditable="false" style="outline:none;">12:30</td>
-    <td contenteditable="false" style="font-size:11px; color:var(--gray-text); outline:none;">Claude</td>
-    <td><button class="sched-del" onclick="this.closest('tr').remove()" style="display:inline;">✕</button></td></tr><tr class="sched-row-highlight"><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">CR and GNA: AI Strategy &amp; Implementation</span></td><td class="time-cell" contenteditable="false">12:30 PM</td><td class="time-cell" contenteditable="false">1:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">HQ-Birch-Board-Teams-Room · Todd Ciolek</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr><tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">Travel to Empire</span></td><td class="time-cell" contenteditable="false">4:15 PM</td><td class="time-cell" contenteditable="false">4:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">—</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr><tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">Amy</span></td><td class="time-cell" contenteditable="false">4:30 PM</td><td class="time-cell" contenteditable="false">5:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">—</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr></tbody>
-      </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may5')">+ Add event</button>
-    </div>
-
-    <!-- Wednesday May 6 -->
-    <div class="day-toggle open" id="dt-may6" onclick="toggleDay('may6')" style="display: none;">
-      <div class="day-left">
-        <span class="day-dow">Wednesday</span>
-        <span class="day-date">May 6</span>
-        <span class="day-badge">5 events</span>
-      </div>
-      <span class="day-arrow">▾</span>
-    </div>
-    <div class="day-body open" id="db-may6" style="display: none;">
-      <table class="sched-table">
-        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
-        <tbody id="rows-may6">
-          <tr><td><span class="ev-dot ev-remind"></span><span class="event-name" contenteditable="false">📍 Holland store visit (time TBA)</span></td><td class="time-cell" contenteditable="false">All day</td><td class="time-cell" contenteditable="false">—</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Jason Homa</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">🏆 Golf (Boys V) @ NWC Golf 9 — Onekama</span></td><td class="time-cell" contenteditable="false">4:00 PM</td><td class="time-cell" contenteditable="false">6:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Wolf River Golf Park, Bear Lake</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">Travel to Kingsley</span></td><td class="time-cell" contenteditable="false">5:00 PM</td><td class="time-cell" contenteditable="false">5:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">—</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">⚽ Soccer (Girls V) @ KINGSLEY</span></td><td class="time-cell" contenteditable="false">5:30 PM</td><td class="time-cell" contenteditable="false">6:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Kingsley</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Dinner in Lansing (tentative)</span></td><td class="time-cell" contenteditable="false">5:00 PM</td><td class="time-cell" contenteditable="false">6:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">BJ's Restaurant &amp; Brewhouse · Jason Homa</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-        </tbody>
-      </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may6')">+ Add event</button>
-    </div>
-
-    <!-- Thursday May 7 -->
-    <div class="day-toggle" id="dt-may7" onclick="toggleDay('may7')" style="display: none;">
-      <div class="day-left">
-        <span class="day-dow">Thursday</span>
-        <span class="day-date">May 7</span>
-        <span class="day-badge">1 event</span>
-      </div>
-      <span class="day-arrow">▾</span>
-    </div>
-    <div class="day-body" id="db-may7" style="display: none;">
-      <table class="sched-table">
-        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
-        <tbody id="rows-may7">
-          <tr><td><span class="ev-dot ev-remind"></span><span class="event-name" contenteditable="false">📍 AA, FMU visits (time TBA)</span></td><td class="time-cell" contenteditable="false">All day</td><td class="time-cell" contenteditable="false">—</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Jason Homa</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-        </tbody>
-      </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may7')">+ Add event</button>
-    </div>
-
-    <!-- Friday May 8 — TODAY -->
-    <div class="day-toggle is-today open" id="dt-may8" onclick="toggleDay('may8')">
+    <!-- Friday May 15 -->
+    <div class="day-toggle" id="dt-may15" onclick="toggleDay('may15')">
       <div class="day-left">
         <span class="day-dow">Friday</span>
-        <span class="day-date">May 8</span>
-        <span class="day-badge">Today · 7 events</span>
+        <span class="day-date">May 15</span>
+        <span class="day-badge">3 events</span>
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body open" id="db-may8">
+    <div class="day-body" id="db-may15">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
-        <tbody id="rows-may8">
-          <tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">Travel to TC</span></td><td class="time-cell" contenteditable="false">7:30 AM</td><td class="time-cell" contenteditable="false">8:30 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Traverse City</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">Dermatologist</span></td><td class="time-cell" contenteditable="false">8:30 AM</td><td class="time-cell" contenteditable="false">9:30 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">—</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Visit TC Store</span></td><td class="time-cell" contenteditable="false">9:30 AM</td><td class="time-cell" contenteditable="false">10:00 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Traverse City Store</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Cherry Republic / MI Partner Health</span></td><td class="time-cell" contenteditable="false">10:00 AM</td><td class="time-cell" contenteditable="false">11:00 AM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Microsoft Teams Meeting · Beth Wierenga</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">Dr. Pyne Appt — Pain/Redness, Right Pinky</span></td><td class="time-cell" contenteditable="false">12:30 PM</td><td class="time-cell" contenteditable="false">1:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Northern Michigan Medicine &amp; Pediatrics PLLC · 3643 W Front St, Traverse City</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">Travel back to Glen Arbor</span></td><td class="time-cell" contenteditable="false">1:00 PM</td><td class="time-cell" contenteditable="false">2:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">For 2 PM meeting at HQ</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
-          <tr><td><span class="ev-dot ev-meeting"></span><span class="event-name" contenteditable="false">Fustini's and Cherry Republic Connect</span></td><td class="time-cell" contenteditable="false">2:00 PM</td><td class="time-cell" contenteditable="false">3:00 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Cherry Republic HQ · Bob Sutherland</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+        <tbody id="rows-may15">
+          <tr><td><span class="ev-dot ev-remind"></span><span class="event-name" contenteditable="false">📍 Strategic Coach — Toronto, ON</span></td><td class="time-cell" contenteditable="false">All day</td><td class="time-cell" contenteditable="false">—</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Out of office · TO GM mA1</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr class="sched-row-travel"><td><span class="ev-dot ev-travel"></span><span class="event-name" contenteditable="false">✈️ AA 4768 → Traverse City</span></td><td class="time-cell" contenteditable="false">6:00 PM</td><td class="time-cell" contenteditable="false">7:15 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Chicago O'Hare → Traverse City · Confirmation KNDBXS</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
+          <tr><td><span class="ev-dot ev-personal"></span><span class="event-name" contenteditable="false">⚽ Soccer (Girls V) @ Leland Public Schools</span></td><td class="time-cell" contenteditable="false">6:00 PM</td><td class="time-cell" contenteditable="false">7:30 PM</td><td contenteditable="false" style="font-size:11px;color:var(--gray-text);">Glen Lake Community Schools</td><td><button class="sched-del" onclick="this.closest('tr').remove()">✕</button></td></tr>
         </tbody>
       </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may8')">+ Add event</button>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may15')">+ Add event</button>
     </div>
 
     <!-- ── LAST WEEK ── -->
