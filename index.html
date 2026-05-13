@@ -687,23 +687,24 @@
   .wb-msg-todd .wb-msg-author { color:#1E40AF; }
   .wb-msg-todd .wb-msg-body { color:#1E40AF; }
   .wb-msg-del {
-    position:absolute; top:4px; right:6px;
-    background:none; border:none; cursor:pointer; color:#9CA3AF;
-    font-size:13px; padding:2px 6px; border-radius:4px; opacity:0;
-    transition:opacity 0.15s;
+    position:absolute; top:6px; right:8px;
+    background:#fff; border:1px solid #D1D5DB; cursor:pointer; color:#059669;
+    font-size:13px; font-weight:700; padding:3px 9px; border-radius:6px; opacity:0.85;
+    transition:opacity 0.15s, background 0.15s, transform 0.1s;
   }
   .wb-msg:hover .wb-msg-del { opacity:1; }
-  .wb-msg-del:hover { background:rgba(0,0,0,0.06); color:#059669; }
-  .wb-msg-del-perm:hover { color:#DC2626; }
+  .wb-msg-del:hover { background:#D1FAE5; color:#047857; border-color:#86EFAC; transform: scale(1.05); }
+  .wb-msg-del-perm { color:#9CA3AF !important; border-color:#D1D5DB !important; }
+  .wb-msg-del-perm:hover { background:#FEE2E2 !important; color:#DC2626 !important; border-color:#FCA5A5 !important; }
   .wb-empty { font-size:11.5px; color:#9CA3AF; font-style:italic; text-align:center; padding:14px 0; }
   /* Whiteboard archive */
   .wb-archive-wrap { margin-top: 10px; border-top: 1px dashed #E5E7EB; padding-top: 8px; }
   .wb-msg-archived { opacity: 0.75; font-style: italic; font-size: 12px; padding: 6px 10px; }
   .wb-msg-archived .wb-msg-body { font-size: 12px; }
-  .wb-msg-archived-actions { position:absolute; top:4px; right:6px; display:flex; gap:2px; opacity:0; transition:opacity 0.15s; }
+  .wb-msg-archived-actions { position:absolute; top:6px; right:8px; display:flex; gap:4px; opacity:0.85; transition:opacity 0.15s; }
   .wb-msg-archived:hover .wb-msg-archived-actions { opacity:1; }
-  .wb-msg-restore { background:none; border:none; cursor:pointer; color:#9CA3AF; font-size:13px; padding:2px 6px; border-radius:4px; }
-  .wb-msg-restore:hover { background:rgba(0,0,0,0.06); color:#2563EB; }
+  .wb-msg-restore { background:#fff; border:1px solid #D1D5DB; cursor:pointer; color:#2563EB; font-size:13px; font-weight:700; padding:3px 9px; border-radius:6px; transition:background 0.15s; }
+  .wb-msg-restore:hover { background:#DBEAFE; color:#1E40AF; border-color:#93C5FD; }
   .msg-ts { font-size: 10px; color: #9CA3AF; }
   .msg-text {
     min-height: 70px; padding: 9px 11px;
