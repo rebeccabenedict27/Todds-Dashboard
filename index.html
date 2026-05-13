@@ -2665,24 +2665,6 @@
   </div><!-- /hidden legacy end -->
 </div><!-- /hidden legacy wrapper -->
 
-<!-- ── DONE LOG ── -->
-<div class="done-log-wrap">
-  <div class="done-log-title">
-    <span>✅</span> Completed Today
-    <span style="margin-left:auto; font-size:10px; font-weight:400; color:#059669; font-style:italic;">Set any task to "Done" to log it here</span>
-  </div>
-  <div id="doneLog">
-    <div id="doneEmpty" class="done-log-empty" style="display: none;">No completed tasks yet — set a task status to ✅ Done above to see it here.</div>
-  <div class="done-log-item" data-text="Summer Basketball schedule, make and send to Brad"><span class="done-log-check">✓</span><div><div class="done-log-text">Summer Basketball schedule, make and send to Brad</div><div class="done-log-time">Completed at 08:37 AM</div></div></div><div class="done-log-item" data-text="Resend out format on summit meetings"><span class="done-log-check">✓</span><div><div class="done-log-text">Resend out format on summit meetings</div><div class="done-log-time">Completed at 02:44 PM</div></div></div><div class="done-log-item" data-text="2 Hour Quarterly Meeting with T and R"><span class="done-log-check">✓</span><div><div class="done-log-text">2 Hour Quarterly Meeting with T and R</div><div class="done-log-time">Completed at 03:41 PM</div></div></div><div class="done-log-item" data-text="Send your 2025 W2 to Dallas and Ryan 4-20"><span class="done-log-check">✓</span><div><div class="done-log-text">Send your 2025 W2 to Dallas and Ryan 4-20</div><div class="done-log-time">Completed at 04:16 PM</div></div></div><div class="done-log-item" data-text="Clear open task items, prepare for new week"><span class="done-log-check">✓</span><div><div class="done-log-text">Clear open task items, prepare for new week</div><div class="done-log-time">Completed at 12:39 PM</div></div></div><div class="done-log-item" data-text="Add summer basketball to schedule"><span class="done-log-check">✓</span><div><div class="done-log-text">Add summer basketball to schedule</div><div class="done-log-time">Completed at 09:18 AM</div></div></div><div class="done-log-item" data-text="Check on Enhance C Suite with Finance - was it paid?"><span class="done-log-check">✓</span><div><div class="done-log-text">Check on Enhance C Suite with Finance - was it paid?</div><div class="done-log-time">Completed at 12:30 PM</div></div></div><div class="done-log-item" data-text="check on dermatology appontment for todd"><span class="done-log-check">✓</span><div><div class="done-log-text">check on dermatology appontment for todd</div><div class="done-log-time">Completed at 01:44 PM</div></div></div><div class="done-log-item" data-text="Change Amy for Jackson's graduation"><span class="done-log-check">✓</span><div><div class="done-log-text">Change Amy for Jackson's graduation</div><div class="done-log-time">Completed at 01:46 PM</div></div></div><div class="done-log-item" data-text="Meeting with Everest Noyes"><span class="done-log-check">✓</span><div><div class="done-log-text">Meeting with Everest Noyes</div><div class="done-log-time">Completed at 01:46 PM</div></div></div><div class="done-log-item" data-text="kathy valient - roni will be offbuilding coach and sara will be onboarding - touch point"><span class="done-log-check">✓</span><div><div class="done-log-text">kathy valient - roni will be offbuilding coach and sara will be onboarding - touch point</div><div class="done-log-time">Completed at 07:05 AM</div></div></div></div>
-  <!-- Archive section -->
-  <div class="archive-section" id="archiveSection" style="display:none;">
-    <button class="archive-toggle-btn" onclick="toggleArchive()">
-      <span id="archiveToggleIcon">▶</span> <span id="archiveCount">0</span> archived items
-    </button>
-    <div class="archive-list" id="archiveList"></div>
-  </div>
-</div>
-
 <div class="footer">🍒 Cherry Republic · Todd Ciolek Executive Dashboard · Prepared by Rebecca · April 10, 2026 · Source: Todd's Calendar (todd@cherryrepublic.com)</div>
 
 <script>
@@ -2851,7 +2833,9 @@ document.addEventListener('click', e => {
 //  DONE LOG
 // ─────────────────────────────────────────────
 function addToDoneLog(text) {
-  const log   = document.getElementById('doneLog');
+  // Done log section was removed — Executive Task Database archive replaces it.
+  const log = document.getElementById('doneLog');
+  if (!log) return;
   const empty = document.getElementById('doneEmpty');
   if (empty) empty.style.display = 'none';
   const items = log.querySelectorAll('.done-log-item');
@@ -2864,6 +2848,7 @@ function addToDoneLog(text) {
 }
 function removeFromDoneLog(text) {
   const log = document.getElementById('doneLog');
+  if (!log) return;
   log.querySelectorAll('.done-log-item').forEach(el => { if (el.dataset.text === text) el.remove(); });
   if (!log.querySelectorAll('.done-log-item').length) {
     const e = document.getElementById('doneEmpty');
