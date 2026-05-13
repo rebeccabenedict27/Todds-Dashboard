@@ -1119,13 +1119,13 @@
       <button class="btn btn-edit" id="editBtn" onclick="toggleEdit()">✏️ Edit Text</button>
       <button class="btn btn-rearrange active" id="rearrangeBtn" onclick="toggleRearrange()">✅ Done Rearranging</button>
       <button class="btn btn-newsec" onclick="openNewSec()">➕ New Section</button>
-      <button class="btn btn-save dirty" id="saveBtn" onclick="saveFile()" title="Save (⌘S / Ctrl+S)">💾 Save</button>
+      <button class="btn btn-save" id="saveBtn" onclick="saveFile()" title="Download a snapshot of the dashboard to your computer">💾 Download as file</button>
       <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
       <button class="btn btn-archive" onclick="archiveDone()">📦 Archive Done</button>
       <button class="user-pill" id="userPill" data-u="rebecca" onclick="cycleUser()" title="Click to switch identity">👤 Rebecca</button>
     <div id="liveCollabPresence" class=""><span class="lc-dot"></span><span class="lc-text">Live — <strong style="color:#6B5BAB">Rebecca</strong> is editing <span class="lc-avatars"><span class="lc-avatar" style="background:#6B5BAB" title="Rebecca">R</span><span class="lc-avatar" style="background:#6B5BAB" title="Rebecca">R</span></span></span></div></div>
     <div class="toolbar-right">
-      <span class="save-status dirty" id="saveStatus">● Unsaved changes</span>
+      <span class="save-status" id="saveStatus" style="display:none;"></span>
       <span>Updated: May 8, 2026 · 10:43 AM · Rebecca</span>
     </div>
   </div>
@@ -3318,23 +3318,14 @@ async function storeHandle(h) {
 }
 
 function markDirty() {
-  if (_dirty) return;
+  // Visual "unsaved changes" indicator is intentionally disabled — Liveblocks +
+  // localStorage auto-save everything. The save button is now "Download as file"
+  // and never pulses, so we no longer flag the user about pending file saves.
   _dirty = true;
-  const btn = document.getElementById('saveBtn');
-  const st  = document.getElementById('saveStatus');
-  if (btn) btn.classList.add('dirty');
-  if (st)  { st.textContent = '● Unsaved changes'; st.className = 'save-status dirty'; }
 }
 
 function markClean() {
   _dirty = false;
-  const btn = document.getElementById('saveBtn');
-  const st  = document.getElementById('saveStatus');
-  if (btn) btn.classList.remove('dirty');
-  if (st)  { st.textContent = '✓ All saved'; st.className = 'save-status saved'; }
-  setTimeout(() => {
-    if (!_dirty && st) { st.textContent = 'All saved'; st.className = 'save-status'; }
-  }, 3000);
 }
 
 // Auto-save to localStorage (backup copy — only for crash/close safety within a session)
