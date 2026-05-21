@@ -4918,4 +4918,47 @@ taskDbInit();
   console.log('   yjs doc:', ydoc, '· awareness:', provider.awareness, '· room:', room);
 </script>
 
+<!-- ───────────────────────────────────────────────────────────────────────
+     AUTO TODAY MARKER — runs on every page load.
+     Replaces the old daily-refresh task that had to edit the HTML by hand.
+     ────────────────────────────────────────────────────────────────────── -->
+<script>
+(function autoTodayMarker() {
+  const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  const now = new Date();
+
+  // Pick today, or fall back to last Friday for weekends
+  let target = new Date(now);
+  const dow = now.getDay();           // 0=Sun, 6=Sat
+  if (dow === 0) target.setDate(now.getDate() - 2);  // Sun → Fri
+  if (dow === 6) target.setDate(now.getDate() - 1);  // Sat → Fri
+
+  const targetId = 'dt-' + months[target.getMonth()] + target.getDate();
+  const el = document.getElementById(targetId);
+  if (!el) {
+    console.log('[autoTodayMarker] no day-toggle for', targetId, '— calendar needs an update');
+    return;
+  }
+
+  // Strip is-today + "Today · " prefix from any previous Today
+  document.querySelectorAll('.day-toggle.is-today').forEach(prev => {
+    if (prev.id === targetId) return;
+    prev.classList.remove('is-today');
+    const b = prev.querySelector('.day-badge');
+    if (b && b.textContent.startsWith('Today · ')) b.textContent = b.textContent.slice(8);
+  });
+
+  // Apply is-today + open + "Today · " prefix on today
+  el.classList.add('is-today', 'open');
+  const badge = el.querySelector('.day-badge');
+  if (badge && !badge.textContent.startsWith('Today · ')) {
+    badge.textContent = 'Today · ' + badge.textContent;
+  }
+  const body = document.getElementById(targetId.replace('dt-', 'db-'));
+  if (body) body.classList.add('open');
+
+  console.log('[autoTodayMarker] Today set to', targetId);
+})();
+</script>
+
 </body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
