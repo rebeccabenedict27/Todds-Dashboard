@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><plasmo-csui id="ff-overlay-container"></plasmo-csui><head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🍒 Todd Ciolek — Executive Dashboard</title>
@@ -1072,10 +1072,165 @@
     .td-th-created { display: none; }
     .task-db-table tbody td.tdb-created { display: none; }
   }
+
+  /* ── SECTION ARCHIVE (FYIs / Waiting / Radar / Issues / Decisions) ── */
+  .sec-archive-wrap { margin-top:10px; border-top:1px dashed #E5E7EB; padding-top:8px; }
+  .sec-archive-toggle { display:flex; align-items:center; gap:6px; background:none; border:none; cursor:pointer; font-family:inherit; font-size:11px; font-weight:600; color:#9CA3AF; width:100%; padding:3px 0; text-align:left; }
+  .sec-archive-toggle:hover { color:#6B7280; }
+  .sec-arch-cnt { background:#F3F4F6; color:#6B7280; font-size:10px; padding:1px 6px; border-radius:8px; }
+  .sec-archive-list { display:none; margin-top:6px; max-height:220px; overflow-y:auto; }
+  .sec-archive-list.open { display:block; }
+  .sec-archive-item { display:flex; align-items:center; gap:7px; padding:5px 2px; font-size:11.5px; color:#9CA3AF; border-bottom:1px solid #F9FAFB; }
+  .sec-archive-item:last-child { border-bottom:none; }
+  .sec-arch-item-text { flex:1; text-decoration:line-through; font-size:11.5px; }
+  .sec-arch-dot { width:12px; height:12px; border-radius:50%; background:#D1FAE5; color:#059669; font-size:8px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  /* ── TODD CHECKBOX ── */
+  .todd-check {
+    flex-shrink:0; width:16px; height:16px; border-radius:3px; border:2px solid #BFCFE0;
+    background:#fff; cursor:pointer; margin-top:3px;
+    appearance:none; -webkit-appearance:none; transition:all 0.15s;
+  }
+  .todd-check:hover { border-color:#2C4A6E; }
+  .todd-check:checked { background:#2C4A6E; border-color:#2C4A6E; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M10 3L5 8.5 2 5.5l-1 1 4 4 6-7z'/%3E%3C/svg%3E"); background-size:contain; background-repeat:no-repeat; background-position:center; }
+  /* ── INLINE ARCHIVE BUTTON ── */
+  .arch-inline-btn {
+    display:none; background:none; border:none; cursor:pointer;
+    color:#C4C9D4; font-size:13px; padding:0 3px; margin-top:1px;
+    transition:color 0.1s; flex-shrink:0; line-height:1;
+  }
+  .arch-inline-btn:hover { color:#2C4A6E; }
+  .bullet-item:hover .arch-inline-btn,
+  .wait-item:hover .arch-inline-btn,
+  .radar-item:hover .arch-inline-btn,
+  .task-row:hover .arch-inline-btn { display:block; }
+  /* ── REBECCA SECTION ARCHIVE ── */
+  .reb-archive-item { padding:8px 11px; background:#FAFAFF; border:1px solid #EDE9FE; border-radius:7px; margin-bottom:6px; }
+  .reb-archive-item-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+  .reb-arch-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; color:#6B5BAB; }
+  .reb-arch-date { font-size:10px; color:#9CA3AF; }
+  .reb-archive-text { font-size:12px; color:#374151; line-height:1.55; }
+
+
+  /* ── DAILY BRIEF ─────────────────────────────────────── */
+  .daily-brief-card > .section-body { padding: 0 !important; }
+
+  /* Day accordion toggle */
+  .bd-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; cursor: pointer; user-select: none;
+    border-bottom: 1px solid var(--border); background: #F9FAFB;
+    transition: background 0.15s;
+  }
+  .bd-toggle:hover { background: #F3F4F6; }
+  .bd-toggle.bd-today { background: #FFF7F0; border-left: 3px solid var(--cherry); }
+  .bd-toggle.bd-holiday { background: #FEF2F2; border-left: 3px solid #EF4444; }
+  .bd-toggle.open .bd-arrow { transform: rotate(180deg); }
+  .bd-left { display: flex; align-items: center; gap: 8px; }
+  .bd-dow  { font-size: 12px; font-weight: 700; color: var(--dark); }
+  .bd-date { font-size: 11px; color: var(--gray-text); }
+  .bd-badge { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: #E5E7EB; color: #374151; }
+  .bd-today .bd-badge { background: var(--cherry-lt); color: var(--cherry); font-weight: 600; }
+  .bd-holiday .bd-badge { background: #FEE2E2; color: #991B1B; }
+  .bd-arrow { font-size: 12px; color: var(--gray-text); transition: transform 0.2s; }
+
+  /* Day body */
+  .bd-body { display: none; border-bottom: 2px solid var(--border); }
+  .bd-body.open { display: block; }
+  .bd-holiday-note { text-align:center; padding:14px; color:#991B1B; font-style:italic; font-size:12px; }
+
+  /* Subsections */
+  .bd-sub { border-bottom: 1px solid #F3F4F6; padding: 10px 14px 8px; }
+  .bd-sub:last-child { border-bottom: none; }
+  .bd-sub-hdr {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+  }
+  .bd-sub-hdr > .bd-sub-title {
+    font-size: 11px; font-weight: 700; color: var(--dark);
+    text-transform: uppercase; letter-spacing: 0.05em; flex: 1;
+  }
+  .bd-sub-icon { font-size: 13px; }
+  .bd-add-btn { font-size: 10px !important; padding: 2px 8px !important; margin: 0 !important; }
+
+  /* Items (Decisions / Issues / FYIs) */
+  .bd-item { display: flex; align-items: flex-start; gap: 6px; padding: 4px 2px; border-radius: 5px; }
+  .bd-item:hover .bd-item-btns { opacity: 1; }
+  .bd-item-chk { margin-top: 3px; cursor: pointer; accent-color: var(--cherry); }
+  .bd-item-text {
+    flex: 1; font-size: 12.5px; color: var(--dark); outline: none;
+    min-height: 18px; border-radius: 3px; padding: 1px 3px;
+  }
+  .bd-item-text:focus { background: #FFFBF5; }
+  .bd-item-text:empty::before { content: attr(data-ph); color: #9CA3AF; font-style: italic; }
+  .bd-item.done .bd-item-text { text-decoration: line-through; color: var(--gray-text); }
+  .bd-item-btns { display: flex; gap: 3px; opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+  .bd-task-btn {
+    font-size: 10px; padding: 2px 5px; border: 1px solid #93C5FD; border-radius: 4px;
+    background: #EFF6FF; color: #1D4ED8; cursor: pointer; white-space: nowrap;
+  }
+  .bd-task-btn:hover { background: #DBEAFE; }
+  .bd-arch-btn {
+    font-size: 11px; padding: 2px 4px; border: 1px solid #D1D5DB; border-radius: 4px;
+    background: #F9FAFB; cursor: pointer;
+  }
+  .bd-arch-btn:hover { background: #F3F4F6; }
+  .bd-empty { font-size: 11px; color: #9CA3AF; font-style: italic; padding: 2px 0 4px; }
+
+  /* Top 3 */
+  .top3-prog-pill {
+    font-size: 10px; font-weight: 700; padding: 1px 6px;
+    border-radius: 10px; background: #E5E7EB; color: #374151;
+  }
+  .top3-prog-pill.all-done { background: #D1FAE5; color: #065F46; }
+  .top3-row { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
+  .top3-chk { accent-color: var(--cherry); cursor: pointer; }
+  .top3-txt {
+    flex: 1; font-size: 12.5px; outline: none; color: var(--dark);
+    border-radius: 3px; padding: 1px 3px;
+  }
+  .top3-txt:focus { background: #FFFBF5; }
+  .top3-txt:empty::before { content: attr(data-ph); color: #9CA3AF; font-style: italic; }
+  .top3-row.done .top3-txt { text-decoration: line-through; color: var(--gray-text); }
+  .top3-bar-wrap { height: 5px; background: #E5E7EB; border-radius: 3px; margin-top: 7px; }
+  .top3-bar-fill { height: 100%; background: var(--cherry); border-radius: 3px; transition: width 0.3s; }
+
+  /* Happiness in Daily Brief */
+  .bd-happy-row { display: flex; gap: 5px; padding: 4px 0; align-items: center; }
+  .bd-happy-btn {
+    font-size: 20px; background: none; border: 2px solid transparent;
+    border-radius: 8px; cursor: pointer; padding: 3px 5px; transition: all 0.15s;
+    line-height: 1;
+  }
+  .bd-happy-btn:hover { background: #F3F4F6; border-color: #E5E7EB; }
+  .bd-happy-btn.bd-happy-sel { background: var(--cherry-lt); border-color: var(--cherry); transform: scale(1.15); }
+  .bd-happy-lbl { font-size: 11px; color: var(--gray-text); margin-left: 6px; }
+
+  /* Archive area */
+  .bd-arch-area { padding: 6px 14px 8px; }
+  .bd-arch-toggle {
+    font-size: 11px; color: var(--gray-text); background: none;
+    border: none; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 4px;
+  }
+  .bd-arch-toggle:hover { color: var(--dark); }
+  .bd-arch-list { margin-top: 6px; }
+  .bd-arch-item {
+    display: flex; align-items: center; gap: 6px; font-size: 11.5px;
+    color: var(--gray-text); padding: 3px 0;
+  }
+  .bd-arch-item-text { text-decoration: line-through; flex: 1; }
+  .bd-arch-item-type {
+    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 1px 4px; border-radius: 3px; background: #F3F4F6; color: #6B7280;
+  }
+  .bd-restore-btn {
+    font-size: 10px; padding: 1px 5px; background: #F9FAFB; border: 1px solid #E5E7EB;
+    border-radius: 3px; cursor: pointer; text-decoration: none; color: var(--dark);
+  }
+  .bd-restore-btn:hover { background: #F3F4F6; }
+
 </style>
 <!-- Sortable: self-contained, no CDN needed -->
-<style>@font-face { font-family: DMSans; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/DMSans-Regular.ttf'); }@font-face { font-family: PoppinsMedium; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Poppins-Medium.otf'); }@font-face { font-family: PoppinsRegular; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Poppins-Regular.otf'); }@font-face { font-family: Roboto; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Roboto-Regular.ttf'); }@font-face { font-family: Inter; src: url('chrome-extension://meimoidfecamngeoanhnpdjjdcefoldn/assets/fonts/Inter-VariableFont_opsz,wght.ttf'); }</style><style></style></head>
-<body class="" data-new-gr-c-s-check-loaded="14.1289.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1290.0">
+</head>
+<body class="rearrange-mode">
 
 <div class="edit-banner">✏️ EDIT MODE ACTIVE — click any text field to update it · Click "Done Editing" to finish</div>
 <div class="rearrange-banner">🔀 REARRANGE MODE — grab the ⠿⠿ handle at the top of any card to drag it into a new position</div>
@@ -1117,16 +1272,16 @@
   <div class="toolbar-top">
     <div class="toolbar-left">
       <button class="btn btn-edit" id="editBtn" onclick="toggleEdit()">✏️ Edit Text</button>
-      <button class="btn btn-rearrange" id="rearrangeBtn" onclick="toggleRearrange()">🔀 Rearrange</button>
+      <button class="btn btn-rearrange active" id="rearrangeBtn" onclick="toggleRearrange()">✅ Done Rearranging</button>
       <button class="btn btn-newsec" onclick="openNewSec()">➕ New Section</button>
       <button class="btn btn-save dirty" id="saveBtn" onclick="saveFile()" title="Save (⌘S / Ctrl+S)">💾 Save</button>
       <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
       <button class="btn btn-archive" onclick="archiveDone()">📦 Archive Done</button>
       <button class="user-pill" id="userPill" data-u="rebecca" onclick="cycleUser()" title="Click to switch identity">👤 Rebecca</button>
-    <div id="liveCollabPresence" class=""><span class="lc-dot"></span><span class="lc-text">Live — <strong style="color:#6B5BAB">Rebecca</strong> is editing <span class="lc-avatars"><span class="lc-avatar" style="background:#6B5BAB" title="Rebecca">R</span><span class="lc-avatar" style="background:#6B5BAB" title="Rebecca">R</span></span></span></div></div>
+    </div>
     <div class="toolbar-right">
       <span class="save-status dirty" id="saveStatus">● Unsaved changes</span>
-      <span>Updated: May 21, 2026 · 11:00 AM · Auto-refresh</span>
+      <span>Updated: May 30, 2026 · 4:30 PM · Auto-refresh</span>
     </div>
   </div>
   <!-- ── QUICK-ADD BAR ── -->
@@ -1180,9 +1335,9 @@
       </div>
     </div>
     <!-- Thread -->
-    <div class="wb-thread" id="wbThread"><div class="wb-msg wb-msg-rebecca" data-wbid="wb_moufetxx_1pk"><div class="wb-msg-head"><span class="wb-msg-author">Rebecca</span><span class="wb-msg-time">May 6 · 3:04 PM</span></div><div class="wb-msg-body">dfadf</div><button class="wb-msg-del" onclick="wbDelete('wb_moufetxx_1pk')" title="Delete message">✕</button></div><div class="wb-msg wb-msg-rebecca" data-wbid="wb_moufefjw_2hu"><div class="wb-msg-head"><span class="wb-msg-author">Brett</span><span class="wb-msg-time">May 6 · 3:03 PM</span></div><div class="wb-msg-body">Nope</div><button class="wb-msg-del" onclick="wbDelete('wb_moufefjw_2hu')" title="Delete message">✕</button></div><div class="wb-msg wb-msg-rebecca" data-wbid="wb_moufebzp_f9d"><div class="wb-msg-head"><span class="wb-msg-author">Brett</span><span class="wb-msg-time">May 6 · 3:03 PM</span></div><div class="wb-msg-body">HEy Bretlkajdsfkherikhaoiewrhjoi</div><button class="wb-msg-del" onclick="wbDelete('wb_moufebzp_f9d')" title="Delete message">✕</button></div><div class="wb-msg wb-msg-rebecca" data-wbid="wb_mou6fv32_40d"><div class="wb-msg-head"><span class="wb-msg-author">Rebecca</span><span class="wb-msg-time">May 6 · 10:53 AM</span></div><div class="wb-msg-body">brett</div><button class="wb-msg-del" onclick="wbDelete('wb_mou6fv32_40d')" title="Delete message">✕</button></div><div class="wb-msg wb-msg-rebecca" data-wbid="wb_mora4k5y_ju3"><div class="wb-msg-head"><span class="wb-msg-author">Rebecca</span><span class="wb-msg-time">May 4 · 10:13 AM</span></div><div class="wb-msg-body">Check In</div><button class="wb-msg-del" onclick="wbDelete('wb_mora4k5y_ju3')" title="Delete message">✕</button></div></div>
+    <div class="wb-thread" id="wbThread"><div class="wb-msg wb-msg-rebecca" data-wbid="wb_mora4k5y_ju3"><div class="wb-msg-head"><span class="wb-msg-author">Rebecca</span><span class="wb-msg-time">Today · 10:13 AM</span></div><div class="wb-msg-body">Check In</div><button class="wb-msg-del" onclick="wbDelete('wb_mora4k5y_ju3')" title="Delete message">✕</button></div></div>
     <!-- Hidden store -->
-    <div id="wb-store" style="display:none">[{"id":"wb_mora4k5y_ju3","author":"Rebecca","text":"Check In","ts":"2026-05-04T14:13:01.846Z"},{"id":"wb_mou6fv32_40d","author":"Rebecca","text":"brett","ts":"2026-05-06T14:53:09.278Z"},{"id":"wb_moufebzp_f9d","author":"Brett","text":"HEy Bretlkajdsfkherikhaoiewrhjoi","ts":"2026-05-06T19:03:54.421Z"},{"id":"wb_moufefjw_2hu","author":"Brett","text":"Nope","ts":"2026-05-06T19:03:59.036Z"},{"id":"wb_moufetxx_1pk","author":"Rebecca","text":"dfadf","ts":"2026-05-06T19:04:17.685Z"}]</div>
+    <div id="wb-store" style="display:none">[{"id":"wb_mora4k5y_ju3","author":"Rebecca","text":"Check In","ts":"2026-05-04T14:13:01.846Z"}]</div>
   </div>
 </div>
 
@@ -1192,7 +1347,7 @@
   <div class="section-header sh-task-db">
     <span class="sh-icon">🗂️</span>
     <span>Executive Task Database</span>
-    <span class="task-db-meta" id="taskDbMeta">6 open · 18 total</span>
+    <span class="task-db-meta" id="taskDbMeta">8 open · 18 total</span>
   </div>
   <div class="section-body" style="padding: 0;">
 
@@ -1202,25 +1357,25 @@
         <div class="bucket-header">
           <span class="bucket-icon">✅</span>
           <span class="bucket-title">Due Today</span>
-          <span class="bucket-count" id="count-today">2</span>
+          <span class="bucket-count" id="count-today">0</span>
         </div>
-        <ul class="bucket-list" id="list-today"><li class="bucket-item" onclick="taskDbScrollTo('t_qa_mosrn9dr_0rqgv')"><span class="bucket-item-text">Q2 Schedule Todd to attend Department L10's each quarter</span><span class="bucket-item-pill bip-todo" title="○ Not started">○ Not started</span></li><li class="bucket-item" onclick="taskDbScrollTo('t_mosr62aq_sg1ly')"><span class="bucket-item-text">Reach out to Jason regarding 2 nights 2 rooms Frankenmuth and Lansing</span><span class="bucket-item-pill bip-todo" title="○ Not started">○ Not started</span></li></ul>
+        <ul class="bucket-list" id="list-today"><li class="bucket-empty">— none —</li></ul>
       </div>
       <div class="task-bucket bucket-past">
         <div class="bucket-header">
           <span class="bucket-icon">⛔</span>
           <span class="bucket-title">Past Due</span>
-          <span class="bucket-count" id="count-past">3</span>
+          <span class="bucket-count" id="count-past">4</span>
         </div>
-        <ul class="bucket-list" id="list-past"><li class="bucket-item" onclick="taskDbScrollTo('t_seed_04')"><span class="bucket-item-text">Working on Todd/Bob Dashboard with Claude</span><span class="bucket-item-pill bip-inprog" title="◐ In progress">◐ In progress</span></li><li class="bucket-item" onclick="taskDbScrollTo('t_reb_02')"><span class="bucket-item-text">Update Rocks in 90io</span><span class="bucket-item-pill bip-action" title="⛔ Action Needed">⛔ Action Needed</span></li><li class="bucket-item" onclick="taskDbScrollTo('t_reb_04')"><span class="bucket-item-text">Full day Q3 planning</span><span class="bucket-item-pill bip-inprog" title="◐ In progress">◐ In progress</span></li></ul>
+        <ul class="bucket-list" id="list-past"><li class="bucket-item" onclick="taskDbScrollTo('t_seed_04')"><span class="bucket-item-text">Working on Todd/Bob Dashboard with Claude</span><span class="bucket-item-pill bip-inprog" title="◐ In progress">◐ In progress</span></li><li class="bucket-item" onclick="taskDbScrollTo('t_seed_06')"><span class="bucket-item-text">Hand off Claude to Brett Clark</span><span class="bucket-item-pill bip-action" title="⛔ Action Needed">⛔ Action Needed</span></li><li class="bucket-item" onclick="taskDbScrollTo('t_reb_02')"><span class="bucket-item-text">Update Rocks in 90io</span><span class="bucket-item-pill bip-action" title="⛔ Action Needed">⛔ Action Needed</span></li><li class="bucket-item" onclick="taskDbScrollTo('t_reb_04')"><span class="bucket-item-text">Full day Q3 planning</span><span class="bucket-item-pill bip-inprog" title="◐ In progress">◐ In progress</span></li></ul>
       </div>
       <div class="task-bucket bucket-action">
         <div class="bucket-header">
           <span class="bucket-icon">⚠️</span>
           <span class="bucket-title">Action Needed</span>
-          <span class="bucket-count" id="count-action">1</span>
+          <span class="bucket-count" id="count-action">2</span>
         </div>
-        <ul class="bucket-list" id="list-action"><li class="bucket-item" onclick="taskDbScrollTo('t_reb_02')"><span class="bucket-item-text">Update Rocks in 90io</span><span class="bucket-item-pill bip-action" title="⛔ Action Needed">⛔ Action Needed</span></li></ul>
+        <ul class="bucket-list" id="list-action"><li class="bucket-item" onclick="taskDbScrollTo('t_seed_06')"><span class="bucket-item-text">Hand off Claude to Brett Clark</span><span class="bucket-item-pill bip-action" title="⛔ Action Needed">⛔ Action Needed</span></li><li class="bucket-item" onclick="taskDbScrollTo('t_reb_02')"><span class="bucket-item-text">Update Rocks in 90io</span><span class="bucket-item-pill bip-action" title="⛔ Action Needed">⛔ Action Needed</span></li></ul>
       </div>
       <div class="task-bucket bucket-contingent">
         <div class="bucket-header">
@@ -1261,7 +1416,7 @@
             <th class="td-th-del"></th>
           </tr>
         </thead>
-        <tbody id="taskDbBody"><tr data-tdbid="t_seed_04"><td class="tdb-created">Apr 10</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_seed_04" data-field="desc" style="height: 31px;">Working on Todd/Bob Dashboard with Claude</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-inprog" onclick="taskDbToggleMenu(this)" data-tdbid="t_seed_04"><span class="pill-dot"></span><span class="pill-label">◐ In progress</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_seed_04" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_seed_04" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-04-12" data-tdbid="t_seed_04" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_seed_04')" title="Delete">✕</button></td></tr><tr data-tdbid="t_reb_02"><td class="tdb-created">Apr 28</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_reb_02" data-field="desc" style="height: 31px;">Update Rocks in 90io</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-action" onclick="taskDbToggleMenu(this)" data-tdbid="t_reb_02"><span class="pill-dot"></span><span class="pill-label">⛔ Action Needed</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_reb_02" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_reb_02" data-field="notes" style="height: 30px;">Todd Ciolek — Ninety.io link Need Bobs Rock info</textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-04-30" data-tdbid="t_reb_02" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_02')" title="Delete">✕</button></td></tr><tr data-tdbid="t_reb_04"><td class="tdb-created">Apr 28</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_reb_04" data-field="desc" style="height: 31px;">Full day Q3 planning</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-inprog" onclick="taskDbToggleMenu(this)" data-tdbid="t_reb_04"><span class="pill-dot"></span><span class="pill-label">◐ In progress</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_reb_04" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_reb_04" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-04-30" data-tdbid="t_reb_04" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_04')" title="Delete">✕</button></td></tr><tr data-tdbid="t_qa_mosrn9dr_0rqgv"><td class="tdb-created">May 5</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_qa_mosrn9dr_0rqgv" data-field="desc" style="height: 31px;">Q2 Schedule Todd to attend Department L10's each quarter</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-todo" onclick="taskDbToggleMenu(this)" data-tdbid="t_qa_mosrn9dr_0rqgv"><span class="pill-dot"></span><span class="pill-label">○ Not started</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_qa_mosrn9dr_0rqgv" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_qa_mosrn9dr_0rqgv" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-05-07" data-tdbid="t_qa_mosrn9dr_0rqgv" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_mosrn9dr_0rqgv')" title="Delete">✕</button></td></tr><tr data-tdbid="t_mosr62aq_sg1ly"><td class="tdb-created">May 5</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_mosr62aq_sg1ly" data-field="desc" style="height: 52px;">Reach out to Jason regarding 2 nights 2 rooms Frankenmuth and Lansing</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-todo" onclick="taskDbToggleMenu(this)" data-tdbid="t_mosr62aq_sg1ly"><span class="pill-dot"></span><span class="pill-label">○ Not started</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_mosr62aq_sg1ly" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_mosr62aq_sg1ly" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-05-07" data-tdbid="t_mosr62aq_sg1ly" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_mosr62aq_sg1ly')" title="Delete">✕</button></td></tr><tr data-tdbid="t_qa_mosrlua8_hpnrq"><td class="tdb-created">May 5</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_qa_mosrlua8_hpnrq" data-field="desc" style="height: 52px;">Q2 Create a list of Accountabilities for my position on a daily, weekly, monthly, quarterly and yearly basis</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-inprog" onclick="taskDbToggleMenu(this)" data-tdbid="t_qa_mosrlua8_hpnrq"><span class="pill-dot"></span><span class="pill-label">◐ In progress</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_qa_mosrlua8_hpnrq" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_qa_mosrlua8_hpnrq" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date" value="2026-05-11" data-tdbid="t_qa_mosrlua8_hpnrq" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_mosrlua8_hpnrq')" title="Delete">✕</button></td></tr></tbody>
+        <tbody id="taskDbBody"><tr data-tdbid="t_seed_04"><td class="tdb-created">Apr 10</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_seed_04" data-field="desc" style="height: 31px;">Working on Todd/Bob Dashboard with Claude</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-inprog" onclick="taskDbToggleMenu(this)" data-tdbid="t_seed_04"><span class="pill-dot"></span><span class="pill-label">◐ In progress</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_04','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_seed_04" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_seed_04" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-04-12" data-tdbid="t_seed_04" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_seed_04')" title="Delete">✕</button></td></tr><tr data-tdbid="t_seed_06"><td class="tdb-created">Apr 22</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_seed_06" data-field="desc" style="height: 31px;">Hand off Claude to Brett Clark</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-action" onclick="taskDbToggleMenu(this)" data-tdbid="t_seed_06"><span class="pill-dot"></span><span class="pill-label">⛔ Action Needed</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_06','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_06','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_06','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_06','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_seed_06','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_seed_06" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_seed_06" data-field="notes" style="height: 30px;">Schedule training time</textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-04-24" data-tdbid="t_seed_06" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_seed_06')" title="Delete">✕</button></td></tr><tr data-tdbid="t_reb_02"><td class="tdb-created">Apr 28</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_reb_02" data-field="desc" style="height: 31px;">Update Rocks in 90io</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-action" onclick="taskDbToggleMenu(this)" data-tdbid="t_reb_02"><span class="pill-dot"></span><span class="pill-label">⛔ Action Needed</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_02','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_reb_02" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_reb_02" data-field="notes" style="height: 30px;">Todd Ciolek — Ninety.io link Need Bobs Rock info</textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-04-30" data-tdbid="t_reb_02" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_02')" title="Delete">✕</button></td></tr><tr data-tdbid="t_reb_04"><td class="tdb-created">Apr 28</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_reb_04" data-field="desc" style="height: 31px;">Full day Q3 planning</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-inprog" onclick="taskDbToggleMenu(this)" data-tdbid="t_reb_04"><span class="pill-dot"></span><span class="pill-label">◐ In progress</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_reb_04','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_reb_04" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_reb_04" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date due-past" value="2026-04-30" data-tdbid="t_reb_04" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_04')" title="Delete">✕</button></td></tr><tr data-tdbid="t_qa_more30fa_hr6v2"><td class="tdb-created">May 4</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_qa_more30fa_hr6v2" data-field="desc" style="height: 52px;">meeting with dr. pine right pinky been like that for awhile</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-todo" onclick="taskDbToggleMenu(this)" data-tdbid="t_qa_more30fa_hr6v2"><span class="pill-dot"></span><span class="pill-label">○ Not started</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_more30fa_hr6v2','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_more30fa_hr6v2','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_more30fa_hr6v2','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_more30fa_hr6v2','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_more30fa_hr6v2','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_qa_more30fa_hr6v2" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_qa_more30fa_hr6v2" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date" value="2026-05-06" data-tdbid="t_qa_more30fa_hr6v2" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_more30fa_hr6v2')" title="Delete">✕</button></td></tr><tr data-tdbid="t_qa_mosrn9dr_0rqgv"><td class="tdb-created">May 5</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_qa_mosrn9dr_0rqgv" data-field="desc" style="height: 52px;">Q2 Schedule Todd to attend Department L10's each quarter</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-todo" onclick="taskDbToggleMenu(this)" data-tdbid="t_qa_mosrn9dr_0rqgv"><span class="pill-dot"></span><span class="pill-label">○ Not started</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrn9dr_0rqgv','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_qa_mosrn9dr_0rqgv" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_qa_mosrn9dr_0rqgv" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date" value="2026-05-07" data-tdbid="t_qa_mosrn9dr_0rqgv" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_mosrn9dr_0rqgv')" title="Delete">✕</button></td></tr><tr data-tdbid="t_mosr62aq_sg1ly"><td class="tdb-created">May 5</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_mosr62aq_sg1ly" data-field="desc" style="height: 52px;">Reach out to Jason regarding 2 nights 2 rooms Frankenmuth and Lansing</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-todo" onclick="taskDbToggleMenu(this)" data-tdbid="t_mosr62aq_sg1ly"><span class="pill-dot"></span><span class="pill-label">○ Not started</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_mosr62aq_sg1ly','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_mosr62aq_sg1ly" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_mosr62aq_sg1ly" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date" value="2026-05-07" data-tdbid="t_mosr62aq_sg1ly" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_mosr62aq_sg1ly')" title="Delete">✕</button></td></tr><tr data-tdbid="t_qa_mosrlua8_hpnrq"><td class="tdb-created">May 5</td><td class="tdb-cell-desc"><textarea class="tdb-desc-input" rows="1" placeholder="Task description…" data-tdbid="t_qa_mosrlua8_hpnrq" data-field="desc" style="height: 52px;">Q2 Create a list of Accountabilities for my position on a daily, weekly, monthly, quarterly and yearly basis</textarea></td><td class="tdb-cell-status"><div class="tdb-status-wrap"><button class="tdb-status-pill s-todo" onclick="taskDbToggleMenu(this)" data-tdbid="t_qa_mosrlua8_hpnrq"><span class="pill-dot"></span><span class="pill-label">○ Not started</span></button><div class="tdb-status-menu"><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','todo')">○ Not started</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','inprog')">◐ In progress</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','action')">⛔ Action Needed</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','contingent')">⚠️ Contingent</div><div class="tdb-status-opt" onclick="taskDbPickStatus(this,'t_qa_mosrlua8_hpnrq','done')">✓ Done</div></div></div></td><td class="tdb-cell-priority"><select class="tdb-priority p-low" data-tdbid="t_qa_mosrlua8_hpnrq" data-field="priority"><option value="low" selected="">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select></td><td class="tdb-cell-notes"><textarea class="tdb-notes-input" rows="1" placeholder="—" data-tdbid="t_qa_mosrlua8_hpnrq" data-field="notes" style="height: 30px;"></textarea></td><td class="tdb-cell-due"><input type="date" class="tdb-date" value="2026-05-11" data-tdbid="t_qa_mosrlua8_hpnrq" data-field="due"></td><td><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_mosrlua8_hpnrq')" title="Delete">✕</button></td></tr></tbody>
       </table>
       <div class="task-db-empty" id="taskDbEmpty" style="display: none;">No tasks match this view. Click + New to add one.</div>
     </div>
@@ -1271,13 +1426,13 @@
       <button class="tdb-archive-toggle" onclick="taskDbToggleArchive()" id="tdbArchiveToggle">
         <span id="tdbArchiveIcon">▶</span>
         <span>Archive — Completed Tasks</span>
-        <span class="tdb-archive-count" id="tdbArchiveCount">12</span>
+        <span class="tdb-archive-count" id="tdbArchiveCount">10</span>
       </button>
-      <div class="tdb-archive-list" id="tdbArchiveList"><div class="tdb-archive-item" data-tdbid="t_qa_more30fa_hr6v2"><span class="tai-check">✓</span><span class="tai-text">meeting with dr. pine right pinky been like that for awhile</span><span class="tai-meta">May 6</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_qa_more30fa_hr6v2')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_more30fa_hr6v2')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_qa_mordm0qk_dpjo4"><span class="tai-check">✓</span><span class="tai-text">send kates questions to Niocle</span><span class="tai-meta">May 6</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_qa_mordm0qk_dpjo4')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_mordm0qk_dpjo4')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_mordlk5s_g92qp"><span class="tai-check">✓</span><span class="tai-text">send todd sc quesiton about sara</span><span class="tai-meta">May 6</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_mordlk5s_g92qp')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_mordlk5s_g92qp')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_qa_mor4y66x_18dq4"><span class="tai-check">✓</span><span class="tai-text">Update Brads Basketball calendar</span><span class="tai-meta">May 6</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_qa_mor4y66x_18dq4')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_mor4y66x_18dq4')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_07"><span class="tai-check">✓</span><span class="tai-text">Update April Summit and to-do's</span><span class="tai-meta">May 1</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_07')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_07')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_01"><span class="tai-check">✓</span><span class="tai-text">Check with Bob — IHME butterfly bush</span><span class="tai-meta">Apr 30</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_01')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_01')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_03"><span class="tai-check">✓</span><span class="tai-text">Quarterly rock building — check in with Kory</span><span class="tai-meta">Apr 30</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_03')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_03')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_05"><span class="tai-check">✓</span><span class="tai-text">Schedule Sara &amp; Todd — Marketing Accountability chart review (1 hour, ~2 weeks out)</span><span class="tai-meta">Apr 30</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_05')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_05')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_06"><span class="tai-check">✓</span><span class="tai-text">Cohesion data — last 6 weeks response counts</span><span class="tai-meta">Apr 30</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_06')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_06')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_seed_06"><span class="tai-check">✓</span><span class="tai-text">Hand off Claude to Brett Clark</span><span class="tai-meta">Apr 24</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_seed_06')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_seed_06')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_seed_07"><span class="tai-check">✓</span><span class="tai-text">Rocks and 3 year picture visual @ HQ</span><span class="tai-meta">Apr 24</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_seed_07')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_seed_07')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_seed_11"><span class="tai-check">✓</span><span class="tai-text">Linda's Birthday in calendar</span><span class="tai-meta">Apr 20</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_seed_11')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_seed_11')" title="Delete permanently">✕</button></div></div>
+      <div class="tdb-archive-list" id="tdbArchiveList"><div class="tdb-archive-item" data-tdbid="t_qa_mordm0qk_dpjo4"><span class="tai-check">✓</span><span class="tai-text">send kates questions to Niocle</span><span class="tai-meta">May 6</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_qa_mordm0qk_dpjo4')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_mordm0qk_dpjo4')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_mordlk5s_g92qp"><span class="tai-check">✓</span><span class="tai-text">send todd sc quesiton about sara</span><span class="tai-meta">May 6</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_mordlk5s_g92qp')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_mordlk5s_g92qp')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_qa_mor4y66x_18dq4"><span class="tai-check">✓</span><span class="tai-text">Update Brads Basketball calendar</span><span class="tai-meta">May 6</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_qa_mor4y66x_18dq4')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_qa_mor4y66x_18dq4')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_07"><span class="tai-check">✓</span><span class="tai-text">Update April Summit and to-do's</span><span class="tai-meta">May 1</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_07')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_07')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_01"><span class="tai-check">✓</span><span class="tai-text">Check with Bob — IHME butterfly bush</span><span class="tai-meta">Apr 30</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_01')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_01')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_03"><span class="tai-check">✓</span><span class="tai-text">Quarterly rock building — check in with Kory</span><span class="tai-meta">Apr 30</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_03')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_03')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_05"><span class="tai-check">✓</span><span class="tai-text">Schedule Sara &amp; Todd — Marketing Accountability chart review (1 hour, ~2 weeks out)</span><span class="tai-meta">Apr 30</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_05')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_05')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_reb_06"><span class="tai-check">✓</span><span class="tai-text">Cohesion data — last 6 weeks response counts</span><span class="tai-meta">Apr 30</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_reb_06')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_reb_06')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_seed_07"><span class="tai-check">✓</span><span class="tai-text">Rocks and 3 year picture visual @ HQ</span><span class="tai-meta">Apr 24</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_seed_07')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_seed_07')" title="Delete permanently">✕</button></div><div class="tdb-archive-item" data-tdbid="t_seed_11"><span class="tai-check">✓</span><span class="tai-text">Linda's Birthday in calendar</span><span class="tai-meta">Apr 20</span><button class="tai-restore" onclick="taskDbRestoreFromArchive('t_seed_11')" title="Restore to active list">Restore</button><button class="tdb-del-btn" onclick="taskDbDelete('t_seed_11')" title="Delete permanently">✕</button></div></div>
     </div>
 
     <!-- HIDDEN STORE — task data persists here when file is saved -->
-    <div id="taskdb-store" style="display:none">[{"id":"t_qa_mosrn9dr_0rqgv","created":"2026-05-05","desc":"Q2 Schedule Todd to attend Department L10's each quarter","status":"todo","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-07"},{"id":"t_qa_mosrlua8_hpnrq","created":"2026-05-05","desc":"Q2 Create a list of Accountabilities for my position on a daily, weekly, monthly, quarterly and yearly basis","status":"inprog","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-11"},{"id":"t_mosr62aq_sg1ly","created":"2026-05-05","desc":"Reach out to Jason regarding 2 nights 2 rooms Frankenmuth and Lansing","status":"todo","exec":"Todd","priority":"low","notes":"","due":"2026-05-07"},{"id":"t_qa_more30fa_hr6v2","created":"2026-05-04","desc":"meeting with dr. pine right pinky been like that for awhile","status":"done","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-06"},{"id":"t_qa_mordm0qk_dpjo4","created":"2026-05-04","desc":"send kates questions to Niocle","status":"done","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-06"},{"id":"t_mordlk5s_g92qp","created":"2026-05-04","desc":"send todd sc quesiton about sara","status":"done","exec":"Todd","priority":"low","notes":"","due":"2026-05-06"},{"id":"t_qa_mor4y66x_18dq4","created":"2026-05-04","desc":"Update Brads Basketball calendar","status":"done","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-06"},{"id":"t_seed_04","created":"2026-04-10","desc":"Working on Todd/Bob Dashboard with Claude","status":"inprog","exec":"Rebecca","notes":"","due":"2026-04-12","priority":"low"},{"id":"t_seed_06","created":"2026-04-22","desc":"Hand off Claude to Brett Clark","status":"done","exec":"Rebecca","notes":"Schedule training time","due":"2026-04-24","priority":"low"},{"id":"t_seed_07","created":"2026-04-22","desc":"Rocks and 3 year picture visual @ HQ","status":"done","exec":"Todd","notes":"","due":"2026-04-24","priority":"low"},{"id":"t_seed_11","created":"2026-04-08","desc":"Linda's Birthday in calendar","status":"done","exec":"Todd","notes":"","due":"2026-04-20","priority":"medium"},{"id":"t_reb_01","created":"2026-04-28","desc":"Check with Bob — IHME butterfly bush","status":"done","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_02","created":"2026-04-28","desc":"Update Rocks in 90io","status":"action","exec":"Rebecca","notes":"Todd Ciolek — Ninety.io link Need Bobs Rock info","due":"2026-04-30","priority":"low"},{"id":"t_reb_03","created":"2026-04-28","desc":"Quarterly rock building — check in with Kory","status":"done","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_04","created":"2026-04-28","desc":"Full day Q3 planning","status":"inprog","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_05","created":"2026-04-28","desc":"Schedule Sara &amp; Todd — Marketing Accountability chart review (1 hour, ~2 weeks out)","status":"done","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_06","created":"2026-04-28","desc":"Cohesion data — last 6 weeks response counts","status":"done","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_07","created":"2026-04-29","desc":"Update April Summit and to-do's","status":"done","exec":"Rebecca","notes":"","due":"2026-05-01","priority":"low"}]</div>
+    <div id="taskdb-store" style="display:none">[{"id":"t_qa_mosrn9dr_0rqgv","created":"2026-05-05","desc":"Q2 Schedule Todd to attend Department L10's each quarter","status":"todo","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-07"},{"id":"t_qa_mosrlua8_hpnrq","created":"2026-05-05","desc":"Q2 Create a list of Accountabilities for my position on a daily, weekly, monthly, quarterly and yearly basis","status":"todo","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-11"},{"id":"t_mosr62aq_sg1ly","created":"2026-05-05","desc":"Reach out to Jason regarding 2 nights 2 rooms Frankenmuth and Lansing","status":"todo","exec":"Todd","priority":"low","notes":"","due":"2026-05-07"},{"id":"t_qa_more30fa_hr6v2","created":"2026-05-04","desc":"meeting with dr. pine right pinky been like that for awhile","status":"todo","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-06"},{"id":"t_qa_mordm0qk_dpjo4","created":"2026-05-04","desc":"send kates questions to Niocle","status":"done","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-06"},{"id":"t_mordlk5s_g92qp","created":"2026-05-04","desc":"send todd sc quesiton about sara","status":"done","exec":"Todd","priority":"low","notes":"","due":"2026-05-06"},{"id":"t_qa_mor4y66x_18dq4","created":"2026-05-04","desc":"Update Brads Basketball calendar","status":"done","exec":"Rebecca","priority":"low","notes":"","due":"2026-05-06"},{"id":"t_seed_04","created":"2026-04-10","desc":"Working on Todd/Bob Dashboard with Claude","status":"inprog","exec":"Rebecca","notes":"","due":"2026-04-12","priority":"low"},{"id":"t_seed_06","created":"2026-04-22","desc":"Hand off Claude to Brett Clark","status":"action","exec":"Rebecca","notes":"Schedule training time","due":"2026-04-24","priority":"low"},{"id":"t_seed_07","created":"2026-04-22","desc":"Rocks and 3 year picture visual @ HQ","status":"done","exec":"Todd","notes":"","due":"2026-04-24","priority":"low"},{"id":"t_seed_11","created":"2026-04-08","desc":"Linda's Birthday in calendar","status":"done","exec":"Todd","notes":"","due":"2026-04-20","priority":"medium"},{"id":"t_reb_01","created":"2026-04-28","desc":"Check with Bob — IHME butterfly bush","status":"done","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_02","created":"2026-04-28","desc":"Update Rocks in 90io","status":"action","exec":"Rebecca","notes":"Todd Ciolek — Ninety.io link Need Bobs Rock info","due":"2026-04-30","priority":"low"},{"id":"t_reb_03","created":"2026-04-28","desc":"Quarterly rock building — check in with Kory","status":"done","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_04","created":"2026-04-28","desc":"Full day Q3 planning","status":"inprog","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_05","created":"2026-04-28","desc":"Schedule Sara &amp; Todd — Marketing Accountability chart review (1 hour, ~2 weeks out)","status":"done","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_06","created":"2026-04-28","desc":"Cohesion data — last 6 weeks response counts","status":"done","exec":"Rebecca","notes":"","due":"2026-04-30","priority":"low"},{"id":"t_reb_07","created":"2026-04-29","desc":"Update April Summit and to-do's","status":"done","exec":"Rebecca","notes":"","due":"2026-05-01","priority":"low"}]</div>
   </div>
 </div>
 
@@ -1305,37 +1460,388 @@
     <!-- TODD'S TO-DO LIST -->
     
 
-    <!-- ISSUES / RISKS -->
-    <div class="section-card">
+
+    <!-- DAILY BRIEF -->
+    <div class="section-card daily-brief-card">
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
-      <div class="section-header sh-red">
-        <span class="sh-icon">⚠️</span><span>Decisions Needed (Action Required)</span>
+      <div class="section-header sh-cherry">
+        <span class="sh-icon">📋</span><span>Daily Brief</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--cherry);text-transform:none;letter-spacing:0;">Week of May 26, 2026</span>
       </div>
-      <div class="section-body" id="decisionsBody" data-add-type="checklist"></div>
-    </div><div class="section-card">
-      <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
-      <div class="section-header sh-amber">
-        <span class="sh-icon">🚧</span><span>Issues / Risks / Friction Points</span>
+      <div class="section-body" style="padding:0;">
+        <div id="daily-brief-store" style="display:none">{}</div>
+
+    <div class="bd-toggle bd-holiday" id="bdt-may25" onclick="toggleBriefDay('may25')">
+      <div class="bd-left">
+        <span class="bd-dow">Monday</span>
+        <span class="bd-date">May 25</span>
+        <span class="bd-badge">🇺🇸 Memorial Day</span>
       </div>
-      <div class="section-body" data-add-type="bullets">
-        
-        <button class="add-item-btn" onclick="addBulletItem(this.parentElement, '⚠️')">+ Add risk or issue</button>
-      </div>
+      <span class="bd-arrow">▾</span>
+    </div>
+    <div class="bd-body" id="bdb-may25">
+      <div class="bd-holiday-note">🏖️ Federal Holiday — Office Closed</div>
     </div>
 
-    <!-- FYIs -->
-    <div class="section-card">
-      <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
-      <div class="section-header sh-blue">
-        <span class="sh-icon">ℹ️</span><span>FYIs (No Action Required)</span>
+    <div class="bd-toggle" id="bdt-may26" onclick="toggleBriefDay('may26')">
+      <div class="bd-left">
+        <span class="bd-dow">Tuesday</span>
+        <span class="bd-date">May 26</span>
+        <span class="bd-badge">0 items</span>
       </div>
-      <div class="section-body" data-add-type="bullets">
-        
-        
-        
-        
-        
-        <button class="add-item-btn" onclick="addBulletItem(this.parentElement, 'ℹ️')">+ Add FYI</button>
+      <span class="bd-arrow">▾</span>
+    </div>
+    <div class="bd-body" id="bdb-may26">
+
+      <!-- Decisions Needed -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚡</span>
+          <span class="bd-sub-title">Decisions Needed</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('decisions','may26')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-decisions-may26"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Issues / Risks -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚠️</span>
+          <span class="bd-sub-title">Issues / Risks</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('issues','may26')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-issues-may26"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- FYIs -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">📢</span>
+          <span class="bd-sub-title">FYIs</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('fyis','may26')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-fyis-may26"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Rebecca's Top 3 -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">✅</span>
+          <span class="bd-sub-title">Rebecca's Top 3</span>
+          <span class="top3-prog-pill" id="top3-pill-may26">0/3</span>
+        </div>
+        <div id="bdi-top3-may26">
+          <div class="top3-row" data-idx="0">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may26',0)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 1…" oninput="saveBriefTop3('may26',0,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="1">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may26',1)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 2…" oninput="saveBriefTop3('may26',1,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="2">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may26',2)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 3…" oninput="saveBriefTop3('may26',2,this.textContent)"></span>
+          </div>
+        </div>
+        <div class="top3-bar-wrap"><div class="top3-bar-fill" id="top3-fill-may26" style="width:0%"></div></div>
+      </div>
+
+      <!-- Rebecca's Happiness -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">😊</span>
+          <span class="bd-sub-title">Rebecca's Happiness</span>
+          <span class="bd-happy-lbl" id="bd-happy-lbl-may26"></span>
+        </div>
+        <div class="bd-happy-row" id="bdi-happy-may26">
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,1,'may26','2026-05-26')" title="Rough day">😢</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,2,'may26','2026-05-26')" title="Meh">😕</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,3,'may26','2026-05-26')" title="OK">😐</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,4,'may26','2026-05-26')" title="Good">😊</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,5,'may26','2026-05-26')" title="Great day">😄</button>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <div class="bd-arch-area">
+        <button class="bd-arch-toggle" id="bd-arch-btn-may26" onclick="toggleBriefArchive('may26')">
+          ▶ Archived  <span id="bd-arch-cnt-may26" style="background:#E5E7EB;border-radius:10px;padding:1px 5px;font-size:10px;">0</span>
+        </button>
+        <div class="bd-arch-list" id="bd-arch-list-may26" style="display:none;"></div>
+      </div>
+
+    </div>
+
+    <div class="bd-toggle" id="bdt-may27" onclick="toggleBriefDay('may27')">
+      <div class="bd-left">
+        <span class="bd-dow">Wednesday</span>
+        <span class="bd-date">May 27</span>
+        <span class="bd-badge">0 items</span>
+      </div>
+      <span class="bd-arrow">▾</span>
+    </div>
+    <div class="bd-body" id="bdb-may27">
+
+      <!-- Decisions Needed -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚡</span>
+          <span class="bd-sub-title">Decisions Needed</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('decisions','may27')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-decisions-may27"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Issues / Risks -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚠️</span>
+          <span class="bd-sub-title">Issues / Risks</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('issues','may27')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-issues-may27"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- FYIs -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">📢</span>
+          <span class="bd-sub-title">FYIs</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('fyis','may27')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-fyis-may27"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Rebecca's Top 3 -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">✅</span>
+          <span class="bd-sub-title">Rebecca's Top 3</span>
+          <span class="top3-prog-pill" id="top3-pill-may27">0/3</span>
+        </div>
+        <div id="bdi-top3-may27">
+          <div class="top3-row" data-idx="0">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may27',0)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 1…" oninput="saveBriefTop3('may27',0,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="1">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may27',1)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 2…" oninput="saveBriefTop3('may27',1,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="2">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may27',2)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 3…" oninput="saveBriefTop3('may27',2,this.textContent)"></span>
+          </div>
+        </div>
+        <div class="top3-bar-wrap"><div class="top3-bar-fill" id="top3-fill-may27" style="width:0%"></div></div>
+      </div>
+
+      <!-- Rebecca's Happiness -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">😊</span>
+          <span class="bd-sub-title">Rebecca's Happiness</span>
+          <span class="bd-happy-lbl" id="bd-happy-lbl-may27"></span>
+        </div>
+        <div class="bd-happy-row" id="bdi-happy-may27">
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,1,'may27','2026-05-27')" title="Rough day">😢</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,2,'may27','2026-05-27')" title="Meh">😕</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,3,'may27','2026-05-27')" title="OK">😐</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,4,'may27','2026-05-27')" title="Good">😊</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,5,'may27','2026-05-27')" title="Great day">😄</button>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <div class="bd-arch-area">
+        <button class="bd-arch-toggle" id="bd-arch-btn-may27" onclick="toggleBriefArchive('may27')">
+          ▶ Archived  <span id="bd-arch-cnt-may27" style="background:#E5E7EB;border-radius:10px;padding:1px 5px;font-size:10px;">0</span>
+        </button>
+        <div class="bd-arch-list" id="bd-arch-list-may27" style="display:none;"></div>
+      </div>
+
+    </div>
+
+    <div class="bd-toggle" id="bdt-may28" onclick="toggleBriefDay('may28')">
+      <div class="bd-left">
+        <span class="bd-dow">Thursday</span>
+        <span class="bd-date">May 28</span>
+        <span class="bd-badge">0 items</span>
+      </div>
+      <span class="bd-arrow">▾</span>
+    </div>
+    <div class="bd-body" id="bdb-may28">
+
+      <!-- Decisions Needed -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚡</span>
+          <span class="bd-sub-title">Decisions Needed</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('decisions','may28')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-decisions-may28"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Issues / Risks -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚠️</span>
+          <span class="bd-sub-title">Issues / Risks</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('issues','may28')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-issues-may28"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- FYIs -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">📢</span>
+          <span class="bd-sub-title">FYIs</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('fyis','may28')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-fyis-may28"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Rebecca's Top 3 -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">✅</span>
+          <span class="bd-sub-title">Rebecca's Top 3</span>
+          <span class="top3-prog-pill" id="top3-pill-may28">0/3</span>
+        </div>
+        <div id="bdi-top3-may28">
+          <div class="top3-row" data-idx="0">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may28',0)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 1…" oninput="saveBriefTop3('may28',0,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="1">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may28',1)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 2…" oninput="saveBriefTop3('may28',1,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="2">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may28',2)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 3…" oninput="saveBriefTop3('may28',2,this.textContent)"></span>
+          </div>
+        </div>
+        <div class="top3-bar-wrap"><div class="top3-bar-fill" id="top3-fill-may28" style="width:0%"></div></div>
+      </div>
+
+      <!-- Rebecca's Happiness -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">😊</span>
+          <span class="bd-sub-title">Rebecca's Happiness</span>
+          <span class="bd-happy-lbl" id="bd-happy-lbl-may28"></span>
+        </div>
+        <div class="bd-happy-row" id="bdi-happy-may28">
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,1,'may28','2026-05-28')" title="Rough day">😢</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,2,'may28','2026-05-28')" title="Meh">😕</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,3,'may28','2026-05-28')" title="OK">😐</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,4,'may28','2026-05-28')" title="Good">😊</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,5,'may28','2026-05-28')" title="Great day">😄</button>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <div class="bd-arch-area">
+        <button class="bd-arch-toggle" id="bd-arch-btn-may28" onclick="toggleBriefArchive('may28')">
+          ▶ Archived  <span id="bd-arch-cnt-may28" style="background:#E5E7EB;border-radius:10px;padding:1px 5px;font-size:10px;">0</span>
+        </button>
+        <div class="bd-arch-list" id="bd-arch-list-may28" style="display:none;"></div>
+      </div>
+
+    </div>
+
+    <div class="bd-toggle" id="bdt-may29" onclick="toggleBriefDay('may29')">
+      <div class="bd-left">
+        <span class="bd-dow">Friday</span>
+        <span class="bd-date">May 29</span>
+        <span class="bd-badge">0 items</span>
+      </div>
+      <span class="bd-arrow">▾</span>
+    </div>
+    <div class="bd-body" id="bdb-may29">
+
+      <!-- Decisions Needed -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚡</span>
+          <span class="bd-sub-title">Decisions Needed</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('decisions','may29')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-decisions-may29"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Issues / Risks -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚠️</span>
+          <span class="bd-sub-title">Issues / Risks</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('issues','may29')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-issues-may29"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- FYIs -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">📢</span>
+          <span class="bd-sub-title">FYIs</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('fyis','may29')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-fyis-may29"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Rebecca's Top 3 -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">✅</span>
+          <span class="bd-sub-title">Rebecca's Top 3</span>
+          <span class="top3-prog-pill" id="top3-pill-may29">0/3</span>
+        </div>
+        <div id="bdi-top3-may29">
+          <div class="top3-row" data-idx="0">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may29',0)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 1…" oninput="saveBriefTop3('may29',0,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="1">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may29',1)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 2…" oninput="saveBriefTop3('may29',1,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="2">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may29',2)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 3…" oninput="saveBriefTop3('may29',2,this.textContent)"></span>
+          </div>
+        </div>
+        <div class="top3-bar-wrap"><div class="top3-bar-fill" id="top3-fill-may29" style="width:0%"></div></div>
+      </div>
+
+      <!-- Rebecca's Happiness -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">😊</span>
+          <span class="bd-sub-title">Rebecca's Happiness</span>
+          <span class="bd-happy-lbl" id="bd-happy-lbl-may29"></span>
+        </div>
+        <div class="bd-happy-row" id="bdi-happy-may29">
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,1,'may29','2026-05-29')" title="Rough day">😢</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,2,'may29','2026-05-29')" title="Meh">😕</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,3,'may29','2026-05-29')" title="OK">😐</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,4,'may29','2026-05-29')" title="Good">😊</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,5,'may29','2026-05-29')" title="Great day">😄</button>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <div class="bd-arch-area">
+        <button class="bd-arch-toggle" id="bd-arch-btn-may29" onclick="toggleBriefArchive('may29')">
+          ▶ Archived  <span id="bd-arch-cnt-may29" style="background:#E5E7EB;border-radius:10px;padding:1px 5px;font-size:10px;">0</span>
+        </button>
+        <div class="bd-arch-list" id="bd-arch-list-may29" style="display:none;"></div>
+      </div>
+
+    </div>
       </div>
     </div>
 
@@ -1347,7 +1853,17 @@
         <span class="sh-icon">⏳</span><span>Waiting On</span>
         <span style="margin-left:auto;font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-text);">Things out to others — following up</span>
       </div>
-      <div class="section-body" id="waitingOnBody"></div>
+      <div class="section-body" id="waitingOnBody">
+        
+        
+        
+        <div class="wait-item"><span class="wait-who" contenteditable="false" style="outline:none; min-width:44px;">Who</span>
+    <div class="wait-body">
+      <div class="wait-what" contenteditable="false" data-ph="What are you waiting on?">Jake Schuster - Shelley is getting us energy invoices due EOW</div>
+      <div class="wait-since" contenteditable="false" data-ph="Since when / context…"><br></div>
+    </div>
+    <button class="del-btn" onclick="this.closest('.wait-item').remove()">✕</button></div><button class="add-item-btn" onclick="addWaitItem()">+ Add waiting-on item</button>
+      </div>
     </div>
 
     <!-- ON OUR RADAR -->
@@ -1356,7 +1872,7 @@
       <div class="section-header sh-gray">
         <span class="sh-icon">📡</span><span>On Our Radar</span>
       </div>
-      <div class="section-body" data-add-type="radar">
+      <div class="section-body" id="radarBody" data-add-type="radar">
         <div class="radar-item">
           <div class="radar-num">1</div>
           <div style="flex:1;">
@@ -1372,84 +1888,7 @@
     </div>
 
     <!-- TOP 3 PRIORITIES -->
-    <div class="section-card">
-      <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
-      <div class="section-header sh-purple">
-        <span class="sh-icon">🎯</span><span>Rebecca's Top 3 — Today</span>
-        <button onclick="archiveTop3()" style="margin-left:auto;background:none;border:1px solid #DDD6FE;color:var(--purple);border-radius:6px;font-size:10px;font-weight:700;padding:2px 8px;cursor:pointer;" title="Archive and clear today's Top 3">📦 Archive</button>
-      </div>
-      <div class="section-body" id="top3Body" data-set-date="2026-05-08">
-        <div class="top3-item top3-1" data-slot="p1">
-          <div class="top3-head-row">
-            <button type="button" class="top3-check" aria-checked="false" title="Mark complete" onclick="toggleTop3Check(this)">✓</button>
-            <div class="top3-label">Priority One</div>
-          </div>
-          <div class="top3-text" contenteditable="false" oninput="top3Touched()">Test Todd's Dashboard with Brett, Finish To-Do List Open Items</div>
-          <div class="top3-why" contenteditable="false" oninput="top3Touched()"></div>
-        </div>
-        <div class="top3-item top3-2" data-slot="p2">
-          <div class="top3-head-row">
-            <button type="button" class="top3-check" aria-checked="false" title="Mark complete" onclick="toggleTop3Check(this)">✓</button>
-            <div class="top3-label">Priority Two</div>
-          </div>
-          <div class="top3-text" contenteditable="false" oninput="top3Touched()">Check in with Bob, Tennis, Steph, Greenland, Prescriptions, Genetic Tests Tracking, Email questions</div>
-          <div class="top3-why" contenteditable="false" oninput="top3Touched()"></div>
-        </div>
-        <div class="top3-item top3-3" data-slot="p3">
-          <div class="top3-head-row">
-            <button type="button" class="top3-check" aria-checked="false" title="Mark complete" onclick="toggleTop3Check(this)">✓</button>
-            <div class="top3-label">Priority Three</div>
-          </div>
-          <div class="top3-text" contenteditable="false" oninput="top3Touched()"><span style="color: rgb(26, 32, 44);">List of Bob and Todd Open Topics</span></div>
-          <div class="top3-why" contenteditable="false" oninput="top3Touched()"></div>
-        </div>
-
-        <!-- Weekly completion stat -->
-        <div class="top3-weekly-stat" title="Percentage of filled Top 3 priorities completed this week (Mon–Sun)">
-          <span class="top3-ws-label">🗓 This Week</span>
-          <span class="top3-ws-val" id="top3WeeklyPct">40%</span>
-          <span class="top3-ws-frac" id="top3WeeklyFrac">2 of 5 done</span>
-          <div class="top3-ws-bar"><div class="top3-ws-bar-fill" id="top3WeeklyBar" style="width: 40%;"></div></div>
-        </div>
-
-        <!-- Archive section -->
-        <div class="top3-archive-wrap">
-          <button class="archive-toggle-btn" onclick="toggleTop3Archive(this)">📂 Past Top 3s ▾</button>
-          <div id="top3-archive-list" class="archive-list"><div class="archive-day">
-      <div class="archive-day-header"><span>Fri, May 8</span><span class="archive-day-pct ">100% · 2/2</span></div>
-      <div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority Two:</strong> Make Bob's Tennis Contacts - work on calendar</div><div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority Three:</strong> Work on dashboard with Brett - testing</div>
-    </div><div class="archive-day">
-      <div class="archive-day-header"><span>Tue, May 5</span><span class="archive-day-pct ">67% · 2/3</span></div>
-      <div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority One:</strong> Todd's Dashboard</div><div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority Two:</strong> Enter my rocks into here</div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Three:</strong> Work on to-do's.&nbsp; If you had access the dashboard you would be able to see.&nbsp; Today!</div>
-    </div><div class="archive-day">
-      <div class="archive-day-header"><span>Fri, May 1</span><span class="archive-day-pct ">100% · 1/1</span></div>
-      <div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority One:</strong> Meet with Erik</div>
-    </div><div class="archive-day">
-      <div class="archive-day-header"><span>Thu, Apr 30</span><span class="archive-day-pct ">67% · 2/3</span></div>
-      <div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority One:</strong> Q2 Planning</div><div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority Two:</strong> Working on Claude with Brett - getting Todd and I synched</div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Three:</strong> Doing tasks that are due from Bob and Todd</div>
-    </div><div class="archive-day">
-      <div class="archive-day-header"><span>Wed, Apr 29</span><span class="archive-day-pct ">67% · 2/3</span></div>
-      <div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority One:</strong> Meeting with You</div><div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority Two:</strong> Discount cards labeled</div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Three:</strong> Discount Cards mailed</div>
-    </div><div class="archive-day">
-      <div class="archive-day-header"><span>Mon, Apr 27</span><span class="archive-day-pct ">67% · 2/3</span></div>
-      <div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority One:</strong> Follow up with Brett Clark - He was OOO on Friday</div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Two:</strong> Check in Meeting with you</div><div class="archive-day-item done"><span class="adi-mark">✓</span><strong>Priority Three:</strong> Discount Cards - mail merge and print labels</div>
-    </div><div class="archive-day">
-      <div class="archive-day-header"><span>Wed, Apr 22</span><span class="archive-day-pct zero">0% · 0/3</span></div>
-      <div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority One:</strong> Friends and Family <em>— LIst and Letter approved, begin printing and mailing</em></div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Two:</strong> Bob Dashboard <em>— More dialed in</em></div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Three:</strong> Check in with Todd <em>— Using this dashboard?</em></div>
-    </div><div class="archive-day">
-      <div class="archive-day-header"><span>Tue, Apr 21</span><span class="archive-day-pct zero">0% · 0/3</span></div>
-      <div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority One:</strong> Friends and Family Discount - Finalize list and compose letter</div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Two:</strong> Mood Meter Data and Pause Teamwork for summer(or TBD)</div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Three:</strong> Dashboards - Calendar auto update? <em>— Work on Bob's Dashboard</em></div>
-    </div><div class="archive-day">
-      <div class="archive-day-header"><span>Mon, Apr 20</span><span class="archive-day-pct zero">0% · 0/3</span></div>
-      <div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority One:</strong> Meeting with Todd</div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Two:</strong> Checking in with Bob</div><div class="archive-day-item"><span class="adi-mark">○</span><strong>Priority Three:</strong> Finalize Todd's Dashboard with his input</div>
-    </div></div>
-        </div>
-        <!-- Hidden archive data store (persisted in HTML on save) -->
-        <div id="top3-archive-store" style="display:none">[{"date":"2026-05-08","items":[{"label":"Priority Two","text":"Make Bob's Tennis Contacts - work on calendar","why":"","done":true},{"label":"Priority Three","text":"Work on dashboard with Brett - testing","why":"","done":true}]},{"date":"2026-05-05","items":[{"label":"Priority One","text":"Todd's Dashboard","why":"","done":true},{"label":"Priority Two","text":"Enter my rocks into here","why":"","done":true},{"label":"Priority Three","text":"Work on to-do's.&nbsp; If you had access the dashboard you would be able to see.&nbsp; Today!","why":"","done":false}]},{"date":"2026-05-01","items":[{"label":"Priority One","text":"Meet with Erik","why":"","done":true}]},{"date":"2026-04-30","items":[{"label":"Priority One","text":"Q2 Planning","why":"","done":true},{"label":"Priority Two","text":"Working on Claude with Brett - getting Todd and I synched","why":"","done":true},{"label":"Priority Three","text":"Doing tasks that are due from Bob and Todd","why":"","done":false}]},{"date":"2026-04-29","items":[{"label":"Priority One","text":"Meeting with You","why":"","done":true},{"label":"Priority Two","text":"Discount cards labeled","why":"","done":true},{"label":"Priority Three","text":"Discount Cards mailed","why":"","done":false}]},{"date":"2026-04-27","items":[{"label":"Priority One","text":"Follow up with Brett Clark - He was OOO on Friday","why":"","done":true},{"label":"Priority Two","text":"Check in Meeting with you","why":"","done":false},{"label":"Priority Three","text":"Discount Cards - mail merge and print labels","why":"","done":true}]},{"date":"2026-04-22","items":[{"label":"Priority One","text":"Friends and Family","why":"LIst and Letter approved, begin printing and mailing","done":false},{"label":"Priority Two","text":"Bob Dashboard","why":"More dialed in","done":false},{"label":"Priority Three","text":"Check in with Todd","why":"Using this dashboard?","done":false}]},{"date":"2026-04-21","items":[{"label":"Priority One","text":"Friends and Family Discount - Finalize list and compose letter","why":""},{"label":"Priority Two","text":"Mood Meter Data and Pause Teamwork for summer(or TBD)","why":""},{"label":"Priority Three","text":"Dashboards - Calendar auto update?","why":"Work on Bob's Dashboard"}]},{"date":"2026-04-20","items":[{"label":"Priority One","text":"Meeting with Todd","why":""},{"label":"Priority Two","text":"Checking in with Bob","why":""},{"label":"Priority Three","text":"Finalize Todd's Dashboard with his input","why":""}]}]</div>
-        <!-- Hidden completions store — per-day checkbox state (persisted in HTML on save) -->
-        <div id="top3-completions-store" style="display:none">{"2026-04-27":{"p1":true,"p2":false,"p3":true},"2026-04-28":{"p1":false,"p2":false,"p3":false},"2026-04-29":{"p1":true,"p2":true,"p3":false},"2026-04-30":{"p1":true,"p2":true,"p3":false},"2026-05-01":{"p1":true,"p2":false,"p3":false},"2026-05-04":{"p1":false,"p2":false,"p3":false},"2026-05-05":{"p1":true,"p2":true,"p3":false},"2026-05-08":{"p1":true,"p2":false,"p3":false}}</div>
-      </div>
-    </div>
+    
 
 
     <!-- QUARTERLY ROCKS — Q2 2026 -->
@@ -1463,7 +1902,90 @@
         <span class="sh-icon">🪨</span><span>Q2 2026 Rocks — Todd</span>
         <span style="margin-left:auto;font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-text);">Due Jun 30</span>
       </div>
-      <div class="section-body" id="rocksBody"></div>
+      <div class="section-body" id="rocksBody">
+
+        <div class="rock-item">
+          <div class="rock-num">1</div>
+          <div class="rock-body">
+            <div class="rock-text" contenteditable="false">Freebirding - LT achieves balance between tactical operations and strategic freedom</div>
+            <div class="rock-owner" contenteditable="false">Owner: Todd · High priority</div>
+          </div>
+          <div class="rock-status-wrap">
+            <div class="status-dd" data-s="ontrack">
+              <button class="sd-btn" onclick="openSD(this)"><span class="sd-label">✅ On Track</span><span class="sd-caret">▾</span></button>
+              <div class="sd-menu">
+                <div class="sd-opt" data-v="ontrack" onclick="pickSD(this)">✅ On Track</div>
+                <div class="sd-opt" data-v="offtrack" onclick="pickSD(this)">🚨 Off Track</div>
+                <div class="sd-opt" data-v="done" onclick="pickSD(this)">🏁 Done</div>
+                <div class="sd-opt" data-v="todo" onclick="pickSD(this)">○ Not Started</div>
+              </div>
+            </div>
+          </div>
+          <button class="del-btn" onclick="this.closest('.rock-item').remove()">✕</button>
+        </div>
+
+        <div class="rock-item">
+          <div class="rock-num">2</div>
+          <div class="rock-body">
+            <div class="rock-text" contenteditable="false">Gross Margin Tiger Team established with activities to understand and improve levers</div>
+            <div class="rock-owner" contenteditable="false">Owner: Todd · Dallas Worden contact</div>
+          </div>
+          <div class="rock-status-wrap">
+            <div class="status-dd" data-s="todo">
+              <button class="sd-btn" onclick="openSD(this)"><span class="sd-label">○ Not Started</span><span class="sd-caret">▾</span></button>
+              <div class="sd-menu">
+                <div class="sd-opt" data-v="ontrack" onclick="pickSD(this)">✅ On Track</div>
+                <div class="sd-opt" data-v="offtrack" onclick="pickSD(this)">🚨 Off Track</div>
+                <div class="sd-opt" data-v="done" onclick="pickSD(this)">🏁 Done</div>
+                <div class="sd-opt" data-v="todo" onclick="pickSD(this)">○ Not Started</div>
+              </div>
+            </div>
+          </div>
+          <button class="del-btn" onclick="this.closest('.rock-item').remove()">✕</button>
+        </div>
+
+        <div class="rock-item">
+          <div class="rock-num">3</div>
+          <div class="rock-body">
+            <div class="rock-text" contenteditable="false">Cherry University strategy and concepts proposed</div>
+            <div class="rock-owner" contenteditable="false"><br></div>
+          </div>
+          <div class="rock-status-wrap">
+            <div class="status-dd" data-s="ontrack">
+              <button class="sd-btn" onclick="openSD(this)"><span class="sd-label">✅ On Track</span><span class="sd-caret">▾</span></button>
+              <div class="sd-menu">
+                <div class="sd-opt" data-v="ontrack" onclick="pickSD(this)">✅ On Track</div>
+                <div class="sd-opt" data-v="offtrack" onclick="pickSD(this)">🚨 Off Track</div>
+                <div class="sd-opt" data-v="done" onclick="pickSD(this)">🏁 Done</div>
+                <div class="sd-opt" data-v="todo" onclick="pickSD(this)">○ Not Started</div>
+              </div>
+            </div>
+          </div>
+          <button class="del-btn" onclick="this.closest('.rock-item').remove()">✕</button>
+        </div>
+
+        <div class="rock-item">
+          <div class="rock-num">4</div>
+          <div class="rock-body">
+            <div class="rock-text" contenteditable="false">Accountability audit - delegated items assigned for continuous improvement</div>
+            <div class="rock-owner" contenteditable="false"><br></div>
+          </div>
+          <div class="rock-status-wrap">
+            <div class="status-dd" data-s="ontrack">
+              <button class="sd-btn" onclick="openSD(this)"><span class="sd-label">✅ On Track</span><span class="sd-caret">▾</span></button>
+              <div class="sd-menu">
+                <div class="sd-opt" data-v="ontrack" onclick="pickSD(this)">✅ On Track</div>
+                <div class="sd-opt" data-v="offtrack" onclick="pickSD(this)">🚨 Off Track</div>
+                <div class="sd-opt" data-v="done" onclick="pickSD(this)">🏁 Done</div>
+                <div class="sd-opt" data-v="todo" onclick="pickSD(this)">○ Not Started</div>
+              </div>
+            </div>
+          </div>
+          <button class="del-btn" onclick="this.closest('.rock-item').remove()">✕</button>
+        </div>
+
+        <button class="add-item-btn" onclick="addRockItem()">+ Add rock</button>
+      </div>
     </div>
 
     <!-- QUARTERLY ROCKS — Rebecca Q2 2026 -->
@@ -1473,7 +1995,30 @@
         <span class="sh-icon">🪨</span><span>Q2 2026 Rocks — Rebecca</span>
         <span style="margin-left:auto;font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-text);">Due Jun 30</span>
       </div>
-      <div class="section-body" id="rocksRebeccaBody"></div>
+      <div class="section-body" id="rocksRebeccaBody">
+
+        <div class="rock-item">
+          <div class="rock-num" style="background:#6B5BAB;">1</div>
+          <div class="rock-body">
+            <div class="rock-text" contenteditable="false">Add your first rock here…</div>
+            <div class="rock-owner" contenteditable="false">Owner: Rebecca</div>
+          </div>
+          <div class="rock-status-wrap">
+            <div class="status-dd" data-s="todo">
+              <button class="sd-btn" onclick="openSD(this)"><span class="sd-label">○ Not Started</span><span class="sd-caret">▾</span></button>
+              <div class="sd-menu">
+                <div class="sd-opt" data-v="ontrack" onclick="pickSD(this)">✅ On Track</div>
+                <div class="sd-opt" data-v="offtrack" onclick="pickSD(this)">🚨 Off Track</div>
+                <div class="sd-opt" data-v="done" onclick="pickSD(this)">🏁 Done</div>
+                <div class="sd-opt" data-v="todo" onclick="pickSD(this)">○ Not Started</div>
+              </div>
+            </div>
+          </div>
+          <button class="del-btn" onclick="this.closest('.rock-item').remove()">✕</button>
+        </div>
+
+        <button class="add-item-btn" onclick="addRebeccaRockItem()">+ Add rock</button>
+      </div>
     </div><div class="section-card">
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
       <div class="section-header sh-red">
@@ -1525,20 +2070,6 @@
       <div class="task-text" contenteditable="false" data-ph="Task…"><ul style="color: rgb(32, 32, 32); font-family: Poppins, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);"><br></ul></div>
       <div class="task-sub" contenteditable="false" data-ph="Note or deadline…"></div>
     </div>
-    <button class="del-btn" onclick="this.closest('.task-row').remove()">✕</button></div><div class="task-row"><div class="status-dd" data-s="todo">
-    <button class="sd-btn" onclick="openSD(this)"><span class="sd-label">To Do</span><span class="sd-caret">▾</span></button>
-    <div class="sd-menu">
-      <div class="sd-opt" data-v="todo" onclick="pickSD(this)">○ Not Started</div>
-      <div class="sd-opt" data-v="inprog" onclick="pickSD(this)">🔄 In Progress</div>
-      <div class="sd-opt" data-v="done" onclick="pickSD(this)">✅ Done</div>
-      <div class="sd-opt" data-v="blocked" onclick="pickSD(this)">🚫 Blocked</div>
-      <div class="sd-opt" data-v="defer" onclick="pickSD(this)">📅 Deferred</div>
-    </div>
-  </div>
-    <div class="task-body">
-      <div class="task-text" contenteditable="false" data-ph="Task…"></div>
-      <div class="task-sub" contenteditable="false" data-ph="Note or deadline…"></div>
-    </div>
     <button class="del-btn" onclick="this.closest('.task-row').remove()">✕</button></div><button class="add-item-btn" onclick="addTaskRow(this.parentElement, 'todo')">+ Add task for Todd</button>
 
         <!-- Notes area -->
@@ -1567,28 +2098,8 @@
           </div>
         </div>
 
-        <!-- Metric 2: Rebecca's Happiness -->
-        <div class="sc-metric">
-          <div class="sc-metric-hd">
-            <span class="sc-metric-name">😊 Rebecca's Happiness</span>
-            <span class="sc-freq-badge">Daily · 10 AM</span>
-          </div>
-          <div class="sc-emoji-row" id="sc-rebeccaHappy">
-            <button class="sc-emoji" data-val="1" onclick="scSetHappy('rebeccaHappy',1)" title="Rough day">😞</button>
-            <button class="sc-emoji selected" data-val="2" onclick="scSetHappy('rebeccaHappy',2)" title="Okay">😐</button>
-            <button class="sc-emoji" data-val="3" onclick="scSetHappy('rebeccaHappy',3)" title="Good">🙂</button>
-            <button class="sc-emoji" data-val="4" onclick="scSetHappy('rebeccaHappy',4)" title="Great">😊</button>
-            <button class="sc-emoji" data-val="5" onclick="scSetHappy('rebeccaHappy',5)" title="Amazing">😄</button>
-          </div>
-          <div class="sc-avg-row">
-            <span class="sc-avg-label">This week:</span><span class="sc-avg-val" id="sc-rebeccaHappy-week">2.0</span>
-            <span class="sc-avg-sep">·</span>
-            <span class="sc-avg-label">Running avg:</span><span class="sc-avg-val" id="sc-rebeccaHappy-run">3.6</span>
-          </div>
-        </div>
-
-        <!-- Hidden happiness tally store (persisted in HTML on save) -->
-        <div id="happy-store" style="display:none">{"rebeccaHappy":[{"d":"2026-04-20","v":3},{"d":"2026-04-22","v":4},{"d":"2026-04-28","v":4},{"d":"2026-05-01","v":5},{"d":"2026-05-07","v":2}]}</div>
+        <!-- Hidden happiness store (persisted in HTML on save) -->
+        <div id="happy-store" style="display:none">{"rebeccaHappy":[{"d":"2026-04-20","v":3},{"d":"2026-04-22","v":4},{"d":"2026-04-28","v":4},{"d":"2026-05-01","v":5}]}</div>
 
         <!-- ───────── WEEKLY SCORECARD HISTORY ───────── -->
         <div class="sc-weekly-wrap">
@@ -1615,7 +2126,7 @@
                   <th class="sc-wt-week">Mar 30–Apr 5</th>
                 </tr>
               </thead>
-              <tbody id="scWeeklyBody"><tr><td class="sc-wt-metric">🎯 Top 3 Completion</td><td>≥ 80%</td><td><strong>29%</strong></td><td class="sc-cell-bad">33%</td><td class="sc-cell-warn">54%</td><td class="sc-cell-bad">0%</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td></tr><tr><td class="sc-wt-metric">📧 Todd's Friday Inbox</td><td>&lt; 20</td><td><strong>—</strong></td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td></tr><tr><td class="sc-wt-metric">😊 Rebecca Happiness Avg</td><td>≥ 4</td><td><strong>4</strong></td><td class="sc-cell-empty">—</td><td class="sc-cell-good">4.5</td><td class="sc-cell-warn">3.5</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td></tr></tbody>
+              <tbody id="scWeeklyBody"><tr><td class="sc-wt-metric">🎯 Top 3 Completion</td><td>≥ 80%</td><td><strong>27%</strong></td><td class="sc-cell-empty">—</td><td class="sc-cell-warn">54%</td><td class="sc-cell-bad">0%</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td></tr><tr><td class="sc-wt-metric">📧 Todd's Friday Inbox</td><td>&lt; 20</td><td><strong>—</strong></td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td></tr><tr><td class="sc-wt-metric">😊 Rebecca Happiness Avg</td><td>≥ 4</td><td><strong>4</strong></td><td class="sc-cell-empty">—</td><td class="sc-cell-good">4.5</td><td class="sc-cell-warn">3.5</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td><td class="sc-cell-empty">—</td></tr></tbody>
             </table>
           </div>
 
@@ -1657,15 +2168,121 @@
   <div class="section-card" id="scheduleCard">
     <div class="section-header sh-gray">
       <span class="sh-icon">📅</span>
-      <span>Calendar — Week of May 18, 2026</span>
+      <span>Calendar — Week of May 26, 2026</span>
       <span style="margin-left:auto; font-size:10px; color:var(--gray-text); font-weight:400; text-transform:none; letter-spacing:0;">click any day to expand ▾</span>
     </div>
 
     <!-- ── THIS WEEK ── -->
-    <div class="day-divider">This Week — May 18–22</div>
+    <div class="day-divider">This Week — May 25–29</div>
+
+    
+    <!-- Monday May 25 — Memorial Day -->
+    <div class="day-toggle" id="dt-may25" onclick="toggleDay('may25')" style="background:linear-gradient(90deg,#FEF2F2 0%,#fff 100%); border-left:3px solid #EF4444;">
+      <div class="day-left">
+        <span class="day-dow">Monday</span>
+        <span class="day-date">May 25</span>
+        <span class="day-badge" style="background:#FEE2E2;color:#991B1B;">🇺🇸 Memorial Day</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body" id="db-may25">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may25"><tr><td colspan="5" style="text-align:center;color:#991B1B;font-style:italic;font-size:11.5px;padding:12px;">🇺🇸 Federal Holiday — Office Closed</td></tr></tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may25')">+ Add event</button>
+    </div>
+
+    <!-- Tuesday May 26 -->
+    <div class="day-toggle" id="dt-may26" onclick="toggleDay('may26')">
+      <div class="day-left">
+        <span class="day-dow">Tuesday</span>
+        <span class="day-date">May 26</span>
+        <span class="day-badge">4 events</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body" id="db-may26">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may26"><tr><td contenteditable="true">Haircut</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Summit Meeting with Roni</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">LT Level 10</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Summit Meeting with Sara</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may26')">+ Add event</button>
+    </div>
+
+    <!-- Wednesday May 27 — TODAY -->
+    <div class="day-toggle" id="dt-may27" onclick="toggleDay('may27')">
+      <div class="day-left">
+        <span class="day-dow">Wednesday</span>
+        <span class="day-date">May 27</span>
+        <span class="day-badge">6 events</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body open" id="db-may27">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may27"><tr><td contenteditable="true">Summit Meeting with Julie</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Summit Meeting with Jason</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">T/R Check In</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">Rebecca Benedict</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Marketing Accountability Chart Review</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Amazon Channel OBM P/L Review for Cherry Republic</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">Microsoft Teams · Sara Harding</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Summit Meeting with Rebecca</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">Microsoft Teams</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may27')">+ Add event</button>
+    </div>
+
+    <!-- Thursday May 28 -->
+    <div class="day-toggle" id="dt-may28" onclick="toggleDay('may28')">
+      <div class="day-left">
+        <span class="day-dow">Thursday</span>
+        <span class="day-date">May 28</span>
+        <span class="day-badge">1 event</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body" id="db-may28">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may28"><tr><td contenteditable="true">🏌️ Golf (Boys V) @ MHSAA Golf Regionals</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">Birchwood Farms Golf Club — Kids' sports</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may28')">+ Add event</button>
+    </div>
+
+    <!-- Friday May 29 -->
+    <div class="day-toggle" id="dt-may29" onclick="toggleDay('may29')">
+      <div class="day-left">
+        <span class="day-dow">Friday</span>
+        <span class="day-date">May 29</span>
+        <span class="day-badge">2 events</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body" id="db-may29">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may29"><tr><td contenteditable="true">OOO — Out of Office</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true">All day</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Pick up Chafing Dishes from the Pub</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may29')">+ Add event</button>
+    </div>
+
+    <!-- Saturday May 30 -->
+    <div class="day-toggle is-today open" id="dt-may30" onclick="toggleDay('may30')">
+      <div class="day-left">
+        <span class="day-dow">Saturday</span>
+        <span class="day-date">May 30</span>
+        <span class="day-badge">Today · 0 events</span>
+      </div>
+      <span class="day-arrow">▾</span>
+    </div>
+    <div class="day-body" id="db-may30">
+      <table class="sched-table">
+        <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
+        <tbody id="rows-may30"><tr><td colspan="5" style="text-align:center;color:#9CA3AF;font-style:italic;font-size:11.5px;padding:12px;">— no events added yet —</td></tr></tbody>
+      </table>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may30')">+ Add event</button>
+    </div>
+
+    <!-- ── LAST WEEK ── -->
+    <div class="day-divider">Last Week — May 18–22</div>
 
     <!-- Monday May 18 -->
-    <div class="day-toggle open" id="dt-may18" onclick="toggleDay('may18')">
+    <div class="day-toggle" id="dt-may18" onclick="toggleDay('may18')">
       <div class="day-left">
         <span class="day-dow">Monday</span>
         <span class="day-date">May 18</span>
@@ -1673,7 +2290,7 @@
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body open" id="db-may18">
+    <div class="day-body" id="db-may18">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-may18">
@@ -1687,7 +2304,7 @@
     </div>
 
     <!-- Tuesday May 19 -->
-    <div class="day-toggle open" id="dt-may19" onclick="toggleDay('may19')">
+    <div class="day-toggle" id="dt-may19" onclick="toggleDay('may19')">
       <div class="day-left">
         <span class="day-dow">Tuesday</span>
         <span class="day-date">May 19</span>
@@ -1695,7 +2312,7 @@
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body open" id="db-may19">
+    <div class="day-body" id="db-may19">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-may19">
@@ -1709,7 +2326,7 @@
     </div>
 
     <!-- Wednesday May 20 -->
-    <div class="day-toggle open" id="dt-may20" onclick="toggleDay('may20')">
+    <div class="day-toggle" id="dt-may20" onclick="toggleDay('may20')">
       <div class="day-left">
         <span class="day-dow">Wednesday</span>
         <span class="day-date">May 20</span>
@@ -1717,7 +2334,7 @@
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body open" id="db-may20">
+    <div class="day-body" id="db-may20">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-may20">
@@ -1731,15 +2348,15 @@
     </div>
 
     <!-- Thursday May 21 — TODAY -->
-    <div class="day-toggle is-today open" id="dt-may21" onclick="toggleDay('may21')">
+    <div class="day-toggle" id="dt-may21" onclick="toggleDay('may21')">
       <div class="day-left">
         <span class="day-dow">Thursday</span>
         <span class="day-date">May 21</span>
-        <span class="day-badge">Today · 8 events</span>
+        <span class="day-badge">8 events</span>
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body open" id="db-may21">
+    <div class="day-body" id="db-may21">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-may21">
@@ -1757,7 +2374,7 @@
     </div>
 
     <!-- Friday May 22 -->
-    <div class="day-toggle open" id="dt-may22" onclick="toggleDay('may22')">
+    <div class="day-toggle" id="dt-may22" onclick="toggleDay('may22')">
       <div class="day-left">
         <span class="day-dow">Friday</span>
         <span class="day-date">May 22</span>
@@ -1765,7 +2382,7 @@
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body open" id="db-may22">
+    <div class="day-body" id="db-may22">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-may22">
@@ -1776,8 +2393,7 @@
       <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-may22')">+ Add event</button>
     </div>
 
-    <!-- ── LAST WEEK ── -->
-    <div class="day-divider" style="display: none;">Last Week — April 20–24</div>
+
 
     <!-- Monday April 20 -->
     <div class="day-toggle" id="dt-apr20" onclick="toggleDay('apr20')" style="display: none;">
@@ -1914,18 +2530,30 @@
       <!-- Left: Today's Focus / Notes -->
       <div>
         <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #6B5BAB; margin-bottom: 6px;">📝 Today's Focus &amp; Notes</div>
-        <div id="rebecca-notes" contenteditable="false" data-ph="Capture today's priorities, calls to make, follow-ups, reminders to self…" oninput="markDirty()" style="min-height: 110px; font-size: 12.5px; line-height: 1.6; padding: 10px 12px; background: #FAFAFA; border-radius: 8px; border: 1px solid #EEE; outline: none; color: var(--dark);"></div>
+        <div id="rebecca-notes" contenteditable="true" data-ph="Capture today's priorities, calls to make, follow-ups, reminders to self…" oninput="markDirty()" style="min-height: 110px; font-size: 12.5px; line-height: 1.6; padding: 10px 12px; background: #FAFAFA; border-radius: 8px; border: 1px solid #EEE; outline: none; color: var(--dark);"></div>
       </div>
       <!-- Right: Personal Reminders / Quick Lists -->
       <div>
         <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #6B5BAB; margin-bottom: 6px;">🔔 Personal Reminders</div>
-        <div id="rebecca-reminders" contenteditable="false" data-ph="Birthdays, errands, things to remember outside of Todd's tasks…" oninput="markDirty()" style="min-height: 110px; font-size: 12.5px; line-height: 1.6; padding: 10px 12px; background: #FAFAFA; border-radius: 8px; border: 1px solid #EEE; outline: none; color: var(--dark);"></div>
+        <div id="rebecca-reminders" contenteditable="true" data-ph="Birthdays, errands, things to remember outside of Todd's tasks…" oninput="markDirty()" style="min-height: 110px; font-size: 12.5px; line-height: 1.6; padding: 10px 12px; background: #FAFAFA; border-radius: 8px; border: 1px solid #EEE; outline: none; color: var(--dark);"></div>
       </div>
     </div>
     <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed #E5E7EB;">
       <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #6B5BAB; margin-bottom: 6px;">💭 End-of-Day Reflection</div>
-      <div id="rebecca-reflection" contenteditable="false" data-ph="What went well today? What's tomorrow's #1 priority?" oninput="markDirty()" style="min-height: 50px; font-size: 12.5px; line-height: 1.6; padding: 10px 12px; background: #FAFAFA; border-radius: 8px; border: 1px solid #EEE; outline: none; color: var(--dark);"></div>
+      <div id="rebecca-reflection" contenteditable="true" data-ph="What went well today? What's tomorrow's #1 priority?" oninput="markDirty()" style="min-height: 50px; font-size: 12.5px; line-height: 1.6; padding: 10px 12px; background: #FAFAFA; border-radius: 8px; border: 1px solid #EEE; outline: none; color: var(--dark);"></div>
     </div>
+    <!-- Rebecca Archive -->
+    <div style="margin-top:14px; padding-top:11px; border-top:1px dashed #E9D5FF;">
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <button onclick="archiveRebeccaDay()" style="background:#EDE9FE; border:1px solid #C4B5FD; color:#4C1D95; border-radius:7px; font-size:11px; font-weight:700; padding:5px 14px; cursor:pointer; transition:background 0.15s;" onmouseover="this.style.background='#DDD6FE'" onmouseout="this.style.background='#EDE9FE'">📦 Archive Today &amp; Clear</button>
+        <button onclick="toggleRebeccaArchive()" style="background:none; border:1px solid #DDD6FE; color:#7C3AED; border-radius:7px; font-size:11px; font-weight:600; padding:5px 11px; cursor:pointer;">
+          📂 Past Notes &nbsp;<span id="rebArchiveCnt" style="background:#EDE9FE; color:#4C1D95; border-radius:8px; padding:1px 7px; font-size:10px;">0</span>
+        </button>
+      </div>
+      <div id="rebArchiveItems" style="display:none; margin-top:10px; max-height:320px; overflow-y:auto;"></div>
+    </div>
+    <!-- Rebecca Archive Data Store (persisted on save) -->
+    <div id="reb-archive-store" style="display:none">[]</div>
   </div>
 </div><!-- /two-col -->
 
@@ -2433,24 +3061,9 @@
 </div><!-- /hidden legacy wrapper -->
 
 <!-- ── DONE LOG ── -->
-<div class="done-log-wrap">
-  <div class="done-log-title">
-    <span>✅</span> Completed Today
-    <span style="margin-left:auto; font-size:10px; font-weight:400; color:#059669; font-style:italic;">Set any task to "Done" to log it here</span>
-  </div>
-  <div id="doneLog">
-    <div id="doneEmpty" class="done-log-empty" style="display: none;">No completed tasks yet — set a task status to ✅ Done above to see it here.</div>
-  <div class="done-log-item" data-text="Summer Basketball schedule, make and send to Brad"><span class="done-log-check">✓</span><div><div class="done-log-text">Summer Basketball schedule, make and send to Brad</div><div class="done-log-time">Completed at 08:37 AM</div></div></div><div class="done-log-item" data-text="Resend out format on summit meetings"><span class="done-log-check">✓</span><div><div class="done-log-text">Resend out format on summit meetings</div><div class="done-log-time">Completed at 02:44 PM</div></div></div><div class="done-log-item" data-text="2 Hour Quarterly Meeting with T and R"><span class="done-log-check">✓</span><div><div class="done-log-text">2 Hour Quarterly Meeting with T and R</div><div class="done-log-time">Completed at 03:41 PM</div></div></div><div class="done-log-item" data-text="Send your 2025 W2 to Dallas and Ryan 4-20"><span class="done-log-check">✓</span><div><div class="done-log-text">Send your 2025 W2 to Dallas and Ryan 4-20</div><div class="done-log-time">Completed at 04:16 PM</div></div></div><div class="done-log-item" data-text="Clear open task items, prepare for new week"><span class="done-log-check">✓</span><div><div class="done-log-text">Clear open task items, prepare for new week</div><div class="done-log-time">Completed at 12:39 PM</div></div></div><div class="done-log-item" data-text="Add summer basketball to schedule"><span class="done-log-check">✓</span><div><div class="done-log-text">Add summer basketball to schedule</div><div class="done-log-time">Completed at 09:18 AM</div></div></div><div class="done-log-item" data-text="Check on Enhance C Suite with Finance - was it paid?"><span class="done-log-check">✓</span><div><div class="done-log-text">Check on Enhance C Suite with Finance - was it paid?</div><div class="done-log-time">Completed at 12:30 PM</div></div></div><div class="done-log-item" data-text="check on dermatology appontment for todd"><span class="done-log-check">✓</span><div><div class="done-log-text">check on dermatology appontment for todd</div><div class="done-log-time">Completed at 01:44 PM</div></div></div><div class="done-log-item" data-text="Change Amy for Jackson's graduation"><span class="done-log-check">✓</span><div><div class="done-log-text">Change Amy for Jackson's graduation</div><div class="done-log-time">Completed at 01:46 PM</div></div></div><div class="done-log-item" data-text="Meeting with Everest Noyes"><span class="done-log-check">✓</span><div><div class="done-log-text">Meeting with Everest Noyes</div><div class="done-log-time">Completed at 01:46 PM</div></div></div><div class="done-log-item" data-text="kathy valient - roni will be offbuilding coach and sara will be onboarding - touch point"><span class="done-log-check">✓</span><div><div class="done-log-text">kathy valient - roni will be offbuilding coach and sara will be onboarding - touch point</div><div class="done-log-time">Completed at 07:05 AM</div></div></div></div>
-  <!-- Archive section -->
-  <div class="archive-section" id="archiveSection" style="display:none;">
-    <button class="archive-toggle-btn" onclick="toggleArchive()">
-      <span id="archiveToggleIcon">▶</span> <span id="archiveCount">0</span> archived items
-    </button>
-    <div class="archive-list" id="archiveList"></div>
-  </div>
-</div>
 
-<div class="footer">🍒 Cherry Republic · Todd Ciolek Executive Dashboard · Prepared by Rebecca · April 10, 2026 · Source: Todd's Calendar (todd@cherryrepublic.com)</div>
+
+<div class="footer">🍒 Cherry Republic · Todd Ciolek Executive Dashboard · Prepared by Rebecca · May 27, 2026 · Source: Todd's Calendar (todd@cherryrepublic.com)</div>
 
 <script>
 // ─────────────────────────────────────────────
@@ -2742,8 +3355,10 @@ function addBulletItem(container, emoji) {
   const addBtn = container.querySelector('.add-item-btn');
   const el = document.createElement('div');
   el.className = 'bullet-item';
-  el.innerHTML = `<span class="bullet-dot" contenteditable="false">${emoji || '•'}</span>
+  el.innerHTML = `<input type="checkbox" class="todd-check" title="Todd: check when addressed" onchange="toddItemCheck(this)">
+    <span class="bullet-dot" contenteditable="false">${emoji || '•'}</span>
     <div class="bullet-text" contenteditable="true" data-ph="Add note…"></div>
+    <button class="arch-inline-btn" title="Archive" onclick="secArchiveItem(this.closest('.bullet-item'), this.closest('[id]') ? this.closest('[id]').id : '')">📦</button>
     <button class="del-btn" onclick="this.closest('.bullet-item').remove()">✕</button>`;
   container.insertBefore(el, addBtn);
   el.querySelector('.bullet-text').focus();
@@ -2754,11 +3369,13 @@ function addRadarItem(container) {
   const num = container.querySelectorAll('.radar-item').length + 1;
   const el = document.createElement('div');
   el.className = 'radar-item';
-  el.innerHTML = `<div class="radar-num">${num}</div>
+  el.innerHTML = `<input type="checkbox" class="todd-check" title="Todd: check when addressed" onchange="toddItemCheck(this)">
+    <div class="radar-num">${num}</div>
     <div style="flex:1;">
       <div class="radar-text" contenteditable="true" data-ph="Radar item…"></div>
       <div class="radar-sub"  contenteditable="true" data-ph="Sub-note…"></div>
     </div>
+    <button class="arch-inline-btn" title="Archive" onclick="secArchiveItem(this.closest('.radar-item'), 'radarBody')">📦</button>
     <button class="del-btn" onclick="this.closest('.radar-item').remove()">✕</button>`;
   container.insertBefore(el, addBtn);
   el.querySelector('.radar-text').focus();
@@ -2787,6 +3404,58 @@ function _sortSchedRows(tbody) {
   rows.forEach(r => tbody.appendChild(r));
 }
 
+// ─── Calendar 15-minute snap ────────────────────────────────────
+// Snap a time string like "10:23 AM" to the nearest :00/:15/:30/:45.
+// Pass-through for non-time values like "All day", "—", "TBD".
+function _snap15(str) {
+  if (!str) return str;
+  const trimmed = str.trim();
+  const m = trimmed.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+  if (!m) return trimmed;
+  let h = parseInt(m[1], 10);
+  let min = parseInt(m[2], 10);
+  const ampm = (m[3] || '').toUpperCase();
+  let snapped = Math.round(min / 15) * 15;
+  if (snapped === 60) { snapped = 0; h += 1; }
+  let displayH = h;
+  let outAmPm = ampm;
+  if (!outAmPm) {
+    if (h === 0) { displayH = 12; outAmPm = 'AM'; }
+    else if (h < 12) { outAmPm = 'AM'; }
+    else if (h === 12) { outAmPm = 'PM'; }
+    else { displayH = h - 12; outAmPm = 'PM'; }
+  } else {
+    if (h > 12) displayH = h - 12;
+    else if (h === 0) displayH = 12;
+  }
+  return displayH + ':' + (snapped < 10 ? '0' + snapped : snapped) + ' ' + outAmPm;
+}
+function _attachSnap(cell) {
+  if (!cell || cell.dataset.snapAttached === '1') return;
+  cell.dataset.snapAttached = '1';
+  cell.addEventListener('blur', () => {
+    const snapped = _snap15(cell.textContent);
+    if (snapped !== cell.textContent) {
+      cell.textContent = snapped;
+      if (typeof markDirty === 'function') markDirty();
+    }
+  });
+}
+// Make all existing .time-cell elements editable and snap-aware on first load.
+// (The seeded HTML had contenteditable="false" — we open them up so users can fix times.)
+function initCalendarSnap() {
+  document.querySelectorAll('.time-cell').forEach(c => {
+    c.setAttribute('contenteditable', 'true');
+    if (!c.style.outline) c.style.outline = 'none';
+    _attachSnap(c);
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCalendarSnap);
+} else {
+  initCalendarSnap();
+}
+
 function addSchedRow(tbodyId) {
   const tbody = document.getElementById(tbodyId);
   // Remove "no events" placeholder if present
@@ -2801,6 +3470,9 @@ function addSchedRow(tbodyId) {
     <td contenteditable="true" style="font-size:11px; color:var(--gray-text); outline:none;"></td>
     <td><button class="sched-del" onclick="this.closest('tr').remove()" style="display:inline;">✕</button></td>`;
   tbody.appendChild(tr);
+
+  // Attach 15-min snap to both time cells (start + end)
+  tr.querySelectorAll('.time-cell').forEach(c => _attachSnap(c));
 
   // When the user finishes editing the start-time cell, re-sort the list
   const timeCell = tr.querySelectorAll('td')[1];
@@ -3046,11 +3718,13 @@ function addWaitItem() {
   const addBtn = body.querySelector('.add-item-btn');
   const el = document.createElement('div');
   el.className = 'wait-item';
-  el.innerHTML = `<span class="wait-who" contenteditable="true" style="outline:none; min-width:44px;">Who</span>
+  el.innerHTML = `<input type="checkbox" class="todd-check" title="Todd: check when addressed" onchange="toddItemCheck(this)">
+    <span class="wait-who" contenteditable="true" style="outline:none; min-width:44px;">Who</span>
     <div class="wait-body">
       <div class="wait-what" contenteditable="true" data-ph="What are you waiting on?">What are you waiting on?</div>
       <div class="wait-since" contenteditable="true" data-ph="Since when / context…">Since…</div>
     </div>
+    <button class="arch-inline-btn" title="Archive" onclick="secArchiveItem(this.closest('.wait-item'), 'waitingOnBody')">📦</button>
     <button class="del-btn" onclick="this.closest('.wait-item').remove()">✕</button>`;
   body.insertBefore(el, addBtn);
   el.querySelector('[contenteditable]').focus();
@@ -4465,6 +5139,300 @@ function taskDbScrollTo(id) {
 //  been evaluated (avoids TDZ errors).
 // ─────────────────────────────────────────────
 taskDbInit();
+
+// ── DAILY BRIEF ──────────────────────────────────────────────────────────────
+
+function _dbStore() {
+  const el = document.getElementById('daily-brief-store');
+  if (!el) return {};
+  try { return JSON.parse(el.textContent || '{}'); } catch(e) { return {}; }
+}
+function _dbSave(data) {
+  const el = document.getElementById('daily-brief-store');
+  if (el) el.textContent = JSON.stringify(data);
+  markDirty();
+}
+function _dbDay(data, dayId) {
+  if (!data[dayId]) data[dayId] = {
+    decisions: [], issues: [], fyis: [],
+    top3: [{text:'',done:false},{text:'',done:false},{text:'',done:false}],
+    happiness: 0, archived: []
+  };
+  return data[dayId];
+}
+
+function toggleBriefDay(dayId) {
+  const tog = document.getElementById('bdt-' + dayId);
+  const body = document.getElementById('bdb-' + dayId);
+  if (!tog || !body) return;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  tog.classList.toggle('open', !isOpen);
+}
+
+function addBriefItem(type, dayId) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  day[type].push({ text: '', done: false });
+  _dbSave(data);
+  _renderBriefItems(type, dayId, day[type]);
+  // Focus new item
+  const cont = document.getElementById('bdi-' + type + '-' + dayId);
+  if (cont) {
+    const items = cont.querySelectorAll('.bd-item-text');
+    if (items.length) { items[items.length - 1].focus(); }
+  }
+  _updateBriefBadge(dayId, data[dayId]);
+}
+
+function checkBriefItem(cb, type, dayId, idx) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  if (!day[type][idx]) return;
+  day[type][idx].done = cb.checked;
+  _dbSave(data);
+  const item = cb.closest('.bd-item');
+  if (item) item.classList.toggle('done', cb.checked);
+  if (cb.checked) {
+    setTimeout(() => archiveBriefItem(type, dayId, idx), 900);
+  }
+}
+
+function saveBriefItemText(type, dayId, idx, text) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  if (day[type][idx]) day[type][idx].text = text;
+  _dbSave(data);
+}
+
+function deleteBriefItem(type, dayId, idx) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  day[type].splice(idx, 1);
+  _dbSave(data);
+  _renderBriefItems(type, dayId, day[type]);
+  _updateBriefBadge(dayId, data[dayId]);
+}
+
+function archiveBriefItem(type, dayId, idx) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  if (!day[type][idx]) return;
+  const item = day[type][idx];
+  if (!item.text.trim()) { deleteBriefItem(type, dayId, idx); return; }
+  if (!day.archived) day.archived = [];
+  day.archived.unshift({
+    type, text: item.text.trim(),
+    ts: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+  });
+  day[type].splice(idx, 1);
+  _dbSave(data);
+  _renderBriefItems(type, dayId, day[type]);
+  _renderBriefArchive(dayId, day.archived);
+  _updateBriefBadge(dayId, data[dayId]);
+}
+
+function moveBriefToTasks(type, dayId, idx) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  if (!day[type][idx]) return;
+  const text = day[type][idx].text.trim();
+  if (!text) return;
+  // Add to main task list
+  const taskBody = document.getElementById('todoBody');
+  if (taskBody) {
+    const row = document.createElement('div');
+    row.className = 'task-row';
+    row.innerHTML = '<input type="checkbox" class="todd-check" onchange="toddItemCheck(this)">' +
+      '<span class="task-text" contenteditable="true">' + text + '</span>' +
+      '<button class="arch-inline-btn" onclick="secArchiveItem(this.closest(\'.task-row\'),\'todoBody\')">📦</button>' +
+      '<button class="del-btn" onclick="this.closest(\'.task-row\').remove()">✕</button>';
+    const first = taskBody.querySelector('.task-row');
+    if (first) taskBody.insertBefore(row, first);
+    else taskBody.appendChild(row);
+    markDirty();
+  }
+  day[type].splice(idx, 1);
+  _dbSave(data);
+  _renderBriefItems(type, dayId, day[type]);
+  _updateBriefBadge(dayId, data[dayId]);
+}
+
+function unarchiveBriefItem(dayId, archIdx) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  if (!day.archived || !day.archived[archIdx]) return;
+  const item = day.archived[archIdx];
+  if (item.type && day[item.type]) {
+    day[item.type].push({ text: item.text, done: false });
+  }
+  day.archived.splice(archIdx, 1);
+  _dbSave(data);
+  _renderBriefItems(item.type, dayId, day[item.type] || []);
+  _renderBriefArchive(dayId, day.archived);
+  _updateBriefBadge(dayId, data[dayId]);
+}
+
+function _renderBriefItems(type, dayId, items) {
+  const cont = document.getElementById('bdi-' + type + '-' + dayId);
+  if (!cont) return;
+  const phMap = { decisions: 'Describe the decision…', issues: 'Describe the issue…', fyis: 'Write the FYI…' };
+  if (!items || items.length === 0) {
+    cont.innerHTML = '<div class="bd-empty">None today</div>';
+    return;
+  }
+  cont.innerHTML = items.map((item, idx) => `
+    <div class="bd-item${item.done ? ' done' : ''}" data-idx="${idx}">
+      <input type="checkbox" class="bd-item-chk" ${item.done ? 'checked' : ''}
+        onchange="checkBriefItem(this,'${type}','${dayId}',${idx})">
+      <span class="bd-item-text" contenteditable="true"
+        data-ph="${phMap[type] || 'Add text…'}"
+        oninput="saveBriefItemText('${type}','${dayId}',${idx},this.textContent)">${item.text}</span>
+      <div class="bd-item-btns">
+        <button class="bd-task-btn" onclick="moveBriefToTasks('${type}','${dayId}',${idx})" title="Move to Todd's task list">→ Tasks</button>
+        <button class="bd-arch-btn" onclick="archiveBriefItem('${type}','${dayId}',${idx})" title="Archive">📦</button>
+        <button class="del-btn"     onclick="deleteBriefItem('${type}','${dayId}',${idx})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function checkBriefTop3(cb, dayId, idx) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  day.top3[idx].done = cb.checked;
+  _dbSave(data);
+  const row = cb.closest('.top3-row');
+  if (row) row.classList.toggle('done', cb.checked);
+  _updateTop3Bar(dayId, day.top3);
+}
+
+function saveBriefTop3(dayId, idx, text) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  day.top3[idx].text = text;
+  _dbSave(data);
+}
+
+function _updateTop3Bar(dayId, top3) {
+  const done = top3.filter(x => x.done).length;
+  const pill = document.getElementById('top3-pill-' + dayId);
+  const fill = document.getElementById('top3-fill-' + dayId);
+  if (pill) {
+    pill.textContent = done + '/3';
+    pill.classList.toggle('all-done', done === 3);
+  }
+  if (fill) fill.style.width = (done / 3 * 100) + '%';
+}
+
+const HAPPY_LABELS = ['', 'Rough day 😢', 'Meh 😕', 'OK 😐', 'Good 😊', 'Great day! 😄'];
+
+function briefSetHappy(btn, val, dayId, dateIso) {
+  const data = _dbStore();
+  const day  = _dbDay(data, dayId);
+  day.happiness = val;
+  _dbSave(data);
+  // Also sync to happy-store (for backward compatibility with scorecard history)
+  const hs = document.getElementById('happy-store');
+  if (hs) {
+    try {
+      const sd = JSON.parse(hs.textContent || '{}');
+      if (!sd.rebeccaHappy) sd.rebeccaHappy = [];
+      const existing = sd.rebeccaHappy.find(e => e.d === dateIso);
+      if (existing) existing.v = val;
+      else sd.rebeccaHappy.push({ d: dateIso, v: val });
+      hs.textContent = JSON.stringify(sd);
+    } catch(e) {}
+  }
+  // Update UI
+  const row = document.getElementById('bdi-happy-' + dayId);
+  if (row) row.querySelectorAll('.bd-happy-btn').forEach((b, i) => b.classList.toggle('bd-happy-sel', i + 1 === val));
+  const lbl = document.getElementById('bd-happy-lbl-' + dayId);
+  if (lbl) lbl.textContent = HAPPY_LABELS[val] || '';
+  markDirty();
+}
+
+function toggleBriefArchive(dayId) {
+  const list = document.getElementById('bd-arch-list-' + dayId);
+  const btn  = document.getElementById('bd-arch-btn-'  + dayId);
+  if (!list) return;
+  const open = list.style.display !== 'none';
+  list.style.display = open ? 'none' : 'block';
+  if (btn) btn.innerHTML = btn.innerHTML.replace(open ? '▼' : '▶', open ? '▶' : '▼');
+}
+
+function _renderBriefArchive(dayId, archived) {
+  const list = document.getElementById('bd-arch-list-' + dayId);
+  const cnt  = document.getElementById('bd-arch-cnt-'  + dayId);
+  if (!list) return;
+  if (cnt) cnt.textContent = (archived || []).length;
+  if (!archived || archived.length === 0) {
+    list.innerHTML = '<div class="bd-empty">Nothing archived yet</div>';
+    return;
+  }
+  list.innerHTML = archived.map((item, idx) => `
+    <div class="bd-arch-item">
+      <span class="bd-arch-item-type">${item.type || ''}</span>
+      <span class="bd-arch-item-text">${item.text}</span>
+      <span style="font-size:10px;color:#D1D5DB;">${item.ts || ''}</span>
+      <button class="bd-restore-btn" onclick="unarchiveBriefItem('${dayId}',${idx})" title="Restore">↩</button>
+    </div>`).join('');
+}
+
+function _updateBriefBadge(dayId, dayData) {
+  const tog = document.getElementById('bdt-' + dayId);
+  if (!tog) return;
+  const badge = tog.querySelector('.bd-badge');
+  if (!badge) return;
+  const total = (dayData.decisions || []).length + (dayData.issues || []).length + (dayData.fyis || []).length;
+  const isToday = tog.classList.contains('bd-today');
+  badge.textContent = (isToday ? 'Today · ' : '') + total + (total === 1 ? ' item' : ' items');
+}
+
+function initDailyBrief() {
+  const data = _dbStore();
+  const days = ['may25', 'may26', 'may27', 'may28', 'may29'];
+  const dateMap = { may25:'2026-05-25', may26:'2026-05-26', may27:'2026-05-27', may28:'2026-05-28', may29:'2026-05-29' };
+  days.forEach(dayId => {
+    const dayData = data[dayId];
+    if (!dayData) return;
+    ['decisions', 'issues', 'fyis'].forEach(type => {
+      if (dayData[type]) _renderBriefItems(type, dayId, dayData[type]);
+    });
+    // Top 3
+    if (dayData.top3) {
+      dayData.top3.forEach((item, idx) => {
+        const row = document.querySelector('#bdi-top3-' + dayId + ' .top3-row[data-idx="' + idx + '"]');
+        if (!row) return;
+        const chk = row.querySelector('.top3-chk');
+        const txt = row.querySelector('.top3-txt');
+        if (chk) chk.checked = item.done;
+        if (txt) txt.textContent = item.text;
+        row.classList.toggle('done', item.done);
+      });
+      _updateTop3Bar(dayId, dayData.top3);
+    }
+    // Happiness
+    if (dayData.happiness) {
+      briefSetHappy(null, dayData.happiness, dayId, dateMap[dayId]);
+    }
+    // Archive
+    _renderBriefArchive(dayId, dayData.archived || []);
+    _updateBriefBadge(dayId, dayData);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initDailyBrief();
+  // Open today by default
+  const todayToggle = document.querySelector('.bd-toggle.bd-today');
+  const todayBody   = document.querySelector('.bd-body.open');
+  if (todayToggle) todayToggle.classList.add('open');
+  if (!todayBody && todayToggle) {
+    const dayId = todayToggle.id.replace('bdt-', '');
+    document.getElementById('bdb-' + dayId)?.classList.add('open');
+  }
+});
+
 </script>
 
 
@@ -4770,41 +5738,29 @@ taskDbInit();
   });
 
   // ─── 6. TASK DATABASE SYNC ─────────────────────────────────────
-  // The Task DB has structured rows (id, desc, status, exec, due, ...).
-  // Mirror its array via Yjs so add/edit/delete propagates between peers.
+  // Mirror Task DB rows via Yjs. SEED ONLY AFTER LIVEBLOCKS SYNC so we
+  // never re-seed defaults when the server already has content (which would
+  // duplicate the 11 default tasks every time a new client joins).
   const yTaskDb = ydoc.getArray('taskdb');
   if (typeof window.taskDbReadStore === 'function' && typeof window.taskDbWriteStore === 'function') {
     const origReadStore = window.taskDbReadStore;
-    // Override read so all dashboard interactions use Yjs — BUT fall back to
-    // the local HTML store whenever Yjs is empty. Prevents "tasks appear then
-    // disappear" when Yjs hasn't yet synced from the Liveblocks server.
-    window.taskDbReadStore = () => {
-      const arr = yTaskDb.toArray();
-      return arr.length ? arr : origReadStore();
-    };
+    // Override read/write IMMEDIATELY so all dashboard interactions use Yjs
+    window.taskDbReadStore = () => yTaskDb.toArray();
     window.taskDbWriteStore = (data) => {
       ydoc.transact(() => {
         yTaskDb.delete(0, yTaskDb.length);
         data.forEach(t => yTaskDb.push([t]));
       });
-      // Also keep the hidden script tag in sync for any code reading the DOM directly
       const el = document.getElementById('taskdb-store');
       if (el) el.textContent = JSON.stringify(data);
     };
     yTaskDb.observe(() => {
-      const arr = yTaskDb.toArray();
-      // Defensive: never blow away the visible table if Yjs is empty.
-      if (arr.length === 0) {
-        if (typeof window.taskDbRender === 'function') window.taskDbRender();
-        return;
-      }
       const el = document.getElementById('taskdb-store');
-      if (el) el.textContent = JSON.stringify(arr);
+      if (el) el.textContent = JSON.stringify(yTaskDb.toArray());
       if (typeof window.taskDbRender === 'function') window.taskDbRender();
     });
 
-    // Guarded seed: push local defaults if Yjs is empty AFTER Liveblocks sync,
-    // so we don't duplicate when the server already has content.
+    // Guarded seed: only push local defaults if server confirms empty
     let seedAttempted = false;
     const seedIfBothEmpty = () => {
       if (seedAttempted) return;
@@ -4816,81 +5772,162 @@ taskDbInit();
         }
       }
     };
-    if (provider && provider.on) provider.on('synced', seedIfBothEmpty);
+    provider.on('synced', seedIfBothEmpty);
+    // Belt-and-suspenders: if 'synced' never fires (e.g. offline), seed after 2.5s
     setTimeout(seedIfBothEmpty, 2500);
-    // NOTE: deliberately NOT calling window.taskDbRender() here — the initial
-    // render from taskDbInit() is already on screen with the HTML store data,
-    // and re-rendering now would briefly show an empty Yjs array.
+
+    if (typeof window.taskDbRender === 'function') window.taskDbRender();
   }
 
-  // ─── 7. CONTENTEDITABLE SECTION SYNC ──────────────────────────
-  // For sections without a structured store (Decisions, Waiting On, Rocks),
-  // sync the innerHTML wholesale via Y.Text. Pragmatic: last-write-wins per
-  // section if two people edit the SAME section at the same moment, but
-  // works smoothly the rest of the time. Yjs→DOM updates skip the section
-  // currently being typed in to avoid stomping the active cursor.
-  const SYNCED_SECTIONS = ['decisionsBody', 'waitingOnBody', 'rocksBody', 'rocksRebeccaBody'];
-  SYNCED_SECTIONS.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const yText = ydoc.getText('section:' + id);
+  // ─── 7. DECISIONS NEEDED LIVE SYNC ─────────────────────────────
+  // Per-item structured Y.Array. Each decision is { id, status, text, sub }.
+  // Status changes / text edits / adds / deletes propagate cleanly between
+  // peers; users currently typing in a field don't get their cursor stomped.
+  const yDecisions = ydoc.getArray('decisions');
+  const decisionsContainer = document.getElementById('decisionsBody');
+  if (decisionsContainer) {
+    // Capture seed items from the static HTML BEFORE we take over rendering
+    const seedItems = [];
+    decisionsContainer.querySelectorAll('.task-row').forEach(row => {
+      const dd = row.querySelector('.status-dd');
+      const ttext = row.querySelector('.task-text');
+      const tsub = row.querySelector('.task-sub');
+      const text = (ttext?.textContent || '').trim();
+      if (!text) return;
+      seedItems.push({
+        id: 'd_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,7),
+        status: dd?.dataset?.s || 'todo',
+        text,
+        sub: (tsub?.textContent || '').trim(),
+      });
+    });
 
-    // Initial seed/sync
-    if (yText.length === 0 && el.innerHTML.trim()) {
-      yText.insert(0, el.innerHTML);
-    } else if (yText.length > 0) {
-      const remote = yText.toString();
-      if (el.innerHTML !== remote) el.innerHTML = remote;
+    const escHTML = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const newId = () => 'd_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,7);
+
+    function updateDecision(id, field, value) {
+      const arr = yDecisions.toArray();
+      const idx = arr.findIndex(d => d && d.id === id);
+      if (idx === -1) return;
+      if (arr[idx][field] === value) return;
+      ydoc.transact(() => {
+        yDecisions.delete(idx, 1);
+        yDecisions.insert(idx, [{ ...arr[idx], [field]: value }]);
+      });
+      if (typeof window.markDirty === 'function') window.markDirty();
+    }
+    function deleteDecision(id) {
+      const idx = yDecisions.toArray().findIndex(d => d && d.id === id);
+      if (idx === -1) return;
+      ydoc.transact(() => yDecisions.delete(idx, 1));
+      if (typeof window.markDirty === 'function') window.markDirty();
     }
 
-    // DOM → Yjs (debounced)
-    let pushTimer;
-    let suppressNext = false;
-    const obs = new MutationObserver(() => {
-      if (suppressNext) return;
-      clearTimeout(pushTimer);
-      pushTimer = setTimeout(() => {
-        const html = el.innerHTML;
-        if (html !== yText.toString()) {
-          ydoc.transact(() => {
-            yText.delete(0, yText.length);
-            yText.insert(0, html);
-          });
-        }
-      }, 300);
-    });
-    obs.observe(el, {
-      childList: true, subtree: true, characterData: true,
-      attributes: true,
-      attributeFilter: ['class', 'data-s', 'aria-checked', 'contenteditable'],
-    });
+    function renderDecisions() {
+      const data = yDecisions.toArray().filter(d => d && d.id);
+      const dataIds = new Set(data.map(d => d.id));
+      const addBtn = decisionsContainer.querySelector('.add-item-btn');
 
-    // Yjs → DOM (skip while user is editing inside this section)
-    let pendingApply = null;
-    const applyRemote = () => {
-      const remote = yText.toString();
-      if (el.innerHTML !== remote) {
-        suppressNext = true;
-        el.innerHTML = remote;
-        setTimeout(() => { suppressNext = false; }, 50);
-      }
-      pendingApply = null;
-    };
-    yText.observe(() => {
-      if (el.contains(document.activeElement)) {
-        // User is typing — defer the apply until blur
-        pendingApply = applyRemote;
+      // Remove rows that no longer exist
+      decisionsContainer.querySelectorAll('.task-row').forEach(row => {
+        if (!dataIds.has(row.dataset.dId)) row.remove();
+      });
+
+      data.forEach((item, idx) => {
+        let row = decisionsContainer.querySelector(`.task-row[data-d-id="${item.id}"]`);
+        if (!row) {
+          row = document.createElement('div');
+          row.className = 'task-row';
+          row.dataset.dId = item.id;
+          row.innerHTML = `${sdHTML(item.status)}
+            <div class="task-body">
+              <div class="task-text" contenteditable="true" data-ph="Task…">${escHTML(item.text)}</div>
+              <div class="task-sub"  contenteditable="true" data-ph="Note or deadline…">${escHTML(item.sub)}</div>
+            </div>
+            <button class="del-btn">✕</button>`;
+          decisionsContainer.insertBefore(row, addBtn || null);
+
+          const ttext = row.querySelector('.task-text');
+          const tsub  = row.querySelector('.task-sub');
+          const delBtn = row.querySelector('.del-btn');
+          let txtTimer, subTimer;
+          ttext.addEventListener('input', () => {
+            clearTimeout(txtTimer);
+            txtTimer = setTimeout(() => updateDecision(row.dataset.dId, 'text', ttext.textContent), 200);
+          });
+          tsub.addEventListener('input', () => {
+            clearTimeout(subTimer);
+            subTimer = setTimeout(() => updateDecision(row.dataset.dId, 'sub', tsub.textContent), 200);
+          });
+          delBtn.addEventListener('click', () => deleteDecision(row.dataset.dId));
+          row.querySelectorAll('.sd-opt').forEach(opt => {
+            opt.addEventListener('click', e => {
+              // pickSD reads dd.dataset.s as 'prev' for the Done Log — must run
+              // BEFORE updateDecision changes the data (and re-renders the row).
+              if (typeof pickSD === 'function') pickSD(opt);
+              updateDecision(row.dataset.dId, 'status', opt.dataset.v);
+            });
+          });
+          // Apply done strikethrough on initial render
+          if (item.status === 'done' && ttext) ttext.classList.add('done-text');
+        } else {
+          // Update existing row in place — skip fields the user is currently typing in
+          const ttext = row.querySelector('.task-text');
+          const tsub  = row.querySelector('.task-sub');
+          const dd = row.querySelector('.status-dd');
+          const sdLabel = dd?.querySelector('.sd-label');
+          if (ttext && document.activeElement !== ttext && ttext.textContent !== item.text) {
+            ttext.textContent = item.text;
+          }
+          if (tsub && document.activeElement !== tsub && tsub.textContent !== item.sub) {
+            tsub.textContent = item.sub;
+          }
+          if (dd && dd.dataset.s !== item.status) {
+            dd.dataset.s = item.status;
+            if (sdLabel && typeof STATUS_LABELS !== 'undefined') sdLabel.textContent = STATUS_LABELS[item.status];
+            if (ttext) ttext.classList.toggle('done-text', item.status === 'done');
+          }
+        }
+      });
+    }
+
+    // Override addTaskRow ONLY for the decisions container; other sections behave as before
+    const _origAddTaskRow = window.addTaskRow;
+    window.addTaskRow = function(container, status) {
+      if (container && container.id === 'decisionsBody') {
+        const item = { id: newId(), status: status || 'todo', text: '', sub: '' };
+        ydoc.transact(() => yDecisions.push([item]));
+        if (typeof window.markDirty === 'function') window.markDirty();
+        // After render, focus the new row's text field
+        setTimeout(() => {
+          const newRow = decisionsContainer.querySelector(`.task-row[data-d-id="${item.id}"]`);
+          newRow?.querySelector('.task-text')?.focus();
+        }, 50);
       } else {
-        applyRemote();
+        return _origAddTaskRow.apply(this, arguments);
       }
-    });
-    // When the user blurs out of the section, flush any pending remote apply
-    el.addEventListener('focusout', () => {
-      setTimeout(() => {
-        if (pendingApply && !el.contains(document.activeElement)) pendingApply();
-      }, 50);
-    });
-  });
+    };
+
+    // Re-render on Yjs changes
+    yDecisions.observe(() => renderDecisions());
+
+    // Seed gated by Liveblocks sync to avoid duplicating defaults across clients
+    let dSeedAttempted = false;
+    const seedIfNeeded = () => {
+      if (dSeedAttempted) return;
+      dSeedAttempted = true;
+      if (yDecisions.length === 0 && seedItems.length) {
+        ydoc.transact(() => seedItems.forEach(it => yDecisions.push([it])));
+      }
+      renderDecisions();
+    };
+    provider.on('synced', seedIfNeeded);
+    setTimeout(seedIfNeeded, 2500);
+  }
+
+  // Note: Other contenteditable sections (Waiting On, Rocks, Risks, FYIs,
+  // On Our Radar, Calendar) remain local-only. They'd each need a similar
+  // per-item Y.Array sync — pattern is established now, just more wiring.
 
   // ─── 8. AWARENESS / TYPING HIGHLIGHT ────────────────────────────
   // When someone else has focus in the whiteboard composer, glow it briefly
@@ -4916,49 +5953,314 @@ taskDbInit();
 
   console.log('🟢 Live collaboration online (Liveblocks). Room:', ROOM, '· You:', getUserName());
   console.log('   yjs doc:', ydoc, '· awareness:', provider.awareness, '· room:', room);
-</script>
 
-<!-- ───────────────────────────────────────────────────────────────────────
-     AUTO TODAY MARKER — runs on every page load.
-     Replaces the old daily-refresh task that had to edit the HTML by hand.
-     ────────────────────────────────────────────────────────────────────── -->
-<script>
-(function autoTodayMarker() {
-  const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-  const now = new Date();
+// ─────────────────────────────────────────────────────
+//  SECTION ARCHIVES + TODD CHECKBOXES
+//  Sections: decisionsBody, issuesBody, fyisBody, waitingOnBody, radarBody
+// ─────────────────────────────────────────────────────
+const _ARCH_SECTIONS = [
+  { id:'decisionsBody', itemSel:'.task-row',   textSel:'.task-text' },
+  { id:'issuesBody',    itemSel:'.bullet-item', textSel:'.bullet-text' },
+  { id:'fyisBody',      itemSel:'.bullet-item', textSel:'.bullet-text' },
+  { id:'waitingOnBody', itemSel:'.wait-item',   textSel:'.wait-what' },
+  { id:'radarBody',     itemSel:'.radar-item',  textSel:'.radar-text' },
+];
 
-  // Pick today, or fall back to last Friday for weekends
-  let target = new Date(now);
-  const dow = now.getDay();           // 0=Sun, 6=Sat
-  if (dow === 0) target.setDate(now.getDate() - 2);  // Sun → Fri
-  if (dow === 6) target.setDate(now.getDate() - 1);  // Sat → Fri
+function initArchiveSections() {
+  _ARCH_SECTIONS.forEach(cfg => {
+    const body = document.getElementById(cfg.id);
+    if (!body) return;
 
-  const targetId = 'dt-' + months[target.getMonth()] + target.getDate();
-  const el = document.getElementById(targetId);
-  if (!el) {
-    console.log('[autoTodayMarker] no day-toggle for', targetId, '— calendar needs an update');
+    // Add archive area before the last child (add-item-btn)
+    if (!body.querySelector('.sec-archive-wrap')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'sec-archive-wrap';
+      wrap.innerHTML =
+        '<button class="sec-archive-toggle" onclick="toggleSecArchive(this)">' +
+          '<span>▶</span> 📦 Archived <span class="sec-arch-cnt">0</span>' +
+        '</button>' +
+        '<div class="sec-archive-list"></div>';
+      body.appendChild(wrap);
+    }
+
+    // Add Todd checkbox + archive button to existing items
+    body.querySelectorAll(cfg.itemSel).forEach(item => {
+      if (item.querySelector('.todd-check')) return; // already set up
+      const check = document.createElement('input');
+      check.type = 'checkbox';
+      check.className = 'todd-check';
+      check.title = 'Todd: check when addressed';
+      check.onchange = function() { toddItemCheck(this); };
+      item.insertBefore(check, item.firstChild);
+
+      const archBtn = document.createElement('button');
+      archBtn.className = 'arch-inline-btn';
+      archBtn.title = 'Archive this item';
+      archBtn.textContent = '📦';
+      archBtn.onclick = function() { secArchiveItem(item, cfg.id); };
+      const delBtn = item.querySelector('.del-btn');
+      if (delBtn) item.insertBefore(archBtn, delBtn);
+      else item.appendChild(archBtn);
+    });
+  });
+}
+
+function toggleSecArchive(btn) {
+  const wrap = btn.closest('.sec-archive-wrap');
+  const list = wrap.querySelector('.sec-archive-list');
+  const arrow = btn.querySelector('span');
+  list.classList.toggle('open');
+  if (arrow) arrow.textContent = list.classList.contains('open') ? '▼' : '▶';
+}
+
+function secArchiveItem(item, bodyId) {
+  const body = bodyId ? document.getElementById(bodyId) : item.closest('[id]');
+  const wrap = body ? body.querySelector('.sec-archive-wrap') : null;
+  if (!wrap) { item.remove(); return; }
+
+  const textEl = item.querySelector('.task-text, .bullet-text, .wait-what, .radar-text, .wait-body');
+  const text = textEl ? (textEl.innerText || textEl.textContent || '').trim() : '(item)';
+  if (!text || text === 'Task…' || text === 'Add note…') { item.remove(); return; }
+
+  const list = wrap.querySelector('.sec-archive-list');
+  const cnt = wrap.querySelector('.sec-arch-cnt');
+
+  const archItem = document.createElement('div');
+  archItem.className = 'sec-archive-item';
+  archItem.innerHTML = '<span class="sec-arch-dot">✓</span>' +
+    '<span class="sec-arch-item-text">' + text.replace(/</g,'&lt;') + '</span>' +
+    '<span style="font-size:10px;color:#9CA3AF;flex-shrink:0;">' +
+      new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) +
+    '</span>';
+  list.insertBefore(archItem, list.firstChild);
+
+  const cur = parseInt(cnt.textContent) || 0;
+  cnt.textContent = cur + 1;
+  if (!list.classList.contains('open')) {
+    const toggle = wrap.querySelector('.sec-archive-toggle span');
+    if (toggle) toggle.textContent = '▶';
+  }
+  item.remove();
+  markDirty();
+}
+
+function toddItemCheck(checkbox) {
+  const item = checkbox.closest('.task-row, .bullet-item, .wait-item, .radar-item');
+  if (!item) return;
+  const body = item.closest('[id^="decisionsBody"],[id^="issuesBody"],[id^="fyisBody"],[id^="waitingOnBody"],[id^="radarBody"]') ||
+               item.parentElement;
+  if (checkbox.checked) {
+    item.style.opacity = '0.55';
+    item.style.textDecoration = 'line-through';
+    // Auto-archive after short delay so user can see the check
+    setTimeout(() => {
+      const cfg = _ARCH_SECTIONS.find(c => {
+        const b = document.getElementById(c.id);
+        return b && b.contains(item);
+      });
+      if (cfg) secArchiveItem(item, cfg.id);
+      else item.remove();
+    }, 800);
+  } else {
+    item.style.opacity = '';
+    item.style.textDecoration = '';
+  }
+  markDirty();
+}
+
+document.addEventListener('DOMContentLoaded', initArchiveSections);
+
+// ─────────────────────────────────────────────────────
+//  REBECCA ARCHIVE
+// ─────────────────────────────────────────────────────
+function archiveRebeccaDay() {
+  const notes = document.getElementById('rebecca-notes');
+  const reminders = document.getElementById('rebecca-reminders');
+  const reflection = document.getElementById('rebecca-reflection');
+
+  const notesTxt = notes ? notes.innerText.trim() : '';
+  const remindersTxt = reminders ? reminders.innerText.trim() : '';
+  const reflectionTxt = reflection ? reflection.innerText.trim() : '';
+
+  if (!notesTxt && !remindersTxt && !reflectionTxt) {
+    alert('Nothing to archive — all fields are empty.');
     return;
   }
 
-  // Strip is-today + "Today · " prefix from any previous Today
-  document.querySelectorAll('.day-toggle.is-today').forEach(prev => {
-    if (prev.id === targetId) return;
-    prev.classList.remove('is-today');
-    const b = prev.querySelector('.day-badge');
-    if (b && b.textContent.startsWith('Today · ')) b.textContent = b.textContent.slice(8);
-  });
+  const now = new Date();
+  const dateLabel = now.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'});
+  const entry = { date: dateLabel, notes: notesTxt, reminders: remindersTxt, reflection: reflectionTxt };
 
-  // Apply is-today + open + "Today · " prefix on today
-  el.classList.add('is-today', 'open');
-  const badge = el.querySelector('.day-badge');
-  if (badge && !badge.textContent.startsWith('Today · ')) {
-    badge.textContent = 'Today · ' + badge.textContent;
+  // Save to store
+  const storeEl = document.getElementById('reb-archive-store');
+  const data = JSON.parse(storeEl ? storeEl.textContent || '[]' : '[]');
+  data.unshift(entry);
+  if (storeEl) storeEl.textContent = JSON.stringify(data);
+
+  // Clear fields
+  if (notes) notes.innerHTML = '';
+  if (reminders) reminders.innerHTML = '';
+  if (reflection) reflection.innerHTML = '';
+
+  renderRebeccaArchive();
+  markDirty();
+}
+
+function renderRebeccaArchive() {
+  const container = document.getElementById('rebArchiveItems');
+  const cnt = document.getElementById('rebArchiveCnt');
+  const storeEl = document.getElementById('reb-archive-store');
+  const data = JSON.parse(storeEl ? storeEl.textContent || '[]' : '[]');
+
+  if (cnt) cnt.textContent = data.length;
+  if (!container) return;
+
+  if (!data.length) {
+    container.innerHTML = '<div style="font-size:11px;color:#9CA3AF;font-style:italic;">No archived entries yet.</div>';
+    return;
   }
-  const body = document.getElementById(targetId.replace('dt-', 'db-'));
-  if (body) body.classList.add('open');
+  container.innerHTML = data.map(e => {
+    const parts = [];
+    if (e.notes)      parts.push('<div style="margin-top:4px;"><span style="font-size:10px;font-weight:700;color:#6B5BAB;">📝 Focus & Notes:</span><div class="reb-archive-text">' + (e.notes||'').replace(/</g,'&lt;') + '</div></div>');
+    if (e.reminders)  parts.push('<div style="margin-top:4px;"><span style="font-size:10px;font-weight:700;color:#6B5BAB;">🔔 Reminders:</span><div class="reb-archive-text">' + (e.reminders||'').replace(/</g,'&lt;') + '</div></div>');
+    if (e.reflection) parts.push('<div style="margin-top:4px;"><span style="font-size:10px;font-weight:700;color:#6B5BAB;">💭 Reflection:</span><div class="reb-archive-text">' + (e.reflection||'').replace(/</g,'&lt;') + '</div></div>');
+    return '<div class="reb-archive-item">' +
+      '<div class="reb-archive-item-hd"><span class="reb-arch-label">📅 ' + (e.date||'') + '</span></div>' +
+      parts.join('') +
+    '</div>';
+  }).join('');
+}
 
-  console.log('[autoTodayMarker] Today set to', targetId);
-})();
+function toggleRebeccaArchive() {
+  const container = document.getElementById('rebArchiveItems');
+  if (!container) return;
+  const isVisible = container.style.display !== 'none';
+  container.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible) renderRebeccaArchive();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderRebeccaArchive();
+});
+
+// ─────────────────────────────────────────────────────
+//  HAPPINESS DAILY TRACKER
+// ─────────────────────────────────────────────────────
+const HAPPY_EMOJIS = {1:'😞',2:'😐',3:'🙂',4:'😊',5:'😄'};
+const HAPPY_LABELS = {1:'Rough',2:'Okay',3:'Good',4:'Great',5:'Amazing!'};
+
+function _happyWeekDates() {
+  const today = new Date();
+  const dow = today.getDay(); // 0=Sun
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1));
+  return Array.from({length:5}, function(_,i) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    return d;
+  });
+}
+
+function _happyFmt(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function initHappyDailyRows_DEPRECATED() {
+  const container = document.getElementById('happyDailyRows');
+  if (!container) return;
+  const storeEl = document.getElementById('happy-store');
+  const store = JSON.parse(storeEl ? storeEl.textContent || '{}' : '{}');
+  const data = store.rebeccaHappy || [];
+  const todayStr = _happyFmt(new Date());
+  const days = _happyWeekDates();
+  const DOWS = ['Mon','Tue','Wed','Thu','Fri'];
+
+  container.innerHTML = '';
+  days.forEach(function(d, i) {
+    const ds = _happyFmt(d);
+    const entry = data.find(function(e){return e.d===ds;});
+    const val = entry ? entry.v : 0;
+    const isToday = ds === todayStr;
+    const canPick = ds <= todayStr;
+
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:8px;' +
+      'background:' + (isToday ? '#EEF2F8' : '#FAFAFA') + ';' +
+      'border:1px solid ' + (isToday ? '#BFCFE0' : '#F0F0EF') + ';';
+
+    const emojiBtns = [1,2,3,4,5].map(function(v) {
+      return '<button class="sc-emoji' + (val===v?' selected':'') + '" ' +
+        (canPick ? '' : 'disabled style="opacity:0.3;"') +
+        ' data-val="' + v + '" onclick="happyPickDay(this,' + v + ',\'' + ds + '\')" title="' + HAPPY_LABELS[v] + '">' + HAPPY_EMOJIS[v] + '</button>';
+    }).join('');
+
+    row.innerHTML =
+      '<span style="font-size:11px;font-weight:800;width:28px;color:' + (isToday?'#1E3A5F':'#6B7280') + ';flex-shrink:0;">' + DOWS[i] + '</span>' +
+      '<span style="font-size:10px;color:#9CA3AF;width:36px;flex-shrink:0;">' + (d.getMonth()+1) + '/' + d.getDate() + '</span>' +
+      '<div style="display:flex;gap:1px;">' + emojiBtns + '</div>' +
+      '<span style="font-size:11px;color:' + (val?'#374151':'#D1D5DB') + ';margin-left:4px;">' + (val?HAPPY_LABELS[val]:'—') + '</span>' +
+      (isToday ? '<span style="font-size:9px;background:#1E3A5F;color:#fff;border-radius:6px;padding:1px 7px;margin-left:auto;">Today</span>' : '');
+    container.appendChild(row);
+  });
+  _happyUpdateAverages();
+}
+
+function happyPickDay(btn, val, dateStr) {
+  const storeEl = document.getElementById('happy-store');
+  const store = JSON.parse(storeEl.textContent || '{}');
+  var data = store.rebeccaHappy || [];
+  const idx = data.findIndex(function(e){return e.d===dateStr;});
+  if (idx >= 0) data[idx].v = val; else data.push({d:dateStr, v:val});
+  store.rebeccaHappy = data;
+  storeEl.textContent = JSON.stringify(store);
+  initHappyDailyRows();
+  if (typeof scBuildWeeklyBody === 'function') scBuildWeeklyBody();
+  markDirty();
+}
+
+function _happyUpdateAverages() {
+  const storeEl = document.getElementById('happy-store');
+  const store = JSON.parse(storeEl ? storeEl.textContent || '{}' : '{}');
+  const data = store.rebeccaHappy || [];
+  const weekDates = new Set(_happyWeekDates().map(_happyFmt));
+  const weekEntries = data.filter(function(e){return weekDates.has(e.d) && e.v>0;});
+  const allEntries = data.filter(function(e){return e.v>0;});
+  const weekAvg = weekEntries.length ? (weekEntries.reduce(function(s,e){return s+e.v;},0)/weekEntries.length).toFixed(1) : '—';
+  const allAvg  = allEntries.length  ? (allEntries.reduce(function(s,e){return s+e.v;},0)/allEntries.length).toFixed(1) : '—';
+  const wEl = document.getElementById('happyWeekAvg'); if (wEl) wEl.textContent = weekAvg;
+  const aEl = document.getElementById('happyAllAvg');  if (aEl) aEl.textContent = allAvg;
+  _happyRenderArchive();
+}
+
+function _happyRenderArchive() {
+  const container = document.getElementById('happyArchiveList');
+  if (!container) return;
+  const storeEl = document.getElementById('happy-store');
+  const store = JSON.parse(storeEl ? storeEl.textContent || '{}' : '{}');
+  const allData = (store.rebeccaHappy || []).filter(function(e){return e.v>0;}).slice().sort(function(a,b){return a.d<b.d?1:-1;});
+  const weekDates = new Set(_happyWeekDates().map(_happyFmt));
+  const pastData = allData.filter(function(e){return !weekDates.has(e.d);});
+  if (!pastData.length) {
+    container.innerHTML = '<div style="font-size:11px;color:#9CA3AF;font-style:italic;">No past entries yet.</div>';
+    return;
+  }
+  container.innerHTML = pastData.map(function(e) {
+    const d = new Date(e.d + 'T12:00:00');
+    const label = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'2-digit'});
+    return '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #F3F4F6;">' +
+      '<span style="font-size:11px;color:#6B7280;min-width:100px;">' + label + '</span>' +
+      '<span style="font-size:18px;">' + HAPPY_EMOJIS[e.v] + '</span>' +
+      '<span style="font-size:11px;color:#9CA3AF;">' + HAPPY_LABELS[e.v] + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleHappyArchive() {
+  const list = document.getElementById('happyArchiveList');
+  if (!list) return;
+  list.style.display = list.style.display === 'none' ? 'block' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function() { initHappyDailyRows(); });
+
 </script>
-
-</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
