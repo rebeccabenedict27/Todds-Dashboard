@@ -3693,7 +3693,7 @@ function wbRenderThread() {
         '<button class="wb-msg-del" onclick="wbDelete(\'' +m.id+ '\')" title="Delete" style="margin-left:auto;">✕</button>'+
       '</div>'+
       '<div class="wb-msg-body" style="padding-left:28px;">'+safeText+
-      ((m.images&&m.images.length)?m.images.map(src=>'<img src="'+src+'" style="max-width:100%;max-height:280px;border-radius:6px;margin-top:6px;display:block;cursor:pointer;" onclick="this.style.maxHeight=this.style.maxHeight==='none'?'280px':'none'">').join(''):'')+'</div>'+
+      ((m.images&&m.images.length)?m.images.map(src=>'<img src="'+src+'" style="max-width:100%;max-height:280px;border-radius:6px;margin-top:6px;display:block;cursor:pointer;" onclick=\"this.style.maxHeight=this.style.maxHeight===\'none\'?\'280px\':\'none\'\">').join(''):'')+'</div>'+
     '</div>';
   }).join('');
   if (archived.length) {
