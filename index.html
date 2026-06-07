@@ -1311,7 +1311,7 @@
       <button class="btn btn-edit" id="editBtn" onclick="toggleEdit()">✏️ Edit Text</button>
       <button class="btn btn-rearrange active" id="rearrangeBtn" onclick="toggleRearrange()">✅ Done Rearranging</button>
       <button class="btn btn-newsec" onclick="openNewSec()">➕ New Section</button>
-      <button class="btn btn-save dirty" id="saveBtn" onclick="saveFile()" title="Save (⌘S / Ctrl+S)">💾 Save</button>
+      <span id="sb-sync-dot" style="font-size:12px;font-weight:600;color:#9CA3AF;margin-right:6px;white-space:nowrap;letter-spacing:0.01em;" title="">⬤ –</span><button class="btn btn-save dirty" id="saveBtn" onclick="saveFile()" title="Save (⌘S / Ctrl+S)">💾 Save</button>
       <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
       <button class="btn btn-archive" onclick="archiveDone()">📦 Archive Done</button>
       <button class="user-pill" id="userPill" data-u="rebecca" onclick="cycleUser()" title="Click to switch identity">👤 Rebecca</button>
@@ -6608,4 +6608,123 @@ function toggleHappyArchive() {
 
 document.addEventListener('DOMContentLoaded', function() { initHappyDailyRows(); });
 
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  SUPABASE AUTO-SAVE + LIVE SYNC
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  const SB_URL = 'https://lyqlwhrfyursltpfupyg.supabase.co';
+  const SB_KEY = 'sb_publishable_pMHCAsF-ffay_79vvJcUJA_lLBi8AUN';
+  const STORES = [
+    'wb-store','daily-brief-store','past-briefs-store',
+    'taskdb-store','happy-store','sc-history-store',
+    'sc-email-store','reb-archive-store'
+  ];
+  let _lastTs=null, _saveTimer=null, _saving=false, _pollTimer=null;
+
+  function setDot(color, msg) {
+    const el = document.getElementById('sb-sync-dot');
+    if (!el) return;
+    el.style.color = color; el.title = msg || '';
+  }
+
+  function collect() {
+    const out = {};
+    STORES.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      try { out[id] = JSON.parse(el.textContent || 'null'); } catch(e) { out[id] = null; }
+    });
+    return out;
+  }
+
+  function applyStores(data) {
+    if (!data || typeof data !== 'object') return;
+    let any = false;
+    STORES.forEach(id => {
+      if (!(id in data)) return;
+      const el = document.getElementById(id);
+      if (!el) return;
+      const str = JSON.stringify(data[id]);
+      if (el.textContent !== str) { el.textContent = str; any = true; }
+    });
+    if (!any) return;
+    const run = fn => { try { if (window[fn]) window[fn](); } catch(e) {} };
+    run('taskDbRender'); run('taskDbRenderArchive');
+    try { if (window.taskDbRenderBuckets && window.taskDbReadStore) taskDbRenderBuckets(taskDbReadStore()); } catch(e) {}
+    run('initDailyBrief'); run('pbRenderArchive');
+    run('renderRebeccaArchive'); run('wbRenderThread');
+    run('scRenderWeeklyTable'); run('initHappyDailyRows');
+  }
+
+  async function save() {
+    if (_saving) { schedSave(); return; }
+    _saving = true;
+    setDot('#D97706','Saving…');
+    try {
+      const res = await fetch(SB_URL+'/rest/v1/dashboard_state', {
+        method:'POST',
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,
+                 'Content-Type':'application/json',
+                 'Prefer':'resolution=merge-duplicates,return=representation'},
+        body: JSON.stringify({id:1, data:collect(), updated_at:new Date().toISOString()})
+      });
+      if (res.ok) {
+        const rows = await res.json();
+        if (rows&&rows[0]) _lastTs = rows[0].updated_at;
+        setDot('#059669','Saved to cloud ✓');
+        const btn=document.getElementById('saveBtn'), st=document.getElementById('saveStatus');
+        if (btn) btn.classList.remove('dirty');
+        if (st) { st.textContent='✓ Cloud saved'; st.className='save-status'; }
+        window._dirty = false;
+      } else { setDot('#DC2626','Save error: '+res.status); }
+    } catch(e) { setDot('#DC2626','Offline'); }
+    finally { _saving = false; }
+  }
+
+  function schedSave() {
+    clearTimeout(_saveTimer);
+    setDot('#D97706','Saving soon…');
+    _saveTimer = setTimeout(save, 2000);
+  }
+
+  async function poll() {
+    try {
+      const res = await fetch(SB_URL+'/rest/v1/dashboard_state?id=eq.1&select=data,updated_at',
+        {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+      if (!res.ok) return;
+      const rows = await res.json();
+      if (!rows||!rows[0]) return;
+      const row = rows[0];
+      if (_lastTs && row.updated_at <= _lastTs) return;
+      if (_saveTimer) return;
+      _lastTs = row.updated_at;
+      applyStores(row.data);
+      setDot('#2563EB','Synced • '+new Date(row.updated_at).toLocaleTimeString());
+    } catch(e) {}
+  }
+
+  async function load() {
+    setDot('#9CA3AF','Connecting…');
+    try {
+      const res = await fetch(SB_URL+'/rest/v1/dashboard_state?id=eq.1&select=data,updated_at',
+        {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+      if (!res.ok) { setDot('#DC2626','Cannot reach cloud'); return; }
+      const rows = await res.json();
+      if (rows&&rows[0]&&rows[0].data&&Object.keys(rows[0].data).length) {
+        _lastTs = rows[0].updated_at;
+        applyStores(rows[0].data);
+        setDot('#059669','Loaded from cloud ✓');
+      } else {
+        await save(); // first run — push current data up
+      }
+    } catch(e) { setDot('#DC2626','Offline'); }
+    _pollTimer = setInterval(poll, 15000);
+  }
+
+  window._sbScheduleSave = schedSave;
+  document.addEventListener('DOMContentLoaded', () => setTimeout(load, 400));
+})();
 </script>
