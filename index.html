@@ -1026,10 +1026,10 @@
   }
 
   .tdb-status-menu {
-    position: absolute; top: calc(100% + 4px); left: 0;
+    position: fixed;
     background: #fff; border: 1px solid #E5E7EB; border-radius: 7px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    min-width: 150px; z-index: 50;
+    min-width: 160px; z-index: 9999;
     padding: 4px; display: none;
   }
   .tdb-status-menu.open { display: block; }
@@ -5117,6 +5117,20 @@ function taskDbToggleMenu(btn) {
   const menu = btn.nextElementSibling;
   // Close other open menus
   document.querySelectorAll('.tdb-status-menu.open').forEach(m => { if (m !== menu) m.classList.remove('open'); });
+  const isOpen = menu.classList.contains('open');
+  if (!isOpen) {
+    // Position using fixed coords so overflow:hidden parents don't clip it
+    const rect = btn.getBoundingClientRect();
+    menu.style.top  = (rect.bottom + 4) + 'px';
+    menu.style.left = rect.left + 'px';
+    // Flip up if too close to bottom of viewport
+    if (rect.bottom + 200 > window.innerHeight) {
+      menu.style.top  = (rect.top - 4) + 'px';
+      menu.style.transform = 'translateY(-100%)';
+    } else {
+      menu.style.transform = '';
+    }
+  }
   menu.classList.toggle('open');
 }
 function taskDbPickStatus(opt, id, value) {
@@ -5129,6 +5143,10 @@ document.addEventListener('click', e => {
     document.querySelectorAll('.tdb-status-menu.open').forEach(m => m.classList.remove('open'));
   }
 });
+// Also close on scroll since menus are position:fixed
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.tdb-status-menu.open').forEach(m => m.classList.remove('open'));
+}, true);
 function taskDbRenderBuckets(data) {
   const today = taskDbTodayStr();
   const buckets = {
