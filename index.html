@@ -4026,12 +4026,13 @@ async function storeHandle(h) {
 }
 
 function markDirty() {
-  if (_dirty) return;
+  if (window._sbApplying) return;   // cloud sync in progress — don't mark dirty
   _dirty = true;
   const btn = document.getElementById('saveBtn');
   const st  = document.getElementById('saveStatus');
   if (btn) btn.classList.add('dirty');
   if (st)  { st.textContent = '● Unsaved changes'; st.className = 'save-status dirty'; }
+  if (window._sbScheduleSave) window._sbScheduleSave();
 }
 
 function markClean() {
@@ -6726,5 +6727,154 @@ document.addEventListener('DOMContentLoaded', function() { initHappyDailyRows();
 
   window._sbScheduleSave = schedSave;
   document.addEventListener('DOMContentLoaded', () => setTimeout(load, 400));
+})();
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  SUPABASE AUTO-SAVE + LIVE SYNC  (v3 — loop-safe)
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  const SB_URL = 'https://lyqlwhrfyursltpfupyg.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5cWx3aHJmeXVyc2x0cGZ1cHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NTE1NTQsImV4cCI6MjA5NjQyNzU1NH0.FDVaFaE2eJAEWL6ijjqjwR5qoUsebYBfBT9WnzLl7Nk';
+  const STORES = ['wb-store','daily-brief-store','past-briefs-store',
+                  'taskdb-store','happy-store','sc-history-store',
+                  'sc-email-store','reb-archive-store'];
+
+  let _lastTs = null, _saveTimer = null, _saving = false;
+
+  // ── Status dot ──
+  function dot(color, msg) {
+    const el = document.getElementById('sb-sync-dot');
+    if (el) { el.style.color = color; el.title = msg || ''; }
+  }
+
+  // ── Collect all data stores → one object ──
+  function collect() {
+    const out = {};
+    STORES.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      try { out[id] = JSON.parse(el.textContent || 'null'); } catch(e) { out[id] = null; }
+    });
+    return out;
+  }
+
+  // ── Apply cloud data → stores + re-render (loop-safe) ──
+  function applyStores(data) {
+    if (!data || typeof data !== 'object') return;
+    window._sbApplying = true;   // tell markDirty to stay quiet
+    try {
+      let changed = false;
+      STORES.forEach(id => {
+        if (!(id in data)) return;
+        const el = document.getElementById(id);
+        if (!el) return;
+        const str = JSON.stringify(data[id]);
+        if (el.textContent !== str) { el.textContent = str; changed = true; }
+      });
+      if (changed) {
+        const run = fn => { try { if (window[fn]) window[fn](); } catch(e) {} };
+        run('taskDbRenderTable'); run('taskDbRenderArchive');
+        try { if (window.taskDbRenderBuckets && window.taskDbReadStore) taskDbRenderBuckets(taskDbReadStore()); } catch(e) {}
+        run('initDailyBrief'); run('pbRenderArchive');
+        run('renderRebeccaArchive'); run('wbRenderThread');
+        run('scRenderWeeklyTable'); run('initHappyDailyRows');
+      }
+    } finally {
+      window._sbApplying = false;
+      // Clear any dirty state — this came from the cloud, not the user
+      clearTimeout(_saveTimer); _saveTimer = null;
+      window._dirty = false;
+      const btn = document.getElementById('saveBtn');
+      const st  = document.getElementById('saveStatus');
+      if (btn) btn.classList.remove('dirty');
+      if (st)  { st.textContent = '✓ Cloud saved'; st.className = 'save-status'; }
+    }
+  }
+
+  // ── Save to Supabase ──
+  async function save() {
+    if (_saving) return;
+    _saving = true;
+    dot('#D97706', 'Saving…');
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/dashboard_state', {
+        method: 'POST',
+        headers: {
+          'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates,return=representation'
+        },
+        body: JSON.stringify({ id: 1, data: collect(), updated_at: new Date().toISOString() })
+      });
+      if (res.ok) {
+        const rows = await res.json();
+        if (rows && rows[0]) _lastTs = rows[0].updated_at;
+        dot('#059669', 'Saved to cloud ✓  ' + new Date().toLocaleTimeString());
+        window._dirty = false;
+        const btn = document.getElementById('saveBtn');
+        const st  = document.getElementById('saveStatus');
+        if (btn) btn.classList.remove('dirty');
+        if (st)  { st.textContent = '✓ Cloud saved'; st.className = 'save-status'; }
+        if (window.stampSaveInfo) stampSaveInfo();
+      } else {
+        dot('#DC2626', 'Save failed ' + res.status);
+        console.error('Supabase save error:', res.status, await res.text());
+      }
+    } catch(e) {
+      dot('#DC2626', 'Offline — ' + e.message);
+    } finally { _saving = false; }
+  }
+
+  // ── Debounced save trigger (called by markDirty) ──
+  function schedSave() {
+    clearTimeout(_saveTimer);
+    dot('#D97706', 'Saving in 2s…');
+    _saveTimer = setTimeout(save, 2000);
+  }
+
+  // ── Poll every 20s for changes from Todd ──
+  async function poll() {
+    if (_saveTimer || _saving) return; // don't pull while we're pushing
+    try {
+      const res = await fetch(
+        SB_URL + '/rest/v1/dashboard_state?id=eq.1&select=data,updated_at',
+        { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } }
+      );
+      if (!res.ok) return;
+      const rows = await res.json();
+      if (!rows || !rows[0]) return;
+      if (_lastTs && rows[0].updated_at <= _lastTs) return; // nothing new
+      _lastTs = rows[0].updated_at;
+      applyStores(rows[0].data);
+      dot('#2563EB', 'Synced from cloud  ' + new Date(rows[0].updated_at).toLocaleTimeString());
+    } catch(e) { /* silent */ }
+  }
+
+  // ── Initial load on page open ──
+  async function load() {
+    dot('#9CA3AF', 'Connecting to cloud…');
+    try {
+      const res = await fetch(
+        SB_URL + '/rest/v1/dashboard_state?id=eq.1&select=data,updated_at',
+        { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } }
+      );
+      if (!res.ok) { dot('#DC2626', 'Cannot connect — error ' + res.status); return; }
+      const rows = await res.json();
+      if (rows && rows[0] && rows[0].data && Object.keys(rows[0].data).length > 0) {
+        _lastTs = rows[0].updated_at;
+        applyStores(rows[0].data);
+        dot('#059669', 'Loaded from cloud ✓');
+      } else {
+        // First ever load — push current page state up to Supabase
+        await save();
+      }
+    } catch(e) { dot('#DC2626', 'Offline: ' + e.message); }
+    setInterval(poll, 20000);
+  }
+
+  window._sbScheduleSave = schedSave;
+  window.sbSaveNow = save;
+  document.addEventListener('DOMContentLoaded', () => setTimeout(load, 500));
 })();
 </script>
