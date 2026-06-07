@@ -1787,6 +1787,20 @@
       </div>
 
     </div>
+
+      <!-- PAST BRIEFS ARCHIVE -->
+      <div class="pb-section">
+        <div id="past-briefs-store" style="display:none">[]</div>
+        <div class="pb-section-hdr" id="pb-main-hdr" onclick="pbToggleMain()">
+          <span class="pb-arrow">▶</span>
+          <span>📁 Past Briefs</span>
+          <span id="pb-week-count" style="font-size:12px;font-weight:400;margin-left:4px;color:#9CA3AF;"></span>
+        </div>
+        <div class="pb-weeks-list" id="pb-weeks-list">
+          <div id="pb-weeks-container"></div>
+          <button class="pb-save-btn" onclick="pbArchiveCurrentWeek()">⬇️ Archive current week (June 8–12)</button>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -5509,6 +5523,129 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// ───────────────────────────────────────────────
+//  PAST BRIEFS ARCHIVE
+// ───────────────────────────────────────────────
+function _pbStore() {
+  const el = document.getElementById('past-briefs-store');
+  if (!el) return [];
+  try { return JSON.parse(el.textContent || '[]'); } catch(e) { return []; }
+}
+function _pbSave(data) {
+  const el = document.getElementById('past-briefs-store');
+  if (el) el.textContent = JSON.stringify(data);
+  markDirty();
+}
+
+function pbToggleMain() {
+  const hdr = document.getElementById('pb-main-hdr');
+  const list = document.getElementById('pb-weeks-list');
+  if (!hdr || !list) return;
+  const open = list.classList.toggle('open');
+  hdr.classList.toggle('open', open);
+}
+
+function pbToggleWeek(weekIdx) {
+  const hdr  = document.getElementById('pb-wh-' + weekIdx);
+  const body = document.getElementById('pb-wb-' + weekIdx);
+  if (!hdr || !body) return;
+  const open = body.classList.toggle('open');
+  hdr.classList.toggle('open', open);
+}
+
+function pbToggleDay(weekIdx, dayIdx) {
+  const hdr  = document.getElementById('pb-dh-' + weekIdx + '-' + dayIdx);
+  const body = document.getElementById('pb-db-' + weekIdx + '-' + dayIdx);
+  if (!hdr || !body) return;
+  const open = body.classList.toggle('open');
+  hdr.classList.toggle('open', open);
+}
+
+function pbDeleteWeek(weekIdx) {
+  if (!confirm('Remove this archived week?')) return;
+  const data = _pbStore();
+  data.splice(weekIdx, 1);
+  _pbSave(data);
+  pbRenderArchive();
+}
+
+function pbRenderArchive() {
+  const data = _pbStore();
+  const container = document.getElementById('pb-weeks-container');
+  const countEl   = document.getElementById('pb-week-count');
+  if (!container) return;
+  if (countEl) countEl.textContent = data.length ? '(' + data.length + ' week' + (data.length>1?'s':'') + ')' : '';
+  if (!data.length) {
+    container.innerHTML = '<div style="font-size:13.5px;color:#9CA3AF;font-style:italic;padding:4px 0 8px;">No past briefs archived yet.</div>';
+    return;
+  }
+  container.innerHTML = data.map((week, wi) => {
+    const dayRows = (week.days || []).map((day, di) => {
+      const items = (day.items || []);
+      const itemHtml = items.length
+        ? items.map(it => '<div class="pb-item"><span class="pb-item-type">' + (it.type||'note') + '</span>'
+            + '<span class="' + (it.done ? 'pb-item-done' : '') + '">' + (it.text||'').replace(/</g,'&lt;') + '</span></div>').join('')
+        : '<div class="pb-empty">No items</div>';
+      return '<div class="pb-day-row">'
+        + '<div class="pb-day-hdr" id="pb-dh-' + wi + '-' + di + '" onclick="pbToggleDay(' + wi + ',' + di + ')">'
+        + '<span class="pb-day-arrow">▶</span>'
+        + '<strong>' + (day.dow||'') + '</strong>&nbsp;<span style="color:var(--gray-text)">' + (day.date||'') + '</span>'
+        + '<span style="margin-left:auto;font-size:12px;color:#9CA3AF;">' + items.length + ' item' + (items.length!==1?'s':'') + '</span>'
+        + '</div>'
+        + '<div class="pb-day-body" id="pb-db-' + wi + '-' + di + '">' + itemHtml + '</div>'
+        + '</div>';
+    }).join('');
+    return '<div class="pb-week-row">'
+      + '<div class="pb-week-hdr" id="pb-wh-' + wi + '" onclick="pbToggleWeek(' + wi + ')">'
+      + '<span><span class="pb-week-arrow">▶</span> 📅 ' + (week.label||'Week') + '</span>'
+      + '<button class="pb-del-week" onclick="event.stopPropagation();pbDeleteWeek(' + wi + ')">✕ Remove</button>'
+      + '</div>'
+      + '<div class="pb-week-body" id="pb-wb-' + wi + '">' + dayRows + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function pbArchiveCurrentWeek() {
+  const briefData = _dbStore();
+  const days = ['may25','may26','may27','may28','may29'];
+  const dowMap  = {may25:'Monday',may26:'Tuesday',may27:'Wednesday',may28:'Thursday',may29:'Friday'};
+  const dateMap = {may25:'Jun 8',may26:'Jun 9',may27:'Jun 10',may28:'Jun 11',may29:'Jun 12'};
+
+  const dayArr = days.map(id => {
+    const d = briefData[id] || {};
+    const items = [];
+    ['decisions','issues','fyis'].forEach(type => {
+      (d[type]||[]).forEach(it => items.push({type, text: it.text||it, done: it.done||false}));
+    });
+    (d.top3||[]).forEach((it,i) => {
+      if (it && (it.text||it)) items.push({type:'top3', text: it.text||it, done: it.done||false});
+    });
+    (d.archived||[]).forEach(it => items.push({type: it.type||'archived', text: it.text||it, done: true}));
+    return { dow: dowMap[id], date: dateMap[id], items };
+  });
+
+  const weekEntry = { label: 'Week of June 8, 2026', archived: new Date().toISOString().slice(0,10), days: dayArr };
+  const store = _pbStore();
+  // Don't add duplicate
+  if (store.some(w => w.label === weekEntry.label)) {
+    alert('This week is already archived!');
+    return;
+  }
+  store.unshift(weekEntry); // newest first
+  _pbSave(store);
+  pbRenderArchive();
+  // Open the panel to show it
+  const list = document.getElementById('pb-weeks-list');
+  const hdr  = document.getElementById('pb-main-hdr');
+  if (list && !list.classList.contains('open')) {
+    list.classList.add('open');
+    if (hdr) hdr.classList.add('open');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', pbRenderArchive);
+
+
 </script>
 
 
@@ -5567,6 +5704,59 @@ document.addEventListener('DOMContentLoaded', function() {
     box-shadow: 0 0 0 2px rgba(107,91,171,0.4) !important;
     transition: box-shadow 0.2s;
   }
+
+  /* ── PAST BRIEFS ARCHIVE ── */
+  .pb-section { border-top: 2px dashed var(--border); margin-top: 6px; padding: 10px 14px 6px; }
+  .pb-section-hdr {
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    font-size: 14.5px; font-weight: 700; color: var(--gray-text);
+    user-select: none; padding: 2px 0 6px;
+  }
+  .pb-section-hdr:hover { color: var(--dark); }
+  .pb-section-hdr .pb-arrow { font-size: 12px; transition: transform 0.2s; }
+  .pb-section-hdr.open .pb-arrow { transform: rotate(90deg); }
+  .pb-weeks-list { display: none; }
+  .pb-weeks-list.open { display: block; }
+  .pb-week-row {
+    border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .pb-week-hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; background: #F9FAFB; cursor: pointer; user-select: none;
+    font-size: 14px; font-weight: 700; color: var(--dark);
+  }
+  .pb-week-hdr:hover { background: #F3F4F6; }
+  .pb-week-hdr .pb-week-arrow { font-size: 12px; color: var(--gray-text); transition: transform 0.2s; }
+  .pb-week-hdr.open .pb-week-arrow { transform: rotate(90deg); }
+  .pb-week-body { display: none; }
+  .pb-week-body.open { display: block; }
+  .pb-day-row { border-top: 1px solid #F3F4F6; }
+  .pb-day-hdr {
+    display: flex; align-items: center; gap: 8px; padding: 6px 14px;
+    cursor: pointer; user-select: none; font-size: 13.5px; color: var(--dark);
+  }
+  .pb-day-hdr:hover { background: #FAFAFA; }
+  .pb-day-hdr .pb-day-arrow { font-size: 11px; color: var(--gray-text); transition: transform 0.2s; }
+  .pb-day-hdr.open .pb-day-arrow { transform: rotate(90deg); }
+  .pb-day-body { display: none; padding: 4px 14px 8px 32px; }
+  .pb-day-body.open { display: block; }
+  .pb-item { font-size: 13.5px; color: #374151; padding: 2px 0; display: flex; gap: 6px; align-items: flex-start; }
+  .pb-item-type {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 1px 4px; border-radius: 3px; background: #E5E7EB; color: #6B7280; flex-shrink: 0; margin-top: 2px;
+  }
+  .pb-item-done { text-decoration: line-through; color: #9CA3AF; }
+  .pb-empty { font-size: 13.5px; color: #9CA3AF; font-style: italic; }
+  .pb-del-week { font-size: 12px; padding: 2px 6px; border: 1px solid #E5E7EB; border-radius: 4px;
+    background: #F9FAFB; color: #9CA3AF; cursor: pointer; }
+  .pb-del-week:hover { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
+  .pb-save-btn {
+    display: block; width: 100%; margin-top: 8px; padding: 7px; border-radius: 8px;
+    border: 1.5px dashed var(--border); background: none; color: var(--gray-text);
+    font-size: 13.5px; cursor: pointer; text-align: center;
+  }
+  .pb-save-btn:hover { background: #F3F4F6; color: var(--dark); border-color: #9CA3AF; }
 </style>
 
 <script type="module">
