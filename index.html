@@ -1417,15 +1417,94 @@
       <div class="section-body" style="padding:0;">
         <div id="daily-brief-store" style="display:none">{}</div>
 
-    <div class="bd-toggle bd-holiday" id="bdt-may25" onclick="toggleBriefDay('may25')">
+    <div class="bd-toggle bd-toggle" id="bdt-may25" onclick="toggleBriefDay('may25')">
       <div class="bd-left">
         <span class="bd-dow">Monday</span>
         <span class="bd-date">Jun 8</span>
+        <span class="bd-badge">0 items</span>
       </div>
       <span class="bd-arrow">▾</span>
     </div>
     <div class="bd-body" id="bdb-may25">
-      <div class="bd-holiday-note">🏖️ Federal Holiday — Office Closed</div>
+
+      <!-- Decisions Needed -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚡</span>
+          <span class="bd-sub-title">Decisions Needed</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('decisions','may25')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-decisions-may25"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Issues / Risks -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">⚠️</span>
+          <span class="bd-sub-title">Issues / Risks</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('issues','may25')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-issues-may25"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- FYIs -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">📢</span>
+          <span class="bd-sub-title">FYIs</span>
+          <button class="add-item-btn bd-add-btn" onclick="addBriefItem('fyis','may25')">+ Add</button>
+        </div>
+        <div class="bd-items" id="bdi-fyis-may25"><div class="bd-empty">None today</div></div>
+      </div>
+
+      <!-- Rebecca's Top 3 -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">✅</span>
+          <span class="bd-sub-title">Rebecca's Top 3</span>
+          <span class="top3-prog-pill" id="top3-pill-may25">0/3</span>
+        </div>
+        <div id="bdi-top3-may25">
+          <div class="top3-row" data-idx="0">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may25',0)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 1…" oninput="saveBriefTop3('may25',0,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="1">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may25',1)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 2…" oninput="saveBriefTop3('may25',1,this.textContent)"></span>
+          </div>
+          <div class="top3-row" data-idx="2">
+            <input type="checkbox" class="top3-chk" onchange="checkBriefTop3(this,'may25',2)">
+            <span class="top3-txt" contenteditable="true" data-ph="Priority 3…" oninput="saveBriefTop3('may25',2,this.textContent)"></span>
+          </div>
+        </div>
+        <div class="top3-bar-wrap"><div class="top3-bar-fill" id="top3-fill-may25" style="width:0%"></div></div>
+      </div>
+
+      <!-- Rebecca's Happiness -->
+      <div class="bd-sub">
+        <div class="bd-sub-hdr">
+          <span class="bd-sub-icon">😊</span>
+          <span class="bd-sub-title">Rebecca's Happiness</span>
+          <span class="bd-happy-lbl" id="bd-happy-lbl-may25"></span>
+        </div>
+        <div class="bd-happy-row" id="bdi-happy-may25">
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,1,'may25','2026-06-08')" title="Rough day">😢</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,2,'may25','2026-06-08')" title="Meh">😕</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,3,'may25','2026-06-08')" title="OK">😐</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,4,'may25','2026-06-08')" title="Good">😊</button>
+          <button class="bd-happy-btn" onclick="briefSetHappy(this,5,'may25','2026-06-08')" title="Great day">😄</button>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <div class="bd-arch-area">
+        <button class="bd-arch-toggle" id="bd-arch-btn-may25" onclick="toggleBriefArchive('may25')">
+          ▶ Archived  <span id="bd-arch-cnt-may25" style="background:#E5E7EB;border-radius:10px;padding:1px 5px;font-size:10px;">0</span>
+        </button>
+        <div class="bd-arch-list" id="bd-arch-list-may25" style="display:none;"></div>
+      </div>
+
     </div>
 
     <div class="bd-toggle" id="bdt-may26" onclick="toggleBriefDay('may26')">
