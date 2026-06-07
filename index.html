@@ -7,21 +7,22 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    /* Cherry Republic — Lake Michigan Sunset palette (from photo) */
-    --cherry: #B5241B;    --cherry-lt: #FFF0EC;  --cherry-mid: #F5A880; --cherry-dk: #7A1208;
-    --amber:  #9B7818;    --amber-lt:  #FFFAEC;  --amber-mid: #E8C060;  /* golden sunset */
-    --green:  #283828;    --green-lt:  #EEF5EC;  --green-mid: #6A8A68;  /* dark forest */
-    --blue:   #4A6A8A;    --blue-lt:   #EEF2F6;  --blue-mid:  #8AAAC8;  /* lake gray-blue */
-    --purple: #4A3570;    --purple-lt: #F5F0FF;
-    --gold:   #C8A050;    --gold-lt:   #FBF5E8;  --gold-mid:  #E8C878;  /* photo gold */
-    --water:  #5A7A9A;    --water-lt:  #EEF2F6;  --water-mid: #8AAAC8;  /* silver-blue */
-    --gray-bg: #F5F2EC;   /* warm sky gray — matches photo sky */
-    --gray-line: #D8D0C4;
-    --gray-text: #686058;
-    --gray-light: #EDEAE4;
-    --border: #D8D0C4;
-    --dark: #242018;
-    --accent: #4A6A8A;
+    /* Lake Michigan — soft blues, golden yellows, sunset orange, teal, green */
+    --cherry: #C8501A;    --cherry-lt: #FFF3EE;  --cherry-mid: #F4A07A; --cherry-dk: #8A3210;
+    --amber:  #D4820A;    --amber-lt:  #FFFBF0;  --amber-mid: #F2C94C;  /* sandy yellow-gold */
+    --green:  #2A6048;    --green-lt:  #EAF5EE;  --green-mid: #5CAE82;  /* lakeshore green */
+    --blue:   #2C6B9B;    --blue-lt:   #EBF4FA;  --blue-mid:  #72ADD4;  /* deep lake blue */
+    --purple: #5B4A8A;    --purple-lt: #F3F0FF;
+    --gold:   #E8A830;    --gold-lt:   #FDF8EC;  --gold-mid:  #F2C94C;  /* warm yellow */
+    --water:  #1E8A8A;    --water-lt:  #E8F7F7;  --water-mid: #5CBCBC;  /* lake teal */
+    --orange: #E8722A;    --orange-lt: #FFF0E8;  --orange-mid: #F4A060; /* sunset orange */
+    --gray-bg: #F2F6F8;   /* soft lake-sky gray */
+    --gray-line: #C8D8E4;
+    --gray-text: #4A5E6A;
+    --gray-light: #E8EFF4;
+    --border: #C8D8E4;
+    --dark: #1A2E3A;
+    --accent: #2C6B9B;
   }
   body {
     font-family: 'Inter', sans-serif;
@@ -208,21 +209,21 @@
     padding: 12px 15px 10px;
     display: flex; align-items: center; gap: 8px;
     border-bottom: 2px solid rgba(0,0,0,0.07);
-    font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px;
+    font-size: 15.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px;
     border-radius: 9px 9px 0 0;
     background: transparent;
   }
-  .section-header .sh-icon { font-size: 10.5px; }
+  .section-header .sh-icon { font-size: 15.5px; }
   .section-body { padding: 12px 14px; }
 
   /* Header colour fills — muted professional tones */
-  .sh-red    { color: #2D3748;  background: linear-gradient(90deg, #E2E5EA 0%, #EDF0F4 100%); border-bottom-color: #CBD5E0; }
-  .sh-amber  { color: #5C4A1A;  background: linear-gradient(90deg, #EEE4C0 0%, #F5EDD8 100%); border-bottom-color: #D4C080; }
-  .sh-green  { color: #1A4731;  background: linear-gradient(90deg, #BBD9C8 0%, #D4EBE0 100%); border-bottom-color: #8FBFA8; }
-  .sh-blue   { color: #1E3A5F;  background: linear-gradient(90deg, #BFCFE0 0%, #D8E6F0 100%); border-bottom-color: #9AB4CC; }
-  .sh-gray   { color: #374151;  background: linear-gradient(90deg, #E5E7EB 0%, #F3F4F6 100%); border-bottom-color: #D1D5DB; }
-  .sh-purple { color: #3B3764;  background: linear-gradient(90deg, #C9C7E0 0%, #E0DFF0 100%); border-bottom-color: #A8A4CC; }
-  .sh-teal   { color: #1A4040;  background: linear-gradient(90deg, #A8CCCC 0%, #CCE4E4 100%); border-bottom-color: #7AADAD; }
+  .sh-red    { color: #1A2E3A;  background: linear-gradient(90deg, #D4E8F8 0%, #E8F3FC 100%); border-bottom-color: #A8CDE8; }
+  .sh-amber  { color: #5A3A08;  background: linear-gradient(90deg, #FCECC0 0%, #FDF6DC 100%); border-bottom-color: #E8C84A; }
+  .sh-green  { color: #1A4030;  background: linear-gradient(90deg, #B4DECA 0%, #CEEEDD 100%); border-bottom-color: #70C098; }
+  .sh-blue   { color: #0E2A48;  background: linear-gradient(90deg, #B0D0EC 0%, #CCE4F6 100%); border-bottom-color: #6AACE0; }
+  .sh-gray   { color: #304050;  background: linear-gradient(90deg, #DDE8F0 0%, #EEF4F8 100%); border-bottom-color: #B8CCD8; }
+  .sh-purple { color: #0E4848;  background: linear-gradient(90deg, #A8DEDE 0%, #C8EEEE 100%); border-bottom-color: #60C0C0; }
+  .sh-teal   { color: #5A2808;  background: linear-gradient(90deg, #FAC8A0 0%, #FCDEC0 100%); border-bottom-color: #F0A060; }
 
   /* ── DRAG & REARRANGE ── */
   .drag-handle {
@@ -1324,8 +1325,8 @@
     <span class="header-tagline">Daily Briefing · Live</span>
   </div>
   <div class="header-right">
-    <div class="header-date" contenteditable="false">Week of June 1, 2026</div>
-    <div class="header-week">Week 23 · Q2</div>
+    <div class="header-date" contenteditable="false">Week of June 8, 2026</div>
+    <div class="header-week">Week 24 · Q2</div>
     <span class="header-badge">📊 Executive View</span>
   </div>
 </div>
@@ -1392,7 +1393,7 @@
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
       <div class="section-header sh-cherry">
         <span class="sh-icon">📋</span><span>Daily Brief</span>
-        <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--cherry);text-transform:none;letter-spacing:0;">Week of June 1, 2026</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--cherry);text-transform:none;letter-spacing:0;">Week of June 8, 2026</span>
       </div>
       <div class="section-body" style="padding:0;">
         <div id="daily-brief-store" style="display:none">{}</div>
@@ -1400,7 +1401,7 @@
     <div class="bd-toggle bd-holiday" id="bdt-may25" onclick="toggleBriefDay('may25')">
       <div class="bd-left">
         <span class="bd-dow">Monday</span>
-        <span class="bd-date">Jun 1</span>
+        <span class="bd-date">Jun 8</span>
       </div>
       <span class="bd-arrow">▾</span>
     </div>
@@ -1411,7 +1412,7 @@
     <div class="bd-toggle" id="bdt-may26" onclick="toggleBriefDay('may26')">
       <div class="bd-left">
         <span class="bd-dow">Tuesday</span>
-        <span class="bd-date">Jun 2</span>
+        <span class="bd-date">Jun 9</span>
         <span class="bd-badge">0 items</span>
       </div>
       <span class="bd-arrow">▾</span>
@@ -1501,7 +1502,7 @@
     <div class="bd-toggle" id="bdt-may27" onclick="toggleBriefDay('may27')">
       <div class="bd-left">
         <span class="bd-dow">Wednesday</span>
-        <span class="bd-date">Jun 3</span>
+        <span class="bd-date">Jun 10</span>
         <span class="bd-badge">0 items</span>
       </div>
       <span class="bd-arrow">▾</span>
@@ -1591,7 +1592,7 @@
     <div class="bd-toggle" id="bdt-may28" onclick="toggleBriefDay('may28')">
       <div class="bd-left">
         <span class="bd-dow">Thursday</span>
-        <span class="bd-date">Jun 4</span>
+        <span class="bd-date">Jun 11</span>
         <span class="bd-badge">0 items</span>
       </div>
       <span class="bd-arrow">▾</span>
@@ -1681,7 +1682,7 @@
     <div class="bd-toggle" id="bdt-may29" onclick="toggleBriefDay('may29')">
       <div class="bd-left">
         <span class="bd-dow">Friday</span>
-        <span class="bd-date">Jun 5</span>
+        <span class="bd-date">Jun 12</span>
         <span class="bd-badge">0 items</span>
       </div>
       <span class="bd-arrow">▾</span>
@@ -2187,92 +2188,92 @@
   <div class="section-card" id="scheduleCard">
     <div class="section-header sh-gray">
       <span class="sh-icon">📅</span>
-      <span>Calendar — Week of June 1, 2026</span>
+      <span>Calendar — Week of June 8, 2026</span>
       <span style="margin-left:auto; font-size:10px; color:var(--gray-text); font-weight:400; text-transform:none; letter-spacing:0;">click any day to expand ▾</span>
     </div>
 
     <!-- ── THIS WEEK ── -->
-    <div class="day-divider">This Week — June 1–5</div>
+    <div class="day-divider">This Week — June 8–12</div>
 
-    <!-- Monday June 1 -->
-    <div class="day-toggle is-today open" id="dt-jun1" onclick="toggleDay('jun1')">
+    <!-- Monday June 8 -->
+    <div class="day-toggle" id="dt-jun8" onclick="toggleDay('jun8')">
       <div class="day-left">
         <span class="day-dow">Monday</span>
-        <span class="day-date">June 1</span>
-        <span class="day-badge">Today · Today · 1 event</span>
+        <span class="day-date">June 8</span>
+        <span class="day-badge">0 events</span>
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body  open" id="db-jun1">
+    <div class="day-body" id="db-jun8">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-jun1"><tr><td contenteditable="true">Greater Great Hall Progress Review</td><td contenteditable="true">2:00 PM</td><td contenteditable="true">3:00 PM</td><td contenteditable="true">Microsoft Teams Meeting · Logan Sanders</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
       </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun1')">+ Add event</button>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun8')">+ Add event</button>
     </div>
-    <!-- Tuesday June 2 -->
-    <div class="day-toggle" id="dt-jun2" onclick="toggleDay('jun2')">
+    <!-- Tuesday June 9 -->
+    <div class="day-toggle" id="dt-jun9" onclick="toggleDay('jun9')">
       <div class="day-left">
         <span class="day-dow">Tuesday</span>
-        <span class="day-date">June 2</span>
-        <span class="day-badge">6 events</span>
+        <span class="day-date">June 9</span>
+        <span class="day-badge">0 events</span>
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body" id="db-jun2">
+    <div class="day-body" id="db-jun9">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-jun2"><tr><td contenteditable="true">Breneman Advisors Weekly Check In</td><td contenteditable="true">9:00 AM</td><td contenteditable="true">10:00 AM</td><td contenteditable="true">HQ-Life-Media-Teams-Room · Bob Sutherland</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Monthly Financial Health Check</td><td contenteditable="true">10:00 AM</td><td contenteditable="true">11:00 AM</td><td contenteditable="true">Microsoft Teams · HQ-Life-Media-Teams-Room · Julie Meredith</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">LT Level 10</td><td contenteditable="true">10:30 AM</td><td contenteditable="true">12:00 PM</td><td contenteditable="true">Microsoft Teams · HQ-Executive-Sand-Lot-Teams-Room · Todd Ciolek</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Greater Great Hall Budget and Landscape Meeting</td><td contenteditable="true">12:30 PM</td><td contenteditable="true">1:30 PM</td><td contenteditable="true">Cherry Republic Glen Arbor · Logan Sanders</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">SOC Check In</td><td contenteditable="true">1:00 PM</td><td contenteditable="true">2:00 PM</td><td contenteditable="true">Rebecca Benedict</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">T/R Check In</td><td contenteditable="true">4:00 PM</td><td contenteditable="true">4:30 PM</td><td contenteditable="true">Microsoft Teams Meeting · Rebecca Benedict</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
       </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun2')">+ Add event</button>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun9')">+ Add event</button>
     </div>
-    <!-- Wednesday June 3 -->
-    <div class="day-toggle" id="dt-jun3" onclick="toggleDay('jun3')">
+    <!-- Wednesday June 10 -->
+    <div class="day-toggle" id="dt-jun10" onclick="toggleDay('jun10')">
       <div class="day-left">
         <span class="day-dow">Wednesday</span>
-        <span class="day-date">June 3</span>
-        <span class="day-badge">1 event</span>
+        <span class="day-date">June 10</span>
+        <span class="day-badge">0 events</span>
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body" id="db-jun3">
+    <div class="day-body" id="db-jun10">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-jun3"><tr><td contenteditable="true">Summer KickOff SOC</td><td contenteditable="true">9:00 AM</td><td contenteditable="true">10:00 AM</td><td contenteditable="true">Glen Arbor Township Hall, 6394 W Western Ave · Rebecca Benedict</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
       </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun3')">+ Add event</button>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun10')">+ Add event</button>
     </div>
-    <!-- Thursday June 4 -->
-    <div class="day-toggle" id="dt-jun4" onclick="toggleDay('jun4')">
+    <!-- Thursday June 11 -->
+    <div class="day-toggle" id="dt-jun11" onclick="toggleDay('jun11')">
       <div class="day-left">
         <span class="day-dow">Thursday</span>
-        <span class="day-date">June 4</span>
-        <span class="day-badge">3 events</span>
+        <span class="day-date">June 11</span>
+        <span class="day-badge">0 events</span>
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body" id="db-jun4">
+    <div class="day-body" id="db-jun11">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-jun4"><tr><td contenteditable="true">OOO — Out of Office</td><td contenteditable="true">All day</td><td contenteditable="true"></td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">MI Partner Health Open House</td><td contenteditable="true">3:00 PM</td><td contenteditable="true">4:00 PM</td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr><tr><td contenteditable="true">Soccer Banquet</td><td contenteditable="true">6:00 PM</td><td contenteditable="true">8:00 PM</td><td contenteditable="true">Leelanau Outdoor Center · Todd Ciolek</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
       </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun4')">+ Add event</button>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun11')">+ Add event</button>
     </div>
-    <!-- Friday June 5 -->
-    <div class="day-toggle" id="dt-jun5" onclick="toggleDay('jun5')">
+    <!-- Friday June 12 -->
+    <div class="day-toggle" id="dt-jun12" onclick="toggleDay('jun12')">
       <div class="day-left">
         <span class="day-dow">Friday</span>
-        <span class="day-date">June 5</span>
-        <span class="day-badge">1 event</span>
+        <span class="day-date">June 12</span>
+        <span class="day-badge">0 events</span>
       </div>
       <span class="day-arrow">▾</span>
     </div>
-    <div class="day-body" id="db-jun5">
+    <div class="day-body" id="db-jun12">
       <table class="sched-table">
         <thead><tr><th style="width:36%;">Event</th><th style="width:12%;">Start</th><th style="width:12%;">End</th><th>Details</th><th style="width:18px;"></th></tr></thead>
         <tbody id="rows-jun5"><tr><td contenteditable="true">🏌️ Golf (Boys V) @ MHSAA State Finals</td><td contenteditable="true">All day</td><td contenteditable="true"></td><td contenteditable="true">Forest Akers West — Kids' sports</td><td><button class="del-btn" onclick="delRow(this)" title="Remove">×</button></td></tr></tbody>
       </table>
-      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun5')">+ Add event</button>
+      <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun12')">+ Add event</button>
     </div>
 
     Last Week — May 18–22</div>
