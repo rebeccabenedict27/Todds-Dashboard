@@ -178,7 +178,7 @@
   .sc-blue  { border-top-color: #1D4ED8;       } .sc-blue  .stat-value { color: #1D4ED8;       }
 
   /* ── LAYOUT ── */
-  .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; align-items: start; margin-bottom: 16px; }
+  .two-col { display: grid; grid-template-columns: 3fr 2fr; gap: 18px; align-items: start; margin-bottom: 16px; }
   .stack { display: flex; flex-direction: column; gap: 14px; }
   .schedule-col { position: sticky; top: 58px; max-height: calc(100vh - 70px); overflow-y: auto; border-radius: 14px; scrollbar-width: thin; scrollbar-color: #E5E7EB transparent; }
   .schedule-col::-webkit-scrollbar { width: 5px; }
@@ -736,7 +736,7 @@
   .rock-body { flex: 1; min-width: 0; }
   .rock-text { font-size: 14.5px; font-weight: 600; outline: none; line-height: 1.4; }
   .rock-owner { font-size: 14.5px; color: var(--gray-text); margin-top: 2px; outline: none; }
-  .rock-status-wrap { flex-shrink: 0; }
+  .rock-status-wrap { flex-shrink: 0; min-width: 118px; }
   /* Rock-specific status: On Track / Off Track / Done */
   .rock-status-wrap .status-dd[data-s="ontrack"]  .sd-btn { background:#EDF4EF; color:#1A4731; }
   .rock-status-wrap .status-dd[data-s="offtrack"] .sd-btn { background:#EDF0F4; color:#2D3748; }
@@ -1267,7 +1267,7 @@
 </style>
 <!-- Sortable: self-contained, no CDN needed -->
 </head>
-<body class="rearrange-mode">
+<body style="transition: padding-left 0.25s ease;">
 
 <div class="edit-banner">✏️ EDIT MODE ACTIVE — click any text field to update it · Click "Done Editing" to finish</div>
 <div class="rearrange-banner">🔀 REARRANGE MODE — grab the ⠿⠿ handle at the top of any card to drag it into a new position</div>
@@ -1352,7 +1352,7 @@
 <!-- stats row removed -->
 
 <!-- ── SHARED WHITEBOARD — single thread, colored by author ── -->
-<div class="section-card" id="msgBoardCard" style="margin-bottom:16px;">
+<div class="section-card" id="whiteboard-section" id="msgBoardCard" style="margin-bottom:16px;">
   <div class="section-header sh-purple">
     <span class="sh-icon">💬</span><span>Whiteboard — Shared Messages</span>
     <span style="margin-left:auto;font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-text);">Pick author → type → Post</span>
@@ -1885,7 +1885,7 @@
 
 <div class="section-card task-db-card" id="taskDbCard" style="margin-bottom:16px;">
   <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
-  <div class="section-header sh-task-db">
+  <div class="section-header sh-task-db" id="tasks-section">
     <span class="sh-icon">🗂️</span>
     <span>Executive Task Database</span>
     <span class="task-db-meta" id="taskDbMeta">8 open · 18 total</span>
@@ -1979,7 +1979,7 @@
 
 
     <!-- WAITING ON -->
-    <div class="section-card">
+    <div class="section-card" id="dailybrief-section"
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
       <div class="section-header sh-amber">
         <span class="sh-icon">⏳</span><span>Waiting On</span>
@@ -2028,7 +2028,7 @@
 
 
     <!-- SCORECARD -->
-    <div class="section-card">
+    <div class="section-card" id="rocks-todd-section">
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
       <div class="section-header sh-red">
         <span class="sh-icon">🪨</span><span>Q2 2026 Rocks — Todd</span>
@@ -2121,7 +2121,7 @@
     </div>
 
     <!-- QUARTERLY ROCKS — Rebecca Q2 2026 -->
-    <div class="section-card" id="rocksRebeccaCard">
+    <div class="section-card" id="rocks-reb-section" id="rocksRebeccaCard">
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
       <div class="section-header sh-purple">
         <span class="sh-icon">🪨</span><span>Q2 2026 Rocks — Rebecca</span>
@@ -2290,7 +2290,7 @@
           <div class="task-notes-body" contenteditable="false" data-ph="General notes, reminders, or context for Todd's tasks…" oninput="markDirty()"></div>
         </div>
       </div>
-    </div><div class="section-card">
+    </div><div class="section-card" id="scorecard-section">
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
       <div class="section-header sh-blue">
         <span class="sh-icon">📊</span><span>Scorecard</span>
@@ -2376,7 +2376,7 @@
   </div><!-- /stackLeft -->
 
   <!-- RIGHT: Calendar (sticky) -->
-  <div class="schedule-col">
+  <div class="schedule-col" id="schedule-section">
   <div class="section-card" id="scheduleCard">
     <div class="section-header sh-gray">
       <span class="sh-icon">📅</span>
@@ -2700,7 +2700,7 @@
   </div><!-- /schedule card -->
   </div><!-- /schedule-col -->
 
-</div><div class="section-card" id="rebeccaCard" style="margin-bottom:16px; border-left: 3px solid #6B5BAB;">
+</div><div class="section-card" id="rebeccas-section" id="rebeccaCard" style="margin-bottom:16px; border-left: 3px solid #6B5BAB;">
   <!-- Drag bar: shift section up/down on the page -->
   <div id="rebeccaDragBar" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 14px; cursor: grab; user-select: none; background: rgb(238, 234, 248); border-bottom: 1px solid rgb(221, 214, 254); border-radius: 9px 9px 0px 0px; font-size: 14.5px; font-weight: 700; color: rgb(76, 29, 149); letter-spacing: 0.4px;">
     <span style="display:flex; align-items:center; gap:6px;">⠿⠿ DRAG / MOVE THIS SECTION</span>
@@ -5917,6 +5917,116 @@ document.addEventListener('DOMContentLoaded', pbRenderArchive);
     font-size: 13.5px; cursor: pointer; text-align: center;
   }
   .pb-save-btn:hover { background: #F3F4F6; color: var(--dark); border-color: #9CA3AF; }
+
+  /* ── COLLAPSIBLE SECTION CARDS ── */
+  .sec-collapse {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.80); font-size: 18px; font-weight: 300;
+    padding: 0 2px; border-radius: 4px; line-height: 1;
+    margin-left: 8px; flex-shrink: 0;
+    transition: all 0.15s; user-select: none;
+  }
+  .sec-collapse:hover { color: #fff; background: rgba(255,255,255,0.18); }
+  .section-body.sec-collapsed { display: none !important; }
+
+  /* ── CARD POLISH ── */
+  .section-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #E8EAED;
+    border-left: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.04);
+    overflow: visible;
+    transition: box-shadow 0.2s;
+    margin-bottom: 14px;
+  }
+  .section-card:hover {
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .section-header {
+    border-radius: 10px 10px 0 0;
+    display: flex; align-items: center;
+    padding: 11px 16px; gap: 8px;
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em; color: #fff;
+  }
+  .section-body {
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: -apple-system, 'Inter', BlinkMacSystemFont, sans-serif;
+    line-height: 1.5;
+  }
+
+  /* ── SIDEBAR ── */
+  #sb-nav {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: 210px; background: #1E2A3A;
+    z-index: 200; overflow-y: auto;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    transform: translateX(-210px);
+    transition: transform 0.25s ease;
+    padding-top: 58px;
+  }
+  #sb-nav.open { transform: translateX(0); }
+  #sb-toggle {
+    position: fixed; left: 0; top: 68px; z-index: 201;
+    background: #1E2A3A; color: #fff;
+    border: none; border-radius: 0 8px 8px 0;
+    padding: 8px 10px; cursor: pointer; font-size: 16px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    transition: left 0.25s ease;
+  }
+  body.sb-open #sb-toggle { left: 210px; }
+  body.sb-open { padding-left: 210px; }
+  .sb-section-link {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 16px; color: #CBD5E1; font-size: 13px;
+    text-decoration: none; border: none; background: none;
+    cursor: pointer; text-align: left; width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.15s, color 0.15s;
+  }
+  .sb-section-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .sb-section-link .sb-icon { font-size: 15px; }
+  .sb-section-link .sb-eye {
+    margin-left: auto; font-size: 13px; opacity: 0.5;
+    color: #94A3B8;
+  }
+  .sb-section-link .sb-eye:hover { opacity: 1; color: #E8A830; }
+  .sb-title {
+    padding: 16px 16px 6px; font-size: 10px; font-weight: 700;
+    color: #64748B; text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  /* ── ROCK STATUS FIXES ── */
+  .rock-item { gap: 8px; }
+  .rock-status-wrap { flex-shrink: 0; min-width: 118px; display: flex; align-items: center; }
+  .sd-btn {
+    font-size: 12px !important;
+    white-space: nowrap;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
+    min-width: 100px;
+    text-align: left;
+  }
+  .rock-text { font-size: 13px; line-height: 1.45; }
+  .rock-owner { font-size: 12px !important; color: #6B7280; }
+  
+  /* ── CONSISTENT BODY FONT ── */
+  body { font-family: -apple-system, 'Inter', BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  
+  /* ── SIDEBAR TOGGLE BUTTON ── */
+  #sb-toggle {
+    position: fixed; left: 12px; top: 68px; z-index: 201;
+    background: #1E2A3A; color: #CBD5E1;
+    border: none; border-radius: 8px;
+    padding: 8px 11px; cursor: pointer; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    transition: left 0.25s ease, background 0.15s;
+  }
+  #sb-toggle:hover { background: #2D3F54; color: #fff; }
+  body.sb-open #sb-toggle { left: 222px; }
 </style>
 
 <script type="module">
@@ -6957,4 +7067,72 @@ document.addEventListener('DOMContentLoaded', function() { initHappyDailyRows();
   window.sbSaveNow = save;
   document.addEventListener('DOMContentLoaded', () => setTimeout(load, 500));
 })();
+</script>
+
+<!-- ═══ SIDEBAR NAV ═══ -->
+<button id="sb-toggle" onclick="sbToggle()" title="Open navigation menu">☰</button>
+<nav id="sb-nav">
+  <div style="padding:14px 16px 10px; border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom:4px;">
+    <div style="font-size:11px; font-weight:800; color:#E8A830; letter-spacing:0.06em; text-transform:uppercase;">Cherry Republic</div>
+    <div style="font-size:10px; color:#64748B; margin-top:2px;">Todd's Dashboard</div>
+  </div>
+  <div class="sb-title">Navigate To</div>
+  <button class="sb-section-link" onclick="sbScrollTo('whiteboard-section')"><span class="sb-icon">💬</span> Whiteboard</button>
+  <button class="sb-section-link" onclick="sbScrollTo('dailybrief-section')"><span class="sb-icon">📋</span> Daily Brief</button>
+  <button class="sb-section-link" onclick="sbScrollTo('tasks-section')"><span class="sb-icon">🗂️</span> Task Database</button>
+  <button class="sb-section-link" onclick="sbScrollTo('scorecard-section')"><span class="sb-icon">📊</span> Scorecard</button>
+  <button class="sb-section-link" onclick="sbScrollTo('rocks-todd-section')"><span class="sb-icon">🪨</span> Todd's Rocks</button>
+  <button class="sb-section-link" onclick="sbScrollTo('rocks-reb-section')"><span class="sb-icon">🪨</span> Rebecca's Rocks</button>
+  <button class="sb-section-link" onclick="sbScrollTo('rebeccas-section')"><span class="sb-icon">👤</span> Rebecca's Section</button>
+  <button class="sb-section-link" onclick="sbScrollTo('schedule-section')"><span class="sb-icon">📅</span> Calendar</button>
+  <div class="sb-title" style="margin-top:12px;">Sections</div>
+  <button class="sb-section-link" onclick="sbCollapseAll()"><span class="sb-icon">🗜️</span> Collapse All</button>
+  <button class="sb-section-link" onclick="sbExpandAll()"><span class="sb-icon">↕️</span> Expand All</button>
+</nav>
+<script>
+// ── Sidebar ──
+function sbToggle() {
+  document.getElementById('sb-nav').classList.toggle('open');
+  document.body.classList.toggle('sb-open');
+}
+function sbScrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) { el.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+function sbCollapseAll() {
+  document.querySelectorAll('.section-body').forEach(b => {
+    b.classList.add('sec-collapsed');
+    const btn = b.closest('.section-card')?.querySelector('.sec-collapse');
+    if (btn) btn.textContent = '+';
+  });
+}
+function sbExpandAll() {
+  document.querySelectorAll('.section-body').forEach(b => {
+    b.classList.remove('sec-collapsed');
+    const btn = b.closest('.section-card')?.querySelector('.sec-collapse');
+    if (btn) btn.textContent = '–';
+  });
+}
+
+// ── Auto-inject collapse buttons into every section-header ──
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.section-header').forEach(hdr => {
+    if (hdr.querySelector('.sec-collapse')) return;
+    const btn = document.createElement('button');
+    btn.className = 'sec-collapse';
+    btn.textContent = '–';
+    btn.title = 'Collapse / expand section';
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      const card = btn.closest('.section-card');
+      if (!card) return;
+      const body = card.querySelector('.section-body');
+      if (!body) return;
+      const isCollapsed = body.classList.contains('sec-collapsed');
+      body.classList.toggle('sec-collapsed', !isCollapsed);
+      btn.textContent = isCollapsed ? '–' : '+';
+    };
+    hdr.appendChild(btn);
+  });
+});
 </script>
