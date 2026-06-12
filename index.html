@@ -1373,9 +1373,9 @@
       </div>
     </div>
     <!-- Thread -->
-    <div class="wb-thread" id="wbThread"><div class="wb-msg wb-msg-rebecca" data-wbid="wb_mora4k5y_ju3"><div class="wb-msg-head"><span class="wb-msg-author">Rebecca</span><span class="wb-msg-time">Today · 10:13 AM</span></div><div class="wb-msg-body">Check In</div><button class="wb-msg-del" onclick="wbDelete('wb_mora4k5y_ju3')" title="Delete message">✕</button></div></div>
+    <div class="wb-thread" id="wbThread"></div>
     <!-- Hidden store -->
-    <div id="wb-store" style="display:none">[{"id":"wb_mora4k5y_ju3","author":"Rebecca","text":"Check In","ts":"2026-05-04T14:13:01.846Z"}]</div>
+    <div id="wb-store" style="display:none">[]</div>
   </div>
 </div>
 
@@ -1979,7 +1979,7 @@
 
 
     <!-- WAITING ON -->
-    <div class="section-card" id="dailybrief-section"
+    <div class="section-card" id="dailybrief-section">
       <div class="drag-handle"><span class="drag-dots">⠿⠿</span> drag to move</div>
       <div class="section-header sh-amber">
         <span class="sh-icon">⏳</span><span>Waiting On</span>
@@ -2452,7 +2452,7 @@
       <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun11')">+ Add event</button>
     </div>
     <!-- Friday June 12 -->
-    <div class="day-toggle" id="dt-jun12" onclick="toggleDay('jun12')">
+    <div class="day-toggle" id="dt-jun12" onclick="toggleDay('jun12')" class="day-toggle-today">
       <div class="day-left">
         <span class="day-dow">Friday</span>
         <span class="day-date">June 12</span>
@@ -6027,6 +6027,19 @@ document.addEventListener('DOMContentLoaded', pbRenderArchive);
   }
   #sb-toggle:hover { background: #2D3F54; color: #fff; }
   body.sb-open #sb-toggle { left: 222px; }
+
+  .day-toggle-today {
+    background: linear-gradient(90deg, rgba(184,28,28,0.07) 0%, rgba(184,28,28,0.01) 100%);
+    border-left: 3px solid var(--cherry) !important;
+  }
+  .day-toggle-today .day-dow { color: var(--cherry) !important; font-weight: 800; }
+  .day-toggle-today .day-date { color: var(--cherry) !important; font-weight: 700; }
+  .day-toggle-today .day-left::after {
+    content: ' TODAY';
+    font-size: 9px; font-weight: 800;
+    color: var(--cherry); letter-spacing: 0.08em;
+    margin-left: 6px; vertical-align: middle;
+  }
 </style>
 
 <script type="module">
@@ -7116,6 +7129,14 @@ function sbExpandAll() {
 
 // ── Auto-inject collapse buttons into every section-header ──
 document.addEventListener('DOMContentLoaded', function() {
+  // Auto-expand and scroll to today (June 12)
+  var todayBody = document.getElementById('db-jun12');
+  if (todayBody) todayBody.style.display = '';
+  setTimeout(function() {
+    var todayEl = document.getElementById('dt-jun12');
+    if (todayEl) todayEl.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 900);
+
   document.querySelectorAll('.section-header').forEach(hdr => {
     if (hdr.querySelector('.sec-collapse')) return;
     const btn = document.createElement('button');
