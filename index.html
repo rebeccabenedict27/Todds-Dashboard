@@ -2380,12 +2380,29 @@
   <div class="section-card" id="scheduleCard">
     <div class="section-header sh-gray">
       <span class="sh-icon">📅</span>
-      <span>Calendar — Week of June 8, 2026</span>
+      <span>Calendar — Week of June 16, 2026</span>
       <span style="margin-left:auto; font-size:10px; color:var(--gray-text); font-weight:400; text-transform:none; letter-spacing:0;">click any day to expand ▾</span>
     </div>
 
     <!-- ── THIS WEEK ── -->
-    <div class="day-divider">This Week — June 8–12</div>
+   <div class="day-divider">This Week — June 15–19</div>
+
+    <div class="day-toggle" id="dt-jun15" onclick="toggleDay('jun15')"><div class="day-left"><span class="day-dow">Monday</span><span class="day-date">June 15</span><span class="day-badge">0 events</span></div><span class="day-arrow">▾</span></div>
+    <div class="day-body" id="db-jun15"><table class="sched-table"><thead><tr><th>Event</th><th>Start</th><th>End</th><th>Details</th><th></th></tr></thead><tbody id="rows-jun15"></tbody></table><button class="add-item-btn" onclick="addSchedRow('rows-jun15')">+ Add event</button></div>
+
+    <div class="day-toggle day-toggle-today" id="dt-jun16" onclick="toggleDay('jun16')"><div class="day-left"><span class="day-dow">Tuesday</span><span class="day-date">June 16</span><span class="day-badge">5 events</span></div><span class="day-arrow">▾</span></div>
+    <div class="day-body open" id="db-jun16"><table class="sched-table"><thead><tr><th>Event</th><th>Start</th><th>End</th><th>Details</th><th></th></tr></thead><tbody id="rows-jun16"><tr><td contenteditable="true">LT Level 10</td><td contenteditable="true">10:00 AM</td><td contenteditable="true">12:00 PM</td><td contenteditable="true">Microsoft Teams · HQ-Executive-Sand-Lot-Teams-Room</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">LT Photo Shoot – Take II</td><td contenteditable="true">12:00 PM</td><td contenteditable="true">1:00 PM</td><td contenteditable="true">Rebecca Benedict</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Bye Bye Bill Lunch</td><td contenteditable="true">12:00 PM</td><td contenteditable="true">1:00 PM</td><td contenteditable="true">HQ Conference Room</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Travel to Frankfort</td><td contenteditable="true">1:00 PM</td><td contenteditable="true">2:00 PM</td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">🌀 Frankfort Shootout</td><td contenteditable="true">2:00 PM</td><td contenteditable="true">5:00 PM</td><td contenteditable="true">Frankfort</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr></tbody></table><button class="add-item-btn" onclick="addSchedRow('rows-jun16')">+ Add event</button></div>
+
+    <div class="day-toggle" id="dt-jun17" onclick="toggleDay('jun17')"><div class="day-left"><span class="day-dow">Wednesday</span><span class="day-date">June 17</span><span class="day-badge">6 events</span></div><span class="day-arrow">▾</span></div>
+    <div class="day-body" id="db-jun17"><table class="sched-table"><thead><tr><th>Event</th><th>Start</th><th>End</th><th>Details</th><th></th></tr></thead><tbody id="rows-jun17"><tr><td contenteditable="true">Strategic Time</td><td contenteditable="true">9:00 AM</td><td contenteditable="true">10:00 AM</td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Q1 LLC P&amp;L Exception Reporting Review</td><td contenteditable="true">10:00 AM</td><td contenteditable="true">11:00 AM</td><td contenteditable="true">Microsoft Teams · Logan Sanders</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Plante Moran &amp; CR Gross Margin Tiger Team – Working Lunch</td><td contenteditable="true">11:00 AM</td><td contenteditable="true">1:00 PM</td><td contenteditable="true">Microsoft Teams · Todd Ciolek</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Travel to Basketball</td><td contenteditable="true">5:00 PM</td><td contenteditable="true">6:00 PM</td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">⚽🏀 Y League – V vs Elk Rapids</td><td contenteditable="true">6:00 PM</td><td contenteditable="true">7:00 PM</td><td contenteditable="true">TC West Middle School</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">YMCA League JV vs Leland</td><td contenteditable="true">7:00 PM</td><td contenteditable="true">8:00 PM</td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr></tbody></table><button class="add-item-btn" onclick="addSchedRow('rows-jun17')">+ Add event</button></div>
+
+    <div class="day-toggle" id="dt-jun18" onclick="toggleDay('jun18')"><div class="day-left"><span class="day-dow">Thursday</span><span class="day-date">June 18</span><span class="day-badge">6 events</span></div><span class="day-arrow">▾</span></div>
+    <div class="day-body" id="db-jun18"><table class="sched-table"><thead><tr><th>Event</th><th>Start</th><th>End</th><th>Details</th><th></th></tr></thead><tbody id="rows-jun18"><tr><td contenteditable="true">Interview – Nick Lipon</td><td contenteditable="true">10:00 AM</td><td contenteditable="true">11:00 AM</td><td contenteditable="true">HQ-Life-Media-Teams-Room · Julie Meredith</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Meeting at Breneman Advisors – TC</td><td contenteditable="true">1:00 PM</td><td contenteditable="true">4:00 PM</td><td contenteditable="true">1368 Business Park Dr, TC MI · Bob Sutherland</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Drive to Empire Warehouse</td><td contenteditable="true">4:00 PM</td><td contenteditable="true">5:00 PM</td><td contenteditable="true">9876 W Fisher St, Empire MI</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Walkthrough Empire Warehouse/Cherry Factory</td><td contenteditable="true">5:00 PM</td><td contenteditable="true">6:15 PM</td><td contenteditable="true">Bob Sutherland</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Drive back to town</td><td contenteditable="true">6:15 PM</td><td contenteditable="true">7:15 PM</td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr><tr><td contenteditable="true">Dinner at LochenHeath</td><td contenteditable="true">7:30 PM</td><td contenteditable="true">TBD</td><td contenteditable="true">LochenHeath Golf Club, Williamsburg MI</td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr></tbody></table><button class="add-item-btn" onclick="addSchedRow('rows-jun18')">+ Add event</button></div>
+
+    <div class="day-toggle" id="dt-jun19" onclick="toggleDay('jun19')"><div class="day-left"><span class="day-dow">Friday</span><span class="day-date">June 19</span><span class="day-badge">1 event</span></div><span class="day-arrow">▾</span></div>
+    <div class="day-body" id="db-jun19"><table class="sched-table"><thead><tr><th>Event</th><th>Start</th><th>End</th><th>Details</th><th></th></tr></thead><tbody id="rows-jun19"><tr><td contenteditable="true">Strategic Work Day</td><td contenteditable="true">9:00 AM</td><td contenteditable="true">4:00 PM</td><td contenteditable="true"></td><td><button class="del-btn" onclick="delRow(this)">×</button></td></tr></tbody></table><button class="add-item-btn" onclick="addSchedRow('rows-jun19')">+ Add event</button></div>
+
+    <div class="day-divider">Last Week — June 8–12</div>
 
     <!-- Monday June 8 -->
     <div class="day-toggle" id="dt-jun8" onclick="toggleDay('jun8')">
@@ -2468,9 +2485,7 @@
       <button class="add-item-btn" style="margin-top:8px;" onclick="addSchedRow('rows-jun12')">+ Add event</button>
     </div>
 
-    Last Week — May 18–22</div>
-
-    <!-- Monday May 18 -->
+    y May 18 -->
     <div class="day-toggle" id="dt-may18" onclick="toggleDay('may18')">
       <div class="day-left">
         <span class="day-dow">Monday</span>
@@ -7142,10 +7157,10 @@ function sbExpandAll() {
 // ── Auto-inject collapse buttons into every section-header ──
 document.addEventListener('DOMContentLoaded', function() {
   // Auto-expand and scroll to today (June 12)
-  var todayBody = document.getElementById('db-jun12');
+  var todayBody = document.getElementById('db-jun16');
   if (todayBody) todayBody.style.display = '';
   setTimeout(function() {
-    var todayEl = document.getElementById('dt-jun12');
+    var todayEl = document.getElementById('dt-jun16');
     if (todayEl) todayEl.scrollIntoView({behavior:'smooth', block:'center'});
   }, 900);
 
