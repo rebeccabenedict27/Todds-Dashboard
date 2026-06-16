@@ -7072,6 +7072,18 @@ document.addEventListener('DOMContentLoaded', function() { initHappyDailyRows();
         // First ever load — push current page state up to Supabase
         await save();
       }
+      // Self-heal: clear stale Check-In ghost
+      try {
+        const _wbEl = document.getElementById('wb-store');
+        if (_wbEl) {
+          const _wbD = JSON.parse(_wbEl.textContent || '[]');
+          if (_wbD.length === 1 && _wbD[0].id === 'wb_mora4k5y_ju3') {
+            _wbEl.textContent = '[]';
+            const _t = document.getElementById('wbThread'); if (_t) _t.innerHTML = '';
+            schedSave();
+          }
+        }
+      } catch(_e) {}
     } catch(e) { dot('#DC2626', 'Offline: ' + e.message); }
     setInterval(poll, 20000);
   }
